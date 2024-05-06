@@ -20,7 +20,7 @@ class Soulmaster(Action): # Dawn Warrior in GMS.
         self.offsetx=15
         self.goleft=True
         self.goright=False
-        self.randomlist = ['z', 'x', 'c', 'space', '2', '3', '0', 'f9', 'w', 'e', 'r', 't', 's', 'd', 'f', 'v']
+        self.randomlist = ['1', '2', '4', 'r', 't', 'y', 'z', 'v', 's', 'f1', 'f2', 'f3', 'f4']
         self.cosmicshowerplanttimer0=0
         self.cosmicshowerplanttimer=0
         self.cosmicshowerplant=True
@@ -118,7 +118,7 @@ class Soulmaster(Action): # Dawn Warrior in GMS.
         print(f'press ropeconnect once. ')
         await self.ropeconnectp(31,101)
         await self.ropeconnectr(31,101)
-        await sleep(.555)
+        await sleep(.75)
         print(f'press ropeconnect twice. ')
         await self.ropeconnectp(31,101)
         await self.ropeconnectr(31,101)
