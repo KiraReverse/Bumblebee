@@ -259,9 +259,9 @@ class TkinterBot(customtkinter.CTk):
             idx = self.g.vdance_checker2()
             if idx > 0:
                 if previdx==0:
-                    self.pressvdancenpc=True
-                    print(f'on point. {perf_counter()-now:.10f} {previdx=} {idx=} {self.pressvdancenpc}')
-                    self.pressvdancenpc=False
+                    # self.pressvdancenpc=True
+                    # print(f'on point. {perf_counter()-now:.10f} {previdx=} {idx=} {self.pressvdancenpc}')
+                    # self.pressvdancenpc=False
                     # await self.character.ac.npcp(3,11)
                     # await self.character.ac.npcr(3,11)
                     keydown('alt')
@@ -269,14 +269,14 @@ class TkinterBot(customtkinter.CTk):
                     keyup('alt')
                     await sleep(.001)
                 elif idx==previdx:
-                    self.pressvdancenpc=False
-                    print(f'on point. {perf_counter()-now:.10f} {previdx=} {idx=} {self.pressvdancenpc}')
-                    self.pressvdancenpc=False
+                    # self.pressvdancenpc=False
+                    # print(f'on point. {perf_counter()-now:.10f} {previdx=} {idx=} {self.pressvdancenpc}')
+                    # self.pressvdancenpc=False
                     pass
                 elif idx!=previdx:
-                    self.pressvdancenpc=True
-                    print(f'on point. {perf_counter()-now:.10f} {previdx=} {idx=} {self.pressvdancenpc}')
-                    self.pressvdancenpc=False
+                    # self.pressvdancenpc=True
+                    # print(f'on point. {perf_counter()-now:.10f} {previdx=} {idx=} {self.pressvdancenpc}')
+                    # self.pressvdancenpc=False
                     # await self.character.ac.npcp(3,11)
                     # await self.character.ac.npcr(3,11)
                     keydown('alt')
@@ -286,7 +286,7 @@ class TkinterBot(customtkinter.CTk):
                 previdx=idx
             else:
                 previdx=0
-            now=perf_counter()
+            # now=perf_counter()
             #
             # time.sleep(.411) # when testing ..
             # time.sleep(.011) # when real botting ..
