@@ -46,6 +46,22 @@ class Action:
         self.sbtm=58.0 # 54.5
         self.runesolver=None
         self.g=None
+        ## timer variables goes here        
+        self.randomlist = ['z', 'x', 'c', 'space', '2', '3', '0', 'f9', 'w', 'e', 'r', 't', 's', 'd', 'f', 'v']
+        # self.randomlist = []
+        self.cosmicshowerplanttimer0=0
+        self.cosmicshowerplanttimer=0
+        self.cosmicshowerplant=True
+        self.fountaintimer0=0
+        self.fountaintimer=0
+        self.fountain=True
+        self.randommtimer0=0
+        self.randommtimer=0
+        self.runetimer0=0
+        self.runetimer=0
+        self.checkrune=True
+        self.solverune=True
+        self.now=0
         ## misc. others. 
         self.replaceropeconnect=False
         ## enter portal algorithm variable goes here
@@ -965,9 +981,9 @@ class Action:
 
     async def post_perform_action(self,x,y):
         self.now = perf_counter()
-        self.randommtimer = self.now - self.randommtimer0
-        if self.randommtimer > 15:
-            self.randommtimer0 = self.now
+        self.randomtimer = self.now - self.randomtimer0
+        if self.randomtimer > 15:
+            self.randomtimer0 = self.now
             # p = random.randint(0, len(self.randomlist)-1)
             code = random.choice(self.randomlist)
             if code is not None:
