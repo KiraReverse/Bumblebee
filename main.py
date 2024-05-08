@@ -271,7 +271,8 @@ class TkinterBot(customtkinter.CTk):
                 time.sleep(.1)
             else: #
                 xynotfound=0
-                await self.character.perform_next_attack(x,y)
+                await self.character.perform_next_attack(x,y) # game                
+                # await self.changechannel()
 
                 now=perf_counter()                
                 cctimer=now-cctimer0
@@ -280,10 +281,11 @@ class TkinterBot(customtkinter.CTk):
                     keyupall()
                     await self.changechannel()
                     cctimer0=perf_counter() # reset
-                if self.cc: # this is for red dot. 
                     self.cc=False
+                if self.cc: # this is for red dot. 
                     keyupall()
                     await self.changechannel_zakum() # we don't go ardent because it has 5 min cd. 
+                    self.cc=False
                 
 
     async def async_function9(self):
@@ -397,7 +399,8 @@ class TkinterBot(customtkinter.CTk):
             # elif whitedotlocations is None:
             #     whitedotcounter=0
             
-            time.sleep(2)
+            time.sleep(4)
+            # time.sleep(2)
             
     async def async_function5(self): # gma_checker
         while True:
@@ -1443,6 +1446,7 @@ class TkinterBot(customtkinter.CTk):
         x, y, w, h = position
         # set a limit for cc, in case character died, stop it from spamming cc! i've been banned once due to this spamming! no appeal. 
         for i in range(10): # set a limit on how many tries to attempt to move to zakum map to avoid BAN!
+            if self.pause: return
             await self.character.ac.bossuipr() # remember set it in settings.ini
             await self.helper.move_to_and_click(x+104,y+204) # zakum 800x600
             await self.helper.move_to_and_click(x+510,y+562) # gobutton 800x600
@@ -1464,32 +1468,65 @@ class TkinterBot(customtkinter.CTk):
             await self.helper.adjustportal2(g=self.g,spot=21,distx=10.5,docorrection=True,ca=self.character.ac) 
             [await press(self.character.ac.uppr,.06) for _ in range(random.randint(1, 2))]
         # check for red dot/guild dot/bl dot after cc
-        await self.helper.checkreddotaftercomeoutfromzakummap(hwnd=self.maplehwnd,ca=self.character.ac, position1=(8,63,self.minimapX,self.minimapY)) # sorry perfectionist =(
+        await self.helper.checkreddotaftercomeoutfromzakummap(hwnd=self.maplehwnd,ca=self.character.ac, position1=(self.minimapX,self.minimapY)) # sorry perfectionist =(
         # TODO: repeat this function for guild dot 
         # TODO: count number of red dot/guild dot/bl dot (instanced map)
         
 
-    async def changechannel(self): # ardentmill
+    async def changechannel(self): # ardentmill version
+        position = win32gui.GetWindowRect(self.maplehwnd)
+        x, y, w, h = position
+        async def gotoardent():
+            await self.helper.move_to_and_click(x+559,y+233) # click somewhere else to prevent typing in chat. 
+            time.sleep(.5)
+            await self.character.ac.ardentp(11,31)
+            await self.character.ac.ardentr(3,11)
+            time.sleep(.5)
+            await self.helper.move_to_and_click(x+539,y+253) # ardentmill offset (800x600) TODO: write a list of offset for all reso. 
+            time.sleep(.5)
+            await self.character.ac.enterpr()
+            time.sleep(3)
+        async def checkstillinardentmill():            
+            for i in range(7):
+                if i > 5: self.pause=True
+                if self.pause: return False
+                weareinardentyesno = self.g.ardentdetector()
+                if self.g.ardentdetector() is None:
+                    print(f'we are not in ardentmill. {i=} {weareinardentyesno=}')
+                    await gotoardent()
+                else:
+                    print(f'we are in ardentmill. {i=} {weareinardentyesno=}')
+                    await self.helper.move_to_and_click(x+559,y+233) # click somewhere else to prevent typing in chat. 
+                    time.sleep(.5)
+                    await self.character.ac.ardentpr() # close the ui
+                    time.sleep(.5)
+                    return True
         async def press(button,sleep):
                 await button()
                 time.sleep(sleep)
-        position = win32gui.GetWindowRect(self.maplehwnd)
-        x, y, w, h = position
-        await self.character.ac.ardentpr()
-        await self.helper.move_to(x+539,y+253) # ardentmill offset (800x600) TODO: write a list of offset for all reso. 
-        time.sleep(.1)
-        print(f'clicking 539,253 (ardentmill)')
-        left_click()
-        time.sleep(.1)
-        await self.character.ac.enterpr()
-        await self.character.ac.ccbuttonpr()
-        time.sleep(.1)        
+        # go to ardent code starts here. 
+        if not await checkstillinardentmill(): # if return False, means either user paused or tries end (5 times). 
+            return # then we return and bye. if True, proceed. 
+        await self.character.ac.ccbuttonpr() # proceed. 
+        time.sleep(3.)        
         [await self.character.ac.leftpr() for _ in range(random.randint(1, 10))]
+        time.sleep(.5)        
         await self.character.ac.enterpr()
-        time.sleep(5.) # adjust this to your pc loading speed i guess, mine need 5 seconds to cc. 
+        time.sleep(2.) # adjust this to your pc loading speed i guess, mine need 5 seconds to cc. 
         [await press(self.character.ac.uppr,.06) for _ in range(random.randint(4, 10))] # ideally TODO: check ardentmill map loaded. 
         time.sleep(2.) # coming out from ardent. TODO: check if back to hunting map.
-        # TODO: check for red dot/guild dot/bl dot after cc
+        for i in range(10): # set a limit to check. 
+            if i > 8: self.pause=True # set a limit
+            if self.pause: return
+            if self.g.ardentdetector() is None: # we not in ardent. 
+                if self.g.ardentmaploading() is not None: # still loading. (whole maple dark)
+                    time.sleep(.5) # do nothing for .5 seconds. 
+                else:
+                    if self.g.ardentdetector() is None: # final check that we not in ardent
+                        break
+            else: # we still in ardent TODO: if exceed x number of time, just cc again to align with portal and press up. 
+                time.sleep(.5)
+        await self.helper.checkreddotaftercomeoutfromzakummap(hwnd=self.maplehwnd,ca=self.character.ac, position1=(self.minimapX,self.minimapY)) #
         # TODO: set a limit for cc, in case character died, stop it from spamming cc! i've been banned once due to this spamming! no appeal can be made.  
 
     async def playback(self):
@@ -1603,10 +1640,11 @@ class TkinterBot(customtkinter.CTk):
                             keyupall()
                             await self.changechannel()
                             cctimer0=perf_counter() # reset
-                        if self.cc:
                             self.cc=False
+                        if self.cc:
                             keyupall()
                             await self.changechannel_zakum() # this version of changing channel is from reddotdetector. 
+                            self.cc=False
 
     def convertKey(self,button=None):
         PYNPUT_SPECIAL_CASE_MAP = {

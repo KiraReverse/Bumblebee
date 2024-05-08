@@ -37,6 +37,7 @@ ESBGR = (51,187,255, alpha) # especia please use the dot especia detector (timer
 TIBGR = (204,204,204, alpha) # timer gray dot (304,48)
 GMBGR = (222,218,206, alpha) # 
 DABGR = (0,0,0, alpha) # 
+ARDENTBGR = (17,85,170, alpha) # # the icon of the ardent minimap, there is this orange-ish brown roofttop in the tiny icon. 
 ROBGR = (187,187,204, alpha) # mapril island infinity race rock light brown bgr value
 
 
@@ -271,6 +272,15 @@ class Game:
         # location = self.checkertest5(DABGR,x=392,y=671,w=991,h=672) # 1280x720 # not as good because the pink gap is narrower unfortunately
         # location = self.checkertest5(DABGR,x=264,y=719,w=863,h=720) # 1024x768 # even worse, very narrow and the V speed is too fast. 
         return location
+
+    def ardentdetector(self):
+        location = self.checkertest(ARDENTBGR,x=14,y=36,w=15,h=37) # 
+        return location[0] if len(location) > 0 else None
+
+    def ardentmaploading(self):
+        location = self.checkertest(DABGR,x=14,y=36,w=15,h=37)
+        return location[0] if len(location) > 0 else None
+
 
     def pure_test(self): 
         location = self.checkertest(PLAYER_BGRA,x=self.top,y=self.left,w=self.bottom,h=self.right)
@@ -607,11 +617,21 @@ class Game:
                     #     pass
                     for idx in matches:
                         # print(f'{img_reshaped2[idx]=}')
+                        #
+                        # if img_reshaped2[idx,0]+66 < 255:
+                        #     return idx                        
+                        # if img_reshaped2[idx,1]+66 < 255:
+                        #     return idx
+                        # if img_reshaped2[idx,2]+66 < 255:
+                        #     # print(f'press npc key now. {img_reshaped2[idx]}')
+                        #     return idx
+                        #
                         if img_reshaped2[idx,0]+66 < 255:
                             if img_reshaped2[idx,1]+66 < 255:
                                 if img_reshaped2[idx,2]+66 < 255:
                                     # print(f'press npc key now. {img_reshaped2[idx]}')
                                     return idx
+                        #
                         # print(f'{sum_x=} {sum_y=} {count=}')
                         # sum_x += idx % width
                         # sum_y += idx // width

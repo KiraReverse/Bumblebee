@@ -228,8 +228,8 @@ class TkinterBot(customtkinter.CTk):
         # self.thread4.start() # all the detector goes here
         # self.thread5 = threading.Thread(target=self.run_thread5)
         # self.thread5.start() # gma detector goes here
-        # self.thread9 = threading.Thread(target=self.run_thread9)
-        # self.thread9.start() # rock detector
+        self.thread9 = threading.Thread(target=self.run_thread9)
+        self.thread9.start() # rock detector
         self.ac=self.character.ac
         self.polocheckertimer0=0
         self.now=0
@@ -252,44 +252,49 @@ class TkinterBot(customtkinter.CTk):
                     if self.stop_event.is_set():
                         # self.thread4.join()
                         # self.thread5.join()
-                        # self.thread9.join()
+                        self.thread9.join()
                         return
                 print(f'script resumed ..')
-            #
+            # #
             idx = self.g.vdance_checker2()
             if idx > 0:
                 if previdx==0:
                     # self.pressvdancenpc=True
                     # print(f'on point. {perf_counter()-now:.10f} {previdx=} {idx=} {self.pressvdancenpc}')
                     # self.pressvdancenpc=False
-                    # for i in range(random.randint(2,4)):
-                    #     await self.character.ac.npcp(3,11)
-                        # await self.character.ac.npcr(3,11)
-                    keydown('alt')
-                    await sleep(.003)
-                    keyup('alt')
-                    await sleep(.001)
-                elif idx==previdx:
+                    # for i in range(random.randint(1,3)):
+                    await self.character.ac.npcp(3,5)
+                    await self.character.ac.npcr(1,3)
+                    # await self.character.ac.npcp(3,11)
+                    # await self.character.ac.npcr(3,11)
+                    # keydown('alt')
+                    # await sleep(.003)
+                    # keyup('alt')
+                    # await sleep(.001)
+                # elif idx==previdx:
                     # self.pressvdancenpc=False
                     # print(f'on point. {perf_counter()-now:.10f} {previdx=} {idx=} {self.pressvdancenpc}')
                     # self.pressvdancenpc=False
-                    pass
+                    # pass
                 elif idx!=previdx:
                     # self.pressvdancenpc=True
                     # print(f'on point. {perf_counter()-now:.10f} {previdx=} {idx=} {self.pressvdancenpc}')
                     # self.pressvdancenpc=False                    
-                    # for i in range(random.randint(2,4)):
-                    #     await self.character.ac.npcp(3,11)
-                    #     await self.character.ac.npcr(3,11)
-                    keydown('alt')
-                    await sleep(.003)
-                    keyup('alt')
-                    await sleep(.001)
+                    # for i in range(random.randint(1,3)):
+                    await self.character.ac.npcp(3,5)
+                    await self.character.ac.npcr(1,3)
+                    # await self.character.ac.npcp(3,11)
+                    # await self.character.ac.npcr(3,11)
+                    # keydown('alt')
+                    # await sleep(.003)
+                    # keyup('alt')
+                    # await sleep(.001)
+                print(f'on point. {perf_counter()-now:.10f} {previdx=} {idx=} {self.pressvdancenpc}')
                 previdx=idx
             else:
                 previdx=0
             # now=perf_counter()
-            #
+            # #
             # time.sleep(.411) # when testing ..
             # time.sleep(.011) # when real botting ..
             # time.sleep(.001) # when idk maybe you gone insane ..
@@ -297,26 +302,26 @@ class TkinterBot(customtkinter.CTk):
             # x, y = (None, None) if g_variable is None else g_variable
             # x, y = (None, None)
             # if x == None or y == None:
-            #     # #
-            #     # if self.pressvdancenpc:
-            #     #     self.pressvdancenpc=False
-            #     #     await self.character.ac.npcp(3,11)
-            #     #     await self.character.ac.npcr(3,11)
-            #     #     # print(f'pressed. \n')
-            #     #     # print(f'time={perf_counter()-now:.10f}')
-            #     # time.sleep(.0001)
-            #     #
-            #     now=perf_counter()
-            #     # xynotfound+=1
-            #     # if xynotfound > 70:
-            #     #     t = time.localtime()
-            #     #     currenttime = time.strftime("%H:%M:%S", t)
-            #     #     print(f'something is wrong .. character not found .. exiting .. {currenttime}')
-            #     #     self.pause=True
-            #     # print(f'x==None, pass ..')
-            #     # time.sleep(.1)
+            #     if self.pressvdancenpc:
+            #         self.pressvdancenpc=False
+            #         # for i in range(random.randint(3,4)):
+            #         await self.character.ac.npcp(3,11)
+            #         await self.character.ac.npcr(3,11)
+            #         # print(f'pressed. \n')
+            #         # print(f'time={perf_counter()-now:.10f}')
+            #     time.sleep(.0001)
+                
+                # now=perf_counter()
+                # xynotfound+=1
+                # if xynotfound > 70:
+                #     t = time.localtime()
+                #     currenttime = time.strftime("%H:%M:%S", t)
+                #     print(f'something is wrong .. character not found .. exiting .. {currenttime}')
+                #     self.pause=True
+                # print(f'x==None, pass ..')
+                # time.sleep(.1)
             # else: #
-                # xynotfound=0
+            #     xynotfound=0
                 # await self.character.perform_next_attack(x,y)
                 
 
@@ -334,9 +339,9 @@ class TkinterBot(customtkinter.CTk):
                 time.sleep(1)
                 if self.stop_event.is_set():
                     return            
-            # vdanceloc = self.g.vdance_checker()
-            # print(f'af9={perf_counter()-now:.10f} {vdanceloc=}')
-            # print(f'time_per_loop={perf_counter()-now:.10f}')
+            # # vdanceloc = self.g.vdance_checker()
+            # # print(f'af9={perf_counter()-now:.10f} {vdanceloc=}')
+            # # print(f'time_per_loop={perf_counter()-now:.10f}')
             idx = self.g.vdance_checker2()
             if idx > 0:
                 if previdx==0:
@@ -345,13 +350,13 @@ class TkinterBot(customtkinter.CTk):
                     self.pressvdancenpc=False
                 elif idx!=previdx:
                     self.pressvdancenpc=True
-                print(f'on point. {perf_counter()-now:.10f} {previdx=} {idx=} {self.pressvdancenpc}')
+                # print(f'on point. {perf_counter()-now:.10f} {previdx=} {idx=} {self.pressvdancenpc}')
                 previdx=idx
             else:
                 previdx=0
-            # if vdanceloc > 0:
-                # prev=cur
-                # cur=vdanceloc
+            # # if vdanceloc > 0:
+            #     # prev=cur
+            #     # cur=vdanceloc
                 # if cur==prev:
                 #     diff=0
                 # else:

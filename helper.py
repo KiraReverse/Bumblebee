@@ -11,6 +11,7 @@ from PIL import ImageGrab
 import cv2
 import numpy as np
 import random
+import keyboard as pythonkeyboard
 
 
 
@@ -87,6 +88,8 @@ class Helper:
         position1 = (x+11, y+88, x+200, y+200)  # void3
         while True:
             while True:
+                if pythonkeyboard.is_pressed("esc"):
+                    return
                 screenshot = ImageGrab.grab(position1)
                 screenshot = np.array(screenshot)
                 img = cv2.cvtColor(screenshot, cv2.COLOR_RGB2BGR)
@@ -98,8 +101,11 @@ class Helper:
                     print(img[43][30])
                     print(img[44][30])
                     print(img[45][30])
-                    # print(img[45][35])
+                    print(img[45][35])
                     # hfakeclick(x+11+30,y+88+40)
+                    # cv2.imshow('img',img)
+                    # cv2.waitKey(0)
+                    # cv2.destroyAllWindows()
                 if img[45][35][0] < 10 and img[45][35][1] < 10:
                 # if img[40][30][0] < 10 and img[40][30][1] < 10 and img[40][30][2] < 10:
                     print(f'map transition ..')
@@ -130,6 +136,8 @@ class Helper:
                 await ca.rightr(331, 881)
         while (True):
             while (True):
+                if pythonkeyboard.is_pressed("esc"):
+                    return
                 r = random.randint(1, 4)
                 r /= 1000
                 await sleep(r)
@@ -191,7 +199,7 @@ class Helper:
                     await ca.rightr(10, 100)
 
     # check for red dot after coming out from zakum map. 
-    async def checkreddotaftercomeoutfromzakummap(self,hwnd, ca=None, position1=None):
+    async def checkreddotaftercomeoutfromzakummap(self,hwnd, ca=None, position1=(200,200)):
         rdbgr = (0, 0, 255)
         yellowbgr = (68, 221, 255)
         # 255 0 0 rgb
@@ -199,11 +207,19 @@ class Helper:
         position = win32gui.GetWindowRect(hwnd)
         x, y, w, h = position
         # position1 = (x+11, y+88, x+200, y+200)  # void3
+        print(f'{position1[0]=} {position1[1]=}')
+        newposition = (x+8, y+88, x+8+position1[0], y+31+position1[1])
+        # newposition = (x, y, w, h)
         while True:
             while True:
-                screenshot = ImageGrab.grab(position1)
+                if pythonkeyboard.is_pressed("esc"):
+                    return
+                screenshot = ImageGrab.grab(newposition)
                 screenshot = np.array(screenshot)
                 img = cv2.cvtColor(screenshot, cv2.COLOR_RGB2BGR)
+                # cv2.imshow('img',img)
+                # cv2.waitKey(0)
+                # cv2.destroyAllWindows()
                 indicesyellow = np.where(np.all(img == yellowbgr, axis=-1))
                 if len(indicesyellow[0]) != 0:
                     index = np.where(np.all(img == rdbgr, axis=-1))
