@@ -1377,67 +1377,6 @@ class TkinterBot(customtkinter.CTk):
         # buttonplayback = customtkinter.CTkButton(framesonic, text="", command=playback, fg_color='#0d7adf', text_color='black',image=imagesonic)
         buttonplayback.pack(padx=(1,1),pady=(1,1))
 
-
-    def realrecord(self):
-        self.unreleased_keys=[]
-        self.input_events=[]
-        def on_press(key):
-            if key in self.unreleased_keys:
-                return
-            else:
-                self.unreleased_keys.append(key)
-            try:
-                record_event('keyDown', elapsed_time(), key.char)
-            except AttributeError:
-                record_event('keyDown', elapsed_time(), key)
-        def on_release(key):
-            try:
-                self.unreleased_keys.remove(key)
-            except ValueError:
-                print('ERROR: {} not in unreleased_keys'.format(key))
-            try:
-                record_event('keyUp', elapsed_time(), key.char)
-            except AttributeError:
-                record_event('keyUp', elapsed_time(), key)
-            if key == keyboard.Key.esc:
-                self.recordstatus=not self.recordstatus
-                self.record_button.configure(fg_color='#55eecc', text='Record',state='normal')
-                self.signature=''
-                for value in self.input_events:
-                    if value['type']=='keyUp':
-                        if 'Key' in value['button']:
-                            self.signature+=value['button'].replace('Key','')
-                        else:
-                            self.signature+='.'+value['button']
-                length=round(self.input_events[-1]['time'],4)
-                self.labelscript.configure(text=f'script duration: {length}')
-                new_array_temp=[]
-                for index, action in enumerate(self.input_events):
-                    button = action['button']
-                    key = self.convertKey(button)
-                    if key is not None:
-                        self.input_events[index]['button'] = key
-                        if key == 'esc':
-                            pass
-                        else:
-                            new_array_temp.append(action)
-                self.input_events=new_array_temp            
-                raise keyboard.Listener.StopException
-        def record_event(event_type, event_time, button, pos=None):
-            self.input_events.append({
-                'time': event_time,
-                'type': event_type,
-                'button': str(button),
-                'pos': pos
-            })            
-        def elapsed_time():
-            return perf_counter() - self.start_time
-        with keyboard.Listener(
-            on_press=on_press,
-            on_release=on_release) as listener:
-            self.start_time = perf_counter()
-            listener.join()
-
     async def changechannel_zakum(self):
         async def press(button,sleep):
                 await button()
@@ -1530,7 +1469,6 @@ class TkinterBot(customtkinter.CTk):
         # TODO: set a limit for cc, in case character died, stop it from spamming cc! i've been banned once due to this spamming! no appeal can be made.  
 
     async def playback(self):
-        print(f'starting script {self.script} in 1 ..')
         time.sleep(1)
         now=perf_counter()
         runetimer0=now
@@ -1542,6 +1480,7 @@ class TkinterBot(customtkinter.CTk):
         with open(f'script/{self.script}', 'r') as jsonfile:
             data = json.load(jsonfile)
             while True:
+                print(f'starting script {self.script} in 1 ..')
                 time.sleep(1) # testing 
                 for index, action in enumerate(data):
                     # print(f'running: {index=} {action=}')
@@ -1644,29 +1583,8 @@ class TkinterBot(customtkinter.CTk):
                         if self.cc:
                             keyupall()
                             await self.changechannel_zakum() # this version of changing channel is from reddotdetector. 
-                            self.cc=False
-
-    def convertKey(self,button=None):
-        PYNPUT_SPECIAL_CASE_MAP = {
-            'alt_l': 'altleft',
-            'alt_r': 'altright',
-            'alt_gr': 'altright',
-            'caps_lock': 'capslock',
-            'ctrl_l': 'ctrlleft',
-            'ctrl_r': 'ctrlright',
-            'page_down': 'pagedown',
-            'page_up': 'pageup',
-            'shift_l': 'shiftleft',
-            'shift_r': 'shiftright',
-            'num_lock': 'numlock',
-            'print_screen': 'printscreen',
-            'scroll_lock': 'scrolllock',
-        }
-        # example: 'Key.F9' should return 'F9', 'w' should return as 'w'
-        cleaned_key = button.replace('Key.', '')
-        if cleaned_key in PYNPUT_SPECIAL_CASE_MAP:
-            return PYNPUT_SPECIAL_CASE_MAP[cleaned_key]
-        return cleaned_key
+                            self.cc=False                
+                print(f'script finished. {self.script} ..')
 
     async def adjustcharacter(self,a=10,b=10):
         xynotfound=0
@@ -1705,6 +1623,91 @@ class TkinterBot(customtkinter.CTk):
                         await self.character.ac.leftwalk(int((abs(x-a)*40)-30),int((abs(x-a)*40)))
                     elif x < a:
                         await self.character.ac.rightwalk(int((abs(x-a)*40)-30),int((abs(x-a)*40)))
+
+    def realrecord(self):
+        self.unreleased_keys=[]
+        self.input_events=[]
+        def on_press(key):
+            if key in self.unreleased_keys:
+                print(f'unreleased: {key=} {self.unreleased_keys=}')
+                return
+            else:
+                self.unreleased_keys.append(key)
+            try:
+                print(f'{key=}')
+                record_event('keyDown', elapsed_time(), key.char)
+            except AttributeError:
+                record_event('keyDown', elapsed_time(), key)
+        def on_release(key):
+            try:
+                self.unreleased_keys.remove(key)
+            except ValueError:
+                print('ERROR: {} not in unreleased_keys'.format(key))
+            try:
+                record_event('keyUp', elapsed_time(), key.char)
+            except AttributeError:
+                record_event('keyUp', elapsed_time(), key)
+            if key == keyboard.Key.esc:
+                self.recordstatus=not self.recordstatus
+                self.record_button.configure(fg_color='#55eecc', text='Record',state='normal')
+                self.signature=''
+                for value in self.input_events:
+                    print(value)
+                    if value['type']=='keyUp':
+                        if 'Key' in value['button']:
+                            self.signature+=value['button'].replace('Key','')
+                        else:
+                            self.signature+='.'+value['button']
+                length=round(self.input_events[-1]['time'],4)
+                self.labelscript.configure(text=f'script duration: {length}')
+                new_array_temp=[]
+                for index, action in enumerate(self.input_events):
+                    button = action['button']
+                    key = self.convertKey(button)
+                    if key is not None:
+                        self.input_events[index]['button'] = key
+                        if key == 'esc':
+                            pass
+                        else:
+                            new_array_temp.append(action)
+                self.input_events=new_array_temp            
+                raise keyboard.Listener.StopException
+        def record_event(event_type, event_time, button, pos=None):
+            self.input_events.append({
+                'time': event_time,
+                'type': event_type,
+                'button': str(button),
+                'pos': pos
+            })            
+        def elapsed_time():
+            return perf_counter() - self.start_time
+        with keyboard.Listener(
+            on_press=on_press,
+            on_release=on_release) as listener:
+            self.start_time = perf_counter()
+            listener.join()
+
+    def convertKey(self,button=None):
+        PYNPUT_SPECIAL_CASE_MAP = {
+            'alt_l': 'altleft',
+            'alt_r': 'altright',
+            'alt_gr': 'altright',
+            'caps_lock': 'capslock',
+            'ctrl_l': 'ctrlleft',
+            'ctrl_r': 'ctrlright',
+            'page_down': 'pagedown',
+            'page_up': 'pageup',
+            'shift_l': 'shiftleft',
+            'shift_r': 'shiftright',
+            'num_lock': 'numlock',
+            'print_screen': 'printscreen',
+            'scroll_lock': 'scrolllock',
+        }
+        # example: 'Key.F9' should return 'F9', 'w' should return as 'w'
+        cleaned_key = button.replace('Key.', '')
+        if cleaned_key in PYNPUT_SPECIAL_CASE_MAP:
+            return PYNPUT_SPECIAL_CASE_MAP[cleaned_key]
+        return cleaned_key
 
     def setup_tab3(self):
         input_fields = []
