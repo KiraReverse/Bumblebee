@@ -271,8 +271,7 @@ class TkinterBot(customtkinter.CTk):
                 time.sleep(.1)
             else: #
                 xynotfound=0
-                await self.character.perform_next_attack(x,y) # game                
-                # await self.changechannel()
+                await self.character.perform_next_attack(x,y) 
 
                 now=perf_counter()                
                 cctimer=now-cctimer0
@@ -286,7 +285,9 @@ class TkinterBot(customtkinter.CTk):
                     keyupall()
                     await self.changechannel_zakum() # we don't go ardent because it has 5 min cd. 
                     self.cc=False
-                
+                if self.rune:
+                    await self.character.gotorune() # and solve rune.
+
 
     async def async_function9(self):
         now=perf_counter()
@@ -382,6 +383,17 @@ class TkinterBot(customtkinter.CTk):
                     position = win32gui.GetWindowRect(self.maplehwnd)
                     x, y, w, h = position
                     await self.helper.move_to_and_click_and_move_away(x+222,y+410); time.sleep(.1)
+            runecdcheckerlocations = self.g.rune_cd_checker()
+            if runecdcheckerlocations is None: # means rune no more cd
+                print(f'rune cd icon not found. ')
+                runecdcounter+=1
+                if runecdcounter>1: # even rune cd we checking twice!
+                    runecdcounter=0
+                    self.rune=True
+                    print(f'rune cd is true (go solve rune!) {self.rune=}')
+            # mapledccheckerlocations = self.g.maple_dc_checker()
+                
+
 
             # if not self.pausepolochecker and not self.portaldisabled: # i disable this because most user don't want to enter bounty portal
             #     polocheckerlocations = self.g.polo_checker() # check for portal on minimap
@@ -658,9 +670,22 @@ class TkinterBot(customtkinter.CTk):
             print(f'enterportalfailedorerror') # means enter portal failed, or error, back to training. 
         self.polochecker=False
         return truefalse
-    
+
+    def resumebutton(self):
+        self.pause = not self.pause
+        print(f'resumebutton pressed .. {self.pause}')
+        if self.pause:
+            self.button.configure(text='Resume', fg_color='tomato')
+            self.runesolver.disablerune()
+            self.character.ac.disablerune()
+        else:
+            self.button.configure(text='Pause', fg_color='lime')
+            self.runesolver.enablerune()
+            self.character.ac.enablerune()
+
     async def togglepause(self):
-        self.pause=True
+        # self.pause=True
+        self.resumebutton()
         self.scriptpausesignal=True
         self.scriptbuttonstop.configure(state='normal')        
 
@@ -1010,17 +1035,6 @@ class TkinterBot(customtkinter.CTk):
         print(f'rebind mouse. ')
         auto_capture_devices2()
 
-
-    def resumebutton(self):
-        self.pause = not self.pause
-        print(f'resumebutton pressed .. {self.pause}')
-        if self.pause:
-            self.button.configure(text='Resume', fg_color='tomato')
-            self.runesolver.disablerune()
-        else:
-            self.button.configure(text='Pause', fg_color='lime')
-            self.runesolver.enablerune()
-
     def button_adjustminimap_fake(self):
         minimapX = int(self.widthentry.get())
         minimapY = int(self.heightentry.get())
@@ -1140,6 +1154,7 @@ class TkinterBot(customtkinter.CTk):
             runesolver=self.runesolver,
             g=self.g,
             rotation=self.rotation,
+            maplehwnd=self.maplehwnd
         )
 
     def update_four_lines(self,line1,line2,line3,line4):        
@@ -1628,7 +1643,7 @@ class TkinterBot(customtkinter.CTk):
         self.unreleased_keys=[]
         self.input_events=[]
         def on_press(key):
-            if key in self.unreleased_keys:
+            if key in self.unreleased_keys: 
                 print(f'unreleased: {key=} {self.unreleased_keys=}')
                 return
             else:
@@ -2165,6 +2180,7 @@ class TkinterBot(customtkinter.CTk):
             runesolver=self.runesolver,
             g=self.g,
             rotation=self.rotation,
+            maplehwnd=self.maplehwnd
         )
         self.rotation='default'
         rotation_list = self.character.get_rotation_list()

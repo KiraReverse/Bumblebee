@@ -145,7 +145,7 @@ class Character:
             # 'bishop': Bishop,
         }
 
-    def setup(self,left,right,top,btm,classtype=None,runesolver=None,g=None,rotation=None):
+    def setup(self,left,right,top,btm,classtype=None,runesolver=None,g=None,rotation=None,maplehwnd=None):
         self.left=left
         self.right=right
         self.top=top
@@ -156,7 +156,7 @@ class Character:
         self.ac.right=right
         self.ac.top=top
         self.ac.btm=btm
-        self.ac.setup(runesolver,g,rotation)
+        self.ac.setup(runesolver,g,rotation,maplehwnd)
         # print(f'setup complete. {left=} {right=} {top=} {btm=}')
         # print(f'{self.ac.left=} {self.ac.right=} {self.ac.top=} {self.ac.btm=}')
 
@@ -188,6 +188,9 @@ class Character:
 
     def set_rotation(self,rotation):
         self.ac.set_rotation(rotation)
+
+    async def gotorune(self):
+        await self.ac.gotorune()
 
     async def perform_next_attack2(self,x,y):
         if y > self.top and (y > self.btm-self.offsety and y <= self.btm+self.offsety):

@@ -28,6 +28,7 @@ OKBGR = (17,187,170, alpha) # broid die #normalpc
 # OKBGR = (0,187,170, alpha) # died_ok [0 187 170] [0 204 153]
 ORBGR = (1,136,245, alpha) # orange_mushroom [1 136 245] [] #normalpc
 LOBGR = (17,170,136, alpha) # 
+RUNECDBGR = (157,157,158, alpha) # the range is between 15x to 160 ???????
 # POBGR = (17,85,238, alpha) # 
 POBGR = (102,136,255, alpha) # 
 PO2BGR = (0,0,255, alpha) # 
@@ -176,6 +177,12 @@ class Game:
 
     def liedetector_checker(self):
         location = self.checker(LOBGR, x=430,y=375,w=431,h=376)
+        return location[0] if len(location) > 0 else None
+
+    def rune_cd_checker(self):
+        location = self.checkerrune(RUNECDBGR, x=self.right,y=15,w=self.right+1,h=16) # self.right is wrong, but .. 
+        # if len(location) < 1: # temp solution.
+        #     location = self.checkerrune(RUNECDBGR, x=self.right,y=69,w=self.right+1,h=70) ## during stupid announcement.         
         return location[0] if len(location) > 0 else None
 
     def polo_checker(self):
@@ -643,3 +650,46 @@ class Game:
                     #     locations.append((x_pos, y_pos))
                     # print(f'{locations=}')
             return 0
+            
+    def checkerrune(self, *color, x,y,w,h):
+        with gdi_capture.CaptureWindow(self.hwnd) as img:
+            locations = []
+            if img is None:
+                print("MapleStory.exe was not found.")
+            else:
+                img_cropped = img[y:h, x:w]
+                img_cropped2 = img[y+54:h+54, x:w]
+                height, width = img_cropped.shape[0], img_cropped.shape[1]
+                img_reshaped = np.reshape(img_cropped, ((width * height), 4), order="C")
+                img_reshaped2 = np.reshape(img_cropped2, ((width * height), 4), order="C")
+                for c in color:
+                    sum_x, sum_y, count = 0, 0, 0
+                    matches = np.where(
+                        (img_reshaped[:,0] >= 149) & (img_reshaped[:,0] <= 161) &
+                        (img_reshaped[:,1] >= 149) & (img_reshaped[:,1] <= 161) &
+                        (img_reshaped[:,2] >= 149) & (img_reshaped[:,2] <= 161) 
+                        )[0]
+                    for idx in matches:
+                        sum_x += idx % width
+                        sum_y += idx // width
+                        count += 1
+                    if count > 0:
+                        x_pos = sum_x / count
+                        y_pos = sum_y / count
+                        locations.append((x_pos, y_pos))
+                        return locations
+                    matches = np.where(
+                        (img_reshaped2[:,0] >= 149) & (img_reshaped2[:,0] <= 161) &
+                        (img_reshaped2[:,1] >= 149) & (img_reshaped2[:,1] <= 161) &
+                        (img_reshaped2[:,2] >= 149) & (img_reshaped2[:,2] <= 161) 
+                        )[0]
+                    for idx in matches:
+                        sum_x += idx % width
+                        sum_y += idx // width
+                        count += 1
+                    if count > 0:
+                        x_pos = sum_x / count
+                        y_pos = sum_y / count
+                        locations.append((x_pos, y_pos))
+                        return locations
+            return locations

@@ -12,6 +12,7 @@ from attack import npcp, npcr, leftp, leftr, rightp, rightr, jumpp, jumpr, leftj
     upp, upr, downp, downr
 from initinterception import movetoandleftclick
 from helper import Helper
+import keyboard as pythonkeyboard
 
 hwnd = None
 stoprune=False
@@ -258,6 +259,8 @@ class RuneSolver:
         # await f5pr()
         # send5('00')
         while (True):
+            if pythonkeyboard.is_pressed("esc"):
+                return
             # if changechannel or myvariable:
             #     print(f'roger ..')
             #     return
