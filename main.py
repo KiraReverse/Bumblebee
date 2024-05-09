@@ -389,7 +389,7 @@ class TkinterBot(customtkinter.CTk):
                     await self.helper.move_to_and_click_and_move_away(x+222,y+410); time.sleep(.1)
             runecdcheckerlocations = self.g.rune_cd_checker()
             if runecdcheckerlocations is None: # means rune no more cd
-                print(f'rune cd icon not found. ')
+                print(f'rune cd icon not found. {runecdcounter=}')
                 runecdcounter+=1
                 if runecdcounter>1: # even rune cd we checking twice!
                     runecdcounter=0

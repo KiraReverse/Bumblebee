@@ -51,6 +51,12 @@ class Game:
         self.top, self.left, self.bottom, self.right = region[0], region[1], region[2], region[3]
         # self.left, self.top, self.bottom, self.right = region[0], region[1], region[2], region[3]
         self.pololocations = None
+        self.height, self.width = 601, 801
+        with gdi_capture.CaptureWindow(self.hwnd) as img:
+            if img is None:
+                print("MapleStory.exe was not found.")
+                return None
+            self.height, self.width = img.shape[0], img.shape[1]
 
     def get_rune_image(self):
         with gdi_capture.CaptureWindow(self.hwnd) as img:
@@ -181,7 +187,8 @@ class Game:
         return location[0] if len(location) > 0 else None
 
     def rune_cd_checker(self):
-        location = self.checkerrune(RUNECDBGR, x=self.right,y=15,w=self.right+1,h=16) # self.right is wrong, but .. 
+        print(f'{self.height=} {self.width=}')
+        location = self.checkerrune(RUNECDBGR, x=self.right,y=15,w=self.width,h=16) # self.right is wrong, but .. 
         # if len(location) < 1: # temp solution.
         #     location = self.checkerrune(RUNECDBGR, x=self.right,y=69,w=self.right+1,h=70) ## during stupid announcement.         
         return location[0] if len(location) > 0 else None
@@ -685,6 +692,7 @@ class Game:
                         x_pos = sum_x / count
                         y_pos = sum_y / count
                         locations.append((x_pos, y_pos))
+                        print(f'rune cd icon found at 1. {locations=}')
                         return locations
                     matches = np.where(
                         (img_reshaped[:,0] >= 134) & (img_reshaped[:,0] <= 144) &
@@ -699,6 +707,7 @@ class Game:
                         x_pos = sum_x / count
                         y_pos = sum_y / count
                         locations.append((x_pos, y_pos))
+                        print(f'rune cd icon found at 2. {locations=}')
                         return locations
                     matches = np.where(
                         (img_reshaped2[:,0] >= 149) & (img_reshaped2[:,0] <= 161) &
@@ -713,6 +722,7 @@ class Game:
                         x_pos = sum_x / count
                         y_pos = sum_y / count
                         locations.append((x_pos, y_pos))
+                        print(f'rune cd icon found at 3. {locations=}')
                         return locations
                     matches = np.where(
                         (img_reshaped2[:,0] >= 134) & (img_reshaped2[:,0] <= 144) &
@@ -727,5 +737,7 @@ class Game:
                         x_pos = sum_x / count
                         y_pos = sum_y / count
                         locations.append((x_pos, y_pos))
+                        print(f'rune cd icon found at 4. {locations=}')
                         return locations
+            print(f'rune cd icon not found anywhere. (means rune cd finished. )  {locations=}')
             return locations

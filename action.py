@@ -1562,20 +1562,20 @@ class Action:
             # PressKey(captchadict[sms[i:i+1]])
             if sms[i:i+1] == 'u':
                 print('up')
-                await self.upp(1,11)
-                await self.upr(31,131)
+                await self.upp(3,11)
+                await self.upr(101,171)
             if sms[i:i+1] == 'd':
                 print('down')
-                await self.downp(1,11)
-                await self.downr(31,131)
+                await self.downp(3,11)
+                await self.downr(101,171)
             if sms[i:i+1] == 'l':
                 print('left')
-                await self.leftp(1,11)
-                await self.leftr(31,131)
+                await self.leftp(3,11)
+                await self.leftr(101,171)
             if sms[i:i+1] == 'r':
                 print('right')
-                await self.rightp(1,11)
-                await self.rightr(31,131)
+                await self.rightp(3,11)
+                await self.rightr(101,171)
             time.sleep(0.001)
         print(f'{perf_counter()-now=}')
 
