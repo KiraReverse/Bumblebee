@@ -13,56 +13,57 @@
 
 import random
 from action import Action
+from classtype.mycharacterign import Mycharacterign
 from classtype.adele import Adele
-from classtype.angelicbuster import Angelicbuster
-from classtype.aran import Aran
-from classtype.ark import Ark
-from classtype.battlemage import Battlemage
+# from classtype.angelicbuster import Angelicbuster
+# from classtype.aran import Aran
+# from classtype.ark import Ark
+# from classtype.battlemage import Battlemage
 from classtype.bishop import Bishop
-from classtype.blaster import Blaster
-from classtype.bowmaster import Bowmaster
-from classtype.cadena import Cadena
-from classtype.cannonmaster import Cannonmaster
-from classtype.captain import Captain
-from classtype.crossbowman import Crossbowman
-from classtype.darkknight import Darkknight
-from classtype.demonavenger import Demonavenger
-from classtype.demonslayer import Demonslayer
-from classtype.dualblade import Dualblade
-from classtype.eunwol import Eunwol
-from classtype.evan import Evan
-from classtype.firepoison import Firepoison
-from classtype.flamewizard import Flamewizard
-from classtype.hayato import Hayato
-from classtype.hero import Hero
-from classtype.hoyoung import Hoyoung
-from classtype.icelightning import Icelightning
-from classtype.illium import Illium
-from classtype.kaine import Kaine
-from classtype.kanna import Kanna 
-from classtype.kaiser import Kaiser 
-from classtype.khali import Khali
-from classtype.kinesis import Kinesis
-from classtype.lara import Lara
-from classtype.luminous import Luminous
-from classtype.lynn import Lynn
-from classtype.mechanic import Mechanic
-from classtype.mercedes import Mercedes
-from classtype.mihile import Mihile
-from classtype.moxuan import Moxuan
-from classtype.nightlord import Nightlord
-from classtype.nightwalker import Nightwalker
-from classtype.paladin import Paladin
-from classtype.pathfinder import Pathfinder
-from classtype.phantom import Phantom
-from classtype.shadower import Shadower
-from classtype.soulmaster import Soulmaster
-from classtype.striker import Striker
-from classtype.viper import Viper
-from classtype.wildhunter import Wildhunter
-from classtype.windbreaker import Windbreaker
-from classtype.xenon import Xenon
-from classtype.zero import Zero
+# from classtype.blaster import Blaster
+# from classtype.bowmaster import Bowmaster
+# from classtype.cadena import Cadena
+# from classtype.cannonmaster import Cannonmaster
+# from classtype.captain import Captain
+# from classtype.crossbowman import Crossbowman
+# from classtype.darkknight import Darkknight
+# from classtype.demonavenger import Demonavenger
+# from classtype.demonslayer import Demonslayer
+# from classtype.dualblade import Dualblade
+# from classtype.eunwol import Eunwol
+# from classtype.evan import Evan
+# from classtype.firepoison import Firepoison
+# from classtype.flamewizard import Flamewizard
+# from classtype.hayato import Hayato
+# from classtype.hero import Hero
+# from classtype.hoyoung import Hoyoung
+# from classtype.icelightning import Icelightning
+# from classtype.illium import Illium
+# from classtype.kaine import Kaine
+# from classtype.kanna import Kanna 
+# from classtype.kaiser import Kaiser 
+# from classtype.khali import Khali
+# from classtype.kinesis import Kinesis
+# from classtype.lara import Lara
+# from classtype.luminous import Luminous
+# from classtype.lynn import Lynn
+# from classtype.mechanic import Mechanic
+# from classtype.mercedes import Mercedes
+# from classtype.mihile import Mihile
+# from classtype.moxuan import Moxuan
+# from classtype.nightlord import Nightlord
+# from classtype.nightwalker import Nightwalker
+# from classtype.paladin import Paladin
+# from classtype.pathfinder import Pathfinder
+# from classtype.phantom import Phantom
+# from classtype.shadower import Shadower
+# from classtype.soulmaster import Soulmaster
+# from classtype.striker import Striker
+# from classtype.viper import Viper
+# from classtype.wildhunter import Wildhunter
+# from classtype.windbreaker import Windbreaker
+# from classtype.xenon import Xenon
+# from classtype.zero import Zero
 
 
 
@@ -83,56 +84,57 @@ class Character:
         # self.ac = Action()
         self.ac = None
         self.classtype = {
+            'mycharacterign': Mycharacterign,
             'adele': Adele,
-            'angelicbuster': Angelicbuster,
-            'aran': Aran,
-            'ark': Ark,
-            'battlemage': Battlemage,
+            # 'angelicbuster': Angelicbuster,
+            # 'aran': Aran,
+            # 'ark': Ark,
+            # 'battlemage': Battlemage,
             'bishop': Bishop,
-            'blaster': Blaster,
-            'bowmaster': Bowmaster,
-            'cadena': Cadena,
-            'cannonmaster': Cannonmaster,
-            'captain': Captain,
-            'crossbowman': Crossbowman,
-            'darkknight': Darkknight,
-            'demonavenger': Demonavenger,
-            'demonslayer': Demonslayer,
-            'dualblade': Dualblade,
-            'eunwol': Eunwol,
-            'evan': Evan,
-            'firepoison': Firepoison,
-            'flamewizard': Flamewizard,
-            'hayato': Hayato,
-            'hero': Hero,
-            'hoyoung': Hoyoung,
-            'icelightning': Icelightning,
-            'illium': Illium,            
-            'kaine': Kaine,
-            'kaiser': Kaiser,
-            'kanna': Kanna,
-            'khali': Khali,
-            'kinesis': Kinesis,
-            'lara': Lara,
-            'luminous': Luminous,
-            'lynn': Lynn,
-            'mechanic': Mechanic,
-            'mercedes': Mercedes,
-            'mihile': Mihile,
-            'moxuan': Moxuan,            
-            'nightlord': Nightlord,
-            'nightwalker': Nightwalker,
-            'paladin': Paladin,
-            'pathfinder': Pathfinder,
-            'phantom': Phantom,
-            'shadower': Shadower,
-            'soulmaster': Soulmaster,
-            'striker': Striker,
-            'viper': Viper,
-            'wildhunter': Wildhunter,
-            'windbreaker': Windbreaker,
-            'xenon': Xenon,
-            'zero': Zero,
+            # 'blaster': Blaster,
+            # 'bowmaster': Bowmaster,
+            # 'cadena': Cadena,
+            # 'cannonmaster': Cannonmaster,
+            # 'captain': Captain,
+            # 'crossbowman': Crossbowman,
+            # 'darkknight': Darkknight,
+            # 'demonavenger': Demonavenger,
+            # 'demonslayer': Demonslayer,
+            # 'dualblade': Dualblade,
+            # 'eunwol': Eunwol,
+            # 'evan': Evan,
+            # 'firepoison': Firepoison,
+            # 'flamewizard': Flamewizard,
+            # 'hayato': Hayato,
+            # 'hero': Hero,
+            # 'hoyoung': Hoyoung,
+            # 'icelightning': Icelightning,
+            # 'illium': Illium,            
+            # 'kaine': Kaine,
+            # 'kaiser': Kaiser,
+            # 'kanna': Kanna,
+            # 'khali': Khali,
+            # 'kinesis': Kinesis,
+            # 'lara': Lara,
+            # 'luminous': Luminous,
+            # 'lynn': Lynn,
+            # 'mechanic': Mechanic,
+            # 'mercedes': Mercedes,
+            # 'mihile': Mihile,
+            # 'moxuan': Moxuan,            
+            # 'nightlord': Nightlord,
+            # 'nightwalker': Nightwalker,
+            # 'paladin': Paladin,
+            # 'pathfinder': Pathfinder,
+            # 'phantom': Phantom,
+            # 'shadower': Shadower,
+            # 'soulmaster': Soulmaster,
+            # 'striker': Striker,
+            # 'viper': Viper,
+            # 'wildhunter': Wildhunter,
+            # 'windbreaker': Windbreaker,
+            # 'xenon': Xenon,
+            # 'zero': Zero,
 
             ## previous version. 
             # 'nightlord': Nightlord,
