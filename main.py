@@ -266,6 +266,7 @@ class TkinterBot(customtkinter.CTk):
                     t = time.localtime()
                     currenttime = time.strftime("%H:%M:%S", t)
                     print(f'something is wrong .. character not found .. exiting .. {currenttime}')
+                    # self.characternotfound=True # USE THIS TO INFORM TELEGRAM!!!
                     self.pause=True
                 print(f'x==None, pass ..')
                 time.sleep(.1)
@@ -355,7 +356,7 @@ class TkinterBot(customtkinter.CTk):
                     x, y, w, h = position
                     if self.broiddisabled:
                         await self.helper.move_to_and_click_and_move_away(x+440,y+400); time.sleep(.1) ## TODO: write a list of offset for all reso.
-                        self.togglepause()
+                        await self.togglepause()
                         print(f'no broid. stopping bot. TODO: click map and teleport back and continue botting. ')
                     else:
                         await self.helper.move_to_and_click_and_move_away(x+390,y+400); time.sleep(.1) ## all offsets are of 800x600 reso
@@ -373,7 +374,7 @@ class TkinterBot(customtkinter.CTk):
                 liedetectorcounter+=1
                 if liedetectorcounter > 1: # usually check twice
                     liedetectorcounter=0
-                    self.togglepause()
+                    await self.togglepause()
                     print(f'lie detector detector. stopping everything. [testing] {self.pause=} {self.scriptpausesignal=}')
             whitedotcheckerlocations = self.g.white_dot_checker()
             if whitedotcheckerlocations: # this is when accidentally pressed up and enter bounty portal and dialogue come out. 
@@ -393,14 +394,14 @@ class TkinterBot(customtkinter.CTk):
                     runecdcounter=0
                     self.rune=True
                     print(f'rune cd is true (go solve rune!) {self.rune=}')
-            mapledcedcheckerlocations = self.g.maple_dced_checker()
-            if mapledcedcheckerlocations:
-                print(f'maple login screen detected! {mapledcedcounter=}')
-                mapledcedcounter+=1
-                if mapledcedcounter>2: # we check 3 times for dc
-                    mapledcedcounter=0
-                    self.togglepause()
-                    print(f'maple dc-ed detected! (login screen) [testing] {self.pause=} {self.scriptpausesignal=}')
+            # mapledcedcheckerlocations = self.g.maple_dced_checker() # this is redundant
+            # if mapledcedcheckerlocations:
+            #     print(f'maple login screen detected! {mapledcedcounter=}')
+            #     mapledcedcounter+=1
+            #     if mapledcedcounter>2: # we check 3 times for dc
+            #         mapledcedcounter=0
+            #         await self.togglepause()
+            #         print(f'maple dc-ed detected! (login screen) [testing] {self.pause=} {self.scriptpausesignal=}')
 
 
             # await self.g.run_once_all_detect()
