@@ -53,13 +53,13 @@ class Adele(Action):
     def define(self):
         pass
 
-    # def setup(self,runesolver,g,rotation):
-    #     if runesolver is not None:
-    #         self.runesolver=runesolver
-    #     if rotation is not None:
-    #         self.rotation=rotation
-    #     if g is not None:
-    #         self.g=g
+    def setup(self,runesolver,g,rotation):
+        if runesolver is not None:
+            self.runesolver=runesolver
+        if rotation is not None:
+            self.rotation=rotation
+        if g is not None:
+            self.g=g
         
     async def perform_next_attack(self, x, y):
         # await self.limen1_7(x,y)

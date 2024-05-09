@@ -336,6 +336,8 @@ class TkinterBot(customtkinter.CTk):
         liedetectorcounter=0
         reddotcounter=0
         whitedotcounter=0
+        runecdcounter=0
+        mapledcedcounter=0
         self.cc=False
         while True:
             while self.pause:
@@ -391,7 +393,17 @@ class TkinterBot(customtkinter.CTk):
                     runecdcounter=0
                     self.rune=True
                     print(f'rune cd is true (go solve rune!) {self.rune=}')
-            # mapledccheckerlocations = self.g.maple_dc_checker()
+            mapledcedcheckerlocations = self.g.maple_dced_checker()
+            if mapledcedcheckerlocations:
+                print(f'maple login screen detected! {mapledcedcounter=}')
+                mapledcedcounter+=1
+                if mapledcedcounter>2: # we check 3 times for dc
+                    mapledcedcounter=0
+                    self.togglepause()
+                    print(f'maple dc-ed detected! (login screen) [testing] {self.pause=} {self.scriptpausesignal=}')
+
+
+            # await self.g.run_once_all_detect()
                 
 
 

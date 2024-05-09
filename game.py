@@ -27,6 +27,7 @@ OKBGR = (17,187,170, alpha) # broid die #normalpc
 # OKBGR = (17,187,153, alpha) # broid die 
 # OKBGR = (0,187,170, alpha) # died_ok [0 187 170] [0 204 153]
 ORBGR = (1,136,245, alpha) # orange_mushroom [1 136 245] [] #normalpc
+DCBGR = (206,143,16, alpha) # first pixel of login screen (0,0) indicate that YOU HAVE DC-ED!!!
 LOBGR = (17,170,136, alpha) # 
 RUNECDBGR = (157,157,158, alpha) # the range is between 15x to 160 ???????
 # POBGR = (17,85,238, alpha) # 
@@ -184,6 +185,13 @@ class Game:
         # if len(location) < 1: # temp solution.
         #     location = self.checkerrune(RUNECDBGR, x=self.right,y=69,w=self.right+1,h=70) ## during stupid announcement.         
         return location[0] if len(location) > 0 else None
+
+    def maple_dced_checker(self):
+        location = self.checker(DCBGR, x=0,y=0,w=1,h=1) # 
+        return location[0] if len(location) > 0 else None
+
+    def run_once_all_detect(self):
+        pass
 
     def polo_checker(self):
         location = self.locate(POBGR)
@@ -679,9 +687,37 @@ class Game:
                         locations.append((x_pos, y_pos))
                         return locations
                     matches = np.where(
+                        (img_reshaped[:,0] >= 134) & (img_reshaped[:,0] <= 144) &
+                        (img_reshaped[:,1] >= 112) & (img_reshaped[:,1] <= 122) &
+                        (img_reshaped[:,2] >= 93) & (img_reshaped[:,2] <= 113) 
+                        )[0]
+                    for idx in matches:
+                        sum_x += idx % width
+                        sum_y += idx // width
+                        count += 1
+                    if count > 0:
+                        x_pos = sum_x / count
+                        y_pos = sum_y / count
+                        locations.append((x_pos, y_pos))
+                        return locations
+                    matches = np.where(
                         (img_reshaped2[:,0] >= 149) & (img_reshaped2[:,0] <= 161) &
                         (img_reshaped2[:,1] >= 149) & (img_reshaped2[:,1] <= 161) &
                         (img_reshaped2[:,2] >= 149) & (img_reshaped2[:,2] <= 161) 
+                        )[0]
+                    for idx in matches:
+                        sum_x += idx % width
+                        sum_y += idx // width
+                        count += 1
+                    if count > 0:
+                        x_pos = sum_x / count
+                        y_pos = sum_y / count
+                        locations.append((x_pos, y_pos))
+                        return locations
+                    matches = np.where(
+                        (img_reshaped2[:,0] >= 134) & (img_reshaped2[:,0] <= 144) &
+                        (img_reshaped2[:,1] >= 112) & (img_reshaped2[:,1] <= 122) &
+                        (img_reshaped2[:,2] >= 93) & (img_reshaped2[:,2] <= 113) 
                         )[0]
                     for idx in matches:
                         sum_x += idx % width
