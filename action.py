@@ -1373,22 +1373,22 @@ class Action:
 
     ################## REFACTOR GOTORUNE PATCH ###################
 
-    async def runegoupmovement(self,x,y):
+    async def runegoupmovement(self,x=31,y=101):
         print(f'runegoupmovement')
         self.ropeconnectpr()
         # time.sleep(1.7) already sleep in gotorune function
 
-    async def runegodownmovement(self,x,y):
+    async def runegodownmovement(self,x=31,y=101):
         print(f'runegodownmovement')
         self.downjump()
         # time.sleep(1.7) # already sleep in gotorune function
 
-    async def runegoleftmovement(self,x,y):
+    async def runegoleftmovement(self,x=31,y=101):
         print(f'runegoleftmovement')
         self.goleftattack_fjump()
         time.sleep(.7)
 
-    async def runegorightmovement(self,x,y):
+    async def runegorightmovement(self,x=31,y=101):
         print(f'runegorightmovement')
         self.gorightattack_fjump()
         time.sleep(.7)

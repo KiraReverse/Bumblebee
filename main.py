@@ -2196,6 +2196,7 @@ class TkinterBot(customtkinter.CTk):
             rotation=self.rotation,
             maplehwnd=self.maplehwnd
         )
+        self.character.refreshkeybind()
         self.rotation='default'
         rotation_list = self.character.get_rotation_list()
         self.comboboxrotation.configure(values=rotation_list)
