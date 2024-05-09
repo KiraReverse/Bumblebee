@@ -267,7 +267,7 @@ class TkinterBot(customtkinter.CTk):
                     currenttime = time.strftime("%H:%M:%S", t)
                     print(f'something is wrong .. character not found .. exiting .. {currenttime}')
                     # self.characternotfound=True # USE THIS TO INFORM TELEGRAM!!!
-                    self.pause=True
+                    await self.togglepause() # self.pause=True
                 print(f'x==None, pass ..')
                 time.sleep(.1)
             else: #
