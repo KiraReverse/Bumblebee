@@ -10,3 +10,4 @@ pillow
 Pillow
 customtkinter
 keyboard
+mss

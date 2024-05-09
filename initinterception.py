@@ -101,9 +101,9 @@ def auto_capture_devices2(*, keyboard: bool = True, mouse: bool = True, verbose:
             interception.send(num, stroke)
             time.sleep(random.uniform(0.1, 0.3))
             if listener.is_alive():
-                # print(f"No success on {device} {num}...")
+                print(f"No success on {device} {num}...")
                 continue
-            # print(f"Success on {device} {num}!")
+            print(f"Success on {device} {num}! ")
             set_devices(**{device: num})
             break
     # print("Devices set.")    
@@ -114,8 +114,22 @@ def set_devices(keyboard: Optional[int] = None, mouse: Optional[int] = None) -> 
 
     If a device out of range is passed, the context will raise a `ValueError`.
     """
+    print(keyboard)
+    print(mouse)
     interception.keyboard = keyboard or interception.keyboard
     interception.mouse = mouse or interception.mouse
+
+
+# interception.set_filter(interception.is_keyboard, FilterKeyState.FILTER_KEY_ALL.value)
+# print("Click any key on your keyboard.")
+# device = None
+# while True:
+#     device = interception.wait()
+#     print(device)
+#     if interception.is_keyboard(device):
+#         print(f"Bound to keyboard: {interception.get_HWID(device)}.")
+#         interception.set_filter(interception.is_keyboard, 0)
+#         break
 
 auto_capture_devices2()
 # auto_capture_devices2()
@@ -150,6 +164,7 @@ def keydown(key):
     # print(f'{keycode}')
     stroke = KeyStroke(keycode, KeyState.KEY_DOWN, 0)
     # print(f'{stroke=}')
+    # interception.send(device,stroke)
     interception.send_key(stroke)
     # print(f'total_result: {interception.send_key(stroke)}')
 
@@ -160,11 +175,13 @@ def keyup(key):
     stroke = KeyStroke(keycode, KeyState.KEY_UP, 0)
     # stroke = KeyStroke(0, 0, 0)
     # print(f'{stroke}')
+    # interception.send(device,stroke)
     interception.send_key(stroke)
     # print(f'total_result: {interception.send_key(stroke)}')
 
 def keyupall():
     stroke = KeyStroke(0, 0, 0)
+    # interception.send(device,stroke)
     interception.send_key(stroke)
 
 

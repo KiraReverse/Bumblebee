@@ -115,9 +115,11 @@ class Interception:
             return self._context[device].receive()
 
     def send(self, device: int, stroke: Stroke) -> None:
+        print(f'{device=}')
         self._context[device].send(stroke)
 
     def send_key(self, stroke: Stroke) -> None:
+        # print(f'{self._keyboard=}')
         self._context[self._keyboard].send(stroke)        
 
     def send_mouse(self, stroke: Stroke) -> None:

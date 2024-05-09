@@ -394,7 +394,7 @@ class TkinterBot(customtkinter.CTk):
                     runecdcounter=0
                     self.rune=True
                     print(f'rune cd is true (go solve rune!) {self.rune=}')
-            # mapledcedcheckerlocations = self.g.maple_dced_checker() # this is redundant
+            # mapledcedcheckerlocations = self.g.maple_dced_checker() # this is redundant because the bot will stop anyway. 
             # if mapledcedcheckerlocations:
             #     print(f'maple login screen detected! {mapledcedcounter=}')
             #     mapledcedcounter+=1
