@@ -239,6 +239,7 @@ class TkinterBot(customtkinter.CTk):
         cctimer0=now
         cctimer=0
         cc=False
+        self.rune=False
         # ugly code ends here
         await initiate_move()
         while True:
