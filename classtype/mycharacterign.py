@@ -927,17 +927,17 @@ class Mycharacterign(Action):
         # self.fountaintimer = self.now - self.fountaintimer0
         # if self.fountaintimer > 59:
         #     self.fountain = True
-        self.runetimer = self.now - self.runetimer0
-        # if runetimer > 600: # change to 600 when haste
-        if self.runetimer > 900: # change to 600 when haste
-            self.checkrune = True
-            # self.checkrune = False
-        if self.checkrune:
-            self.solverune = self.runesolver.runechecker(self.g)
-        print(f'{x=} {y=} rt={self.runetimer} sr={self.solverune} ft={self.fountaintimer} gl={self.goleft} gr={self.goright}')
+        # self.runetimer = self.now - self.runetimer0
+        # # if runetimer > 600: # change to 600 when haste
+        # if self.runetimer > 900: # change to 600 when haste
+        #     self.checkrune = True
+        #     # self.checkrune = False
+        # if self.checkrune:
+        #     self.solverune = self.runesolver.runechecker(self.g)
+        # print(f'{x=} {y=} rt={self.runetimer} sr={self.solverune} ft={self.fountaintimer} gl={self.goleft} gr={self.goright}')
 
-        if self.solverune:
-            await self.runesolver.gotorune(self.g)
+        # if self.solverune:
+        #     await self.runesolver.gotorune(self.g)
 
 
 

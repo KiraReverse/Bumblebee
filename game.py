@@ -30,6 +30,7 @@ ORBGR = (1,136,245, alpha) # orange_mushroom [1 136 245] [] #normalpc
 DCBGR = (206,143,16, alpha) # first pixel of login screen (0,0) indicate that YOU HAVE DC-ED!!!
 LOBGR = (17,170,136, alpha) # 
 RUNECDBGR = (157,157,158, alpha) # the range is between 15x to 160 ???????
+RUNECD2BGR = (73,74,76, alpha) # the range is between 15x to 160 ???????
 # POBGR = (17,85,238, alpha) # 
 POBGR = (102,136,255, alpha) # 
 PO2BGR = (0,0,255, alpha) # 
@@ -51,12 +52,14 @@ class Game:
         self.top, self.left, self.bottom, self.right = region[0], region[1], region[2], region[3]
         # self.left, self.top, self.bottom, self.right = region[0], region[1], region[2], region[3]
         self.pololocations = None
+        self.newest_screenshot = None
         self.height, self.width = 601, 801
         with gdi_capture.CaptureWindow(self.hwnd) as img:
             if img is None:
                 print("MapleStory.exe was not found.")
                 return None
             self.height, self.width = img.shape[0], img.shape[1]
+            self.newest_screenshot = img.copy()
 
     def get_rune_image(self):
         with gdi_capture.CaptureWindow(self.hwnd) as img:
@@ -131,6 +134,15 @@ class Game:
             print(f'{img.size=} {img.shape}')
             return img.copy().tobytes()
 
+    def generate_newest_screenshot(self):
+        self.newest_screenshot = self.get_screenshot()
+
+    def get_newest_screenshot(self):
+        return self.newest_screenshot
+
+    def run_once_all_detect(self):
+        pass
+    
     def checker(self, *color, x=0,y=0,w=800,h=600):
         with gdi_capture.CaptureWindow(self.hwnd) as img:
             locations = []
@@ -187,8 +199,9 @@ class Game:
         return location[0] if len(location) > 0 else None
 
     def rune_cd_checker(self):
-        print(f'{self.height=} {self.width=}')
-        location = self.checkerrune(RUNECDBGR, x=self.right,y=15,w=self.width,h=16) # self.right is wrong, but .. 
+        # print(f'{self.height=} {self.width=}')
+        location = self.checkerrune2(RUNECD2BGR, x=self.right,y=6,w=self.width,h=7) # 
+        # location = self.checkerrune(RUNECDBGR, x=self.right,y=15,w=self.width,h=16) # clash with other buff
         # if len(location) < 1: # temp solution.
         #     location = self.checkerrune(RUNECDBGR, x=self.right,y=69,w=self.right+1,h=70) ## during stupid announcement.         
         return location[0] if len(location) > 0 else None
@@ -196,9 +209,6 @@ class Game:
     def maple_dced_checker(self):
         location = self.checker(DCBGR, x=0,y=0,w=1,h=1) # 
         return location[0] if len(location) > 0 else None
-
-    def run_once_all_detect(self):
-        pass
 
     def polo_checker(self):
         location = self.locate(POBGR)
@@ -688,6 +698,93 @@ class Game:
                         sum_x += idx % width
                         sum_y += idx // width
                         count += 1
+                        # tmp = idx % width
+                        # img = img_cropped[:,tmp-50:tmp+50]
+                        # cv2.imshow('img',img)
+                        # cv2.waitKey(0)
+                        # cv2.destroyAllWindows()
+                    if count > 0:
+                        x_pos = sum_x / count
+                        y_pos = sum_y / count
+                        locations.append((x_pos, y_pos))
+                        print(f'rune cd icon found at 1. {locations=}')
+                        return locations
+                    matches = np.where(
+                        (img_reshaped[:,0] >= 134) & (img_reshaped[:,0] <= 144) &
+                        (img_reshaped[:,1] >= 112) & (img_reshaped[:,1] <= 122) &
+                        (img_reshaped[:,2] >= 93) & (img_reshaped[:,2] <= 113) 
+                        )[0]
+                    for idx in matches:
+                        sum_x += idx % width
+                        sum_y += idx // width
+                        count += 1
+                    if count > 0:
+                        x_pos = sum_x / count
+                        y_pos = sum_y / count
+                        locations.append((x_pos, y_pos))
+                        print(f'rune cd icon found at 2. {locations=}')
+                        return locations
+                    matches = np.where(
+                        (img_reshaped2[:,0] >= 149) & (img_reshaped2[:,0] <= 161) &
+                        (img_reshaped2[:,1] >= 149) & (img_reshaped2[:,1] <= 161) &
+                        (img_reshaped2[:,2] >= 149) & (img_reshaped2[:,2] <= 161) 
+                        )[0]
+                    for idx in matches:
+                        sum_x += idx % width
+                        sum_y += idx // width
+                        count += 1
+                    if count > 0:
+                        x_pos = sum_x / count
+                        y_pos = sum_y / count
+                        locations.append((x_pos, y_pos))
+                        print(f'rune cd icon found at 3. {locations=}')
+                        return locations
+                    matches = np.where(
+                        (img_reshaped2[:,0] >= 134) & (img_reshaped2[:,0] <= 144) &
+                        (img_reshaped2[:,1] >= 112) & (img_reshaped2[:,1] <= 122) &
+                        (img_reshaped2[:,2] >= 93) & (img_reshaped2[:,2] <= 113) 
+                        )[0]
+                    for idx in matches:
+                        sum_x += idx % width
+                        sum_y += idx // width
+                        count += 1
+                    if count > 0:
+                        x_pos = sum_x / count
+                        y_pos = sum_y / count
+                        locations.append((x_pos, y_pos))
+                        print(f'rune cd icon found at 4. {locations=}')
+                        return locations
+            print(f'rune cd icon not found anywhere. (means rune cd finished. )  {locations=}')
+            return locations
+
+            
+    def checkerrune2(self, *color, x,y,w,h):
+        with gdi_capture.CaptureWindow(self.hwnd) as img:
+            locations = []
+            if img is None:
+                print("MapleStory.exe was not found.")
+            else:
+                img_cropped = img[y:h, x:w]
+                img_cropped2 = img[y+54:h+54, x:w]
+                height, width = img_cropped.shape[0], img_cropped.shape[1]
+                img_reshaped = np.reshape(img_cropped, ((width * height), 4), order="C")
+                img_reshaped2 = np.reshape(img_cropped2, ((width * height), 4), order="C")
+                for c in color:
+                    sum_x, sum_y, count = 0, 0, 0
+                    matches = np.where(
+                        (img_reshaped[:,0] >= 74) & (img_reshaped[:,0] <= 83) &
+                        (img_reshaped[:,1] >= 74) & (img_reshaped[:,1] <= 82) &
+                        (img_reshaped[:,2] >= 71) & (img_reshaped[:,2] <= 77) 
+                        )[0]
+                    for idx in matches:
+                        sum_x += idx % width
+                        sum_y += idx // width
+                        count += 1
+                        # tmp = idx % width
+                        # img = img_cropped[:,tmp-50:tmp+50]
+                        # cv2.imshow('img',img)
+                        # cv2.waitKey(0)
+                        # cv2.destroyAllWindows()
                     if count > 0:
                         x_pos = sum_x / count
                         y_pos = sum_y / count

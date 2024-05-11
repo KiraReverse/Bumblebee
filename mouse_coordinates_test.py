@@ -40,7 +40,6 @@ import keyboard as pythonkeyboard
 from pynput.mouse import Listener, Button
 from pynput import keyboard
 import pygetwindow
-import cv2
 
 
 
@@ -820,53 +819,40 @@ async def main():
     #         print(f'{perf_counter()-now:.10f}')
     #     # break
 
-    # maplehwnd=0
-    # windows=[]
-    # winlist=[]
-    # winlist = pygetwindow.getWindowsWithTitle('MapleStory')
-    # for w in winlist:
-    #     windows.append(w._hWnd)
-    # print(f'{winlist=}')
-    # print(f'{windows=}')
-    # for windowhwnd in windows:
-    #     position = win32gui.GetWindowRect(windowhwnd)
-    #     x, y, w, h = position
-    #     print(f'{windows=} {w-x=}')
-    #     if w-x == 1936 or w-x == 1382 or w-x == 1296 or w-x == 1040 or w-x == 816:
-    #         maplehwnd=windowhwnd
-    #     elif w-x == 1938 or w-x == 1384 or w-x == 1298 or w-x == 1042 or w-x == 818: # some windows 10
-    #     # elif w-x == 1944 or w-x == 1390 or w-x == 1298 or w-x == 1042 or w-x == 818: # japanese maplestory JMS
-    #         maplehwnd=windowhwnd
-    # position = win32gui.GetWindowRect(maplehwnd)
-    # x0, y0, w, h = position
-    # def on_press(key):
-    #     if key == keyboard.Key.esc:
-    #         print(f'esc')
-    #         mouse_listener.stop()
-    #         return False
-    # def on_click(x, y, button, pressed):
-    #     if pressed and button == Button.left:
-    #         print(f'{x=} {y=} {x0=} {y0=} {x-x0=} {y-y0=}')
-    # mouse_listener = Listener(on_click=on_click)
-    # mouse_listener.start()
-    # with keyboard.Listener(on_press=on_press) as listener:
-    #     try:
-    #         listener.join()
-    #     except Exception as e:
-    #         print(f'exception. {e=}')
-    
-    img_rgb = cv2.imread('../image/1.png')
-    assert img_rgb is not None, "file could not be read, check with os.path.exists()"
-    img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
-    template = cv2.imread('sealed_rune.png', cv2.IMREAD_GRAYSCALE)
-    assert template is not None, "file could not be read, check with os.path.exists()"
-    w, h = template.shape[::-1]    
-    res = cv2.matchTemplate(img_gray,template,cv2.TM_CCOEFF_NORMED)
-    threshold = 0.8
-    loc = np.where( res >= threshold)
-    for pt in zip(*loc[::-1]):
-        cv2.rectangle(img_rgb, pt, (pt[0] + w, pt[1] + h), (0,0,255), 2)
-        cv2.imwrite('../image/res.png',img_rgb)
+    maplehwnd=0
+    windows=[]
+    winlist=[]
+    winlist = pygetwindow.getWindowsWithTitle('MapleStory')
+    for w in winlist:
+        windows.append(w._hWnd)
+    print(f'{winlist=}')
+    print(f'{windows=}')
+    for windowhwnd in windows:
+        position = win32gui.GetWindowRect(windowhwnd)
+        x, y, w, h = position
+        print(f'{windows=} {w-x=}')
+        if w-x == 1936 or w-x == 1382 or w-x == 1296 or w-x == 1040 or w-x == 816:
+            maplehwnd=windowhwnd
+        elif w-x == 1938 or w-x == 1384 or w-x == 1298 or w-x == 1042 or w-x == 818: # some windows 10
+        # elif w-x == 1944 or w-x == 1390 or w-x == 1298 or w-x == 1042 or w-x == 818: # japanese maplestory JMS
+            maplehwnd=windowhwnd
+    position = win32gui.GetWindowRect(maplehwnd)
+    x0, y0, w, h = position
+    def on_press(key):
+        if key == keyboard.Key.esc:
+            print(f'esc')
+            mouse_listener.stop()
+            return False
+    def on_click(x, y, button, pressed):
+        if pressed and button == Button.left:
+            print(f'{x=} {y=} {x0=} {y0=} {x-x0=} {y-y0=}')
+    mouse_listener = Listener(on_click=on_click)
+    mouse_listener.start()
+    with keyboard.Listener(on_press=on_press) as listener:
+        try:
+            listener.join()
+        except Exception as e:
+            print(f'exception. {e=}')
 
 
 

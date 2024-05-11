@@ -1375,22 +1375,22 @@ class Action:
 
     async def runegoupmovement(self,x=31,y=101):
         print(f'runegoupmovement')
-        self.ropeconnectpr()
+        await self.ropeconnectpr()
         # time.sleep(1.7) already sleep in gotorune function
 
     async def runegodownmovement(self,x=31,y=101):
         print(f'runegodownmovement')
-        self.downjump()
+        await self.downjump()
         # time.sleep(1.7) # already sleep in gotorune function
 
     async def runegoleftmovement(self,x=31,y=101):
         print(f'runegoleftmovement')
-        self.goleftattack_fjump()
+        await self.goleftattack_fjump()
         time.sleep(.7)
 
     async def runegorightmovement(self,x=31,y=101):
         print(f'runegorightmovement')
-        self.gorightattack_fjump()
+        await self.gorightattack_fjump()
         time.sleep(.7)
 
     async def gotorune(self):
