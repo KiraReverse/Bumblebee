@@ -12,7 +12,7 @@ from initinterception import sleep
 
 
 
-class Mycharacterign(Action):
+class Demonavenger(Action):
 
     def __init__(self):
         super().__init__()
@@ -53,13 +53,13 @@ class Mycharacterign(Action):
     def define(self):
         pass
 
-    # def setup(self,runesolver,g,rotation):
-    #     if runesolver is not None:
-    #         self.runesolver=runesolver
-    #     if rotation is not None:
-    #         self.rotation=rotation
-    #     if g is not None:
-    #         self.g=g
+    def setup(self,runesolver,g,rotation):
+        if runesolver is not None:
+            self.runesolver=runesolver
+        if rotation is not None:
+            self.rotation=rotation
+        if g is not None:
+            self.g=g
         
     async def perform_next_attack(self, x, y):
         # await self.limen1_7(x,y)
@@ -927,17 +927,17 @@ class Mycharacterign(Action):
         # self.fountaintimer = self.now - self.fountaintimer0
         # if self.fountaintimer > 59:
         #     self.fountain = True
-        # self.runetimer = self.now - self.runetimer0
-        # # if runetimer > 600: # change to 600 when haste
-        # if self.runetimer > 900: # change to 600 when haste
-        #     self.checkrune = True
-        #     # self.checkrune = False
-        # if self.checkrune:
-        #     self.solverune = self.runesolver.runechecker(self.g)
-        # print(f'{x=} {y=} rt={self.runetimer} sr={self.solverune} ft={self.fountaintimer} gl={self.goleft} gr={self.goright}')
+        self.runetimer = self.now - self.runetimer0
+        # if runetimer > 600: # change to 600 when haste
+        if self.runetimer > 900: # change to 600 when haste
+            self.checkrune = True
+            # self.checkrune = False
+        if self.checkrune:
+            self.solverune = self.runesolver.runechecker(self.g)
+        print(f'{x=} {y=} rt={self.runetimer} sr={self.solverune} ft={self.fountaintimer} gl={self.goleft} gr={self.goright}')
 
-        # if self.solverune:
-        #     await self.runesolver.gotorune(self.g)
+        if self.solverune:
+            await self.runesolver.gotorune(self.g)
 
 
 
