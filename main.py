@@ -1609,18 +1609,18 @@ class TkinterBot(customtkinter.CTk):
                     # here onwards are equivalent to post_perform_action()
                     if action['type'] == 'keyUp' and index%10<=3: # don't do checking for all key input. do every 10 key input
                         now=perf_counter()
-                        runetimer=now-runetimer0
-                        if runetimer>900:
-                            # rune=True
-                            gotrune=self.runesolver.runechecker(self.g)
-                            if gotrune:
-                                keyupall()
-                                await self.runesolver.gotorune(self.g) # gotoruneandsolverune
-                                await random.choice([self.character.ac.goleftattack,self.character.ac.gorightattack])(); time.sleep(.5) # move away to unblock rune purple dot
-                                if self.runesolver.runechecker(self.g): # if rune not solved for some reason
-                                    pass # attempt solve rune again in the next loop
-                                else:
-                                    runetimer0=perf_counter() # reset
+                        # runetimer=now-runetimer0
+                        # if runetimer>900:
+                        #     # rune=True
+                        #     gotrune=self.runesolver.runechecker(self.g)
+                        #     if gotrune:
+                        #         keyupall()
+                        #         await self.runesolver.gotorune(self.g) # gotoruneandsolverune
+                        #         await random.choice([self.character.ac.goleftattack,self.character.ac.gorightattack])(); time.sleep(.5) # move away to unblock rune purple dot
+                        #         if self.runesolver.runechecker(self.g): # if rune not solved for some reason
+                        #             pass # attempt solve rune again in the next loop
+                        #         else:
+                        #             runetimer0=perf_counter() # reset
                         cctimer=now-cctimer0
                         if cctimer>3000: # 60sec * 50min = 3000sec
                             # cc=True
@@ -1631,7 +1631,12 @@ class TkinterBot(customtkinter.CTk):
                         if self.cc:
                             keyupall()
                             await self.changechannel_zakum() # this version of changing channel is from reddotdetector. 
-                            self.cc=False                
+                            self.cc=False                            
+                        runetimer=now-runetimer0
+                        if runetimer > self.runecd:
+                            if not await self.FindRuneCDIcon():
+                                await self.character.gotorune() # and solve rune.
+                            runetimer0=now
                 print(f'script finished. {self.script} ..')
 
     async def adjustcharacter(self,a=10,b=10):
