@@ -56,7 +56,7 @@ from classtype.bishop import Bishop
 # from classtype.paladin import Paladin
 # from classtype.pathfinder import Pathfinder
 # from classtype.phantom import Phantom
-# from classtype.shadower import Shadower
+from classtype.shadower import Shadower
 # from classtype.soulmaster import Soulmaster
 # from classtype.striker import Striker
 # from classtype.viper import Viper
@@ -127,7 +127,7 @@ class Character:
             # 'paladin': Paladin,
             # 'pathfinder': Pathfinder,
             # 'phantom': Phantom,
-            # 'shadower': Shadower,
+            'shadower': Shadower,
             # 'soulmaster': Soulmaster,
             # 'striker': Striker,
             # 'viper': Viper,

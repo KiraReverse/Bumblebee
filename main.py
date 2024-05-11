@@ -72,6 +72,7 @@ class TkinterBot(customtkinter.CTk):
         self.rotation = self.config.get('main', 'rotation')
         self.portaldisabled = self.config.getboolean('main', 'portaldisabled')
         self.broiddisabled = self.config.getboolean('main', 'broiddisabled')
+        self.runecd = int(self.config.get('main', 'runecd'))
 
         self.runesolver = RuneSolver()
         self.ac=None
@@ -293,22 +294,24 @@ class TkinterBot(customtkinter.CTk):
                     await self.changechannel_zakum() # we don't go ardent because it has 5 min cd. 
                     self.cc=False
                 runetimer=now-runetimer0
-                if runetimer > 5:                    
-                    await self.ImageSearch()
+                if runetimer > self.runecd:
+                    if not await self.FindRuneCDIcon():
+                        await self.character.gotorune() # and solve rune.
                     runetimer0=now
-                    # await self.character.gotorune() # and solve rune.
 
-    async def ImageSearch(self): # TODO: the newest screenshot crop it. 
+    async def FindRuneCDIcon(self): # TODO: the newest screenshot crop it. 
         img_gray = cv2.cvtColor(self.g.get_newest_screenshot(), cv2.COLOR_BGR2GRAY)                
         w, h = self.template.shape[::-1]    
         res = cv2.matchTemplate(img_gray,self.template,cv2.TM_CCOEFF_NORMED)
         threshold = 0.8
         loc = np.where( res >= threshold)
-        print(f'{loc=}')
-        for pt in zip(*loc[::-1]):
-            print(f'{pt=}')
+        # print(f'{type(loc)=} {len(loc)=} {len(loc[0])=} {loc=}')
+        # for pt in zip(*loc[::-1]):
+            # print(f'{type(pt)=} {pt=}')
             # cv2.rectangle(img_rgb, pt, (pt[0] + w, pt[1] + h), (0,0,255), 2)
             # cv2.imwrite('../image/res.png',img_rgb)
+        if len(loc[0]) > 0: return True
+        return False
 
     async def async_function9(self):
         now=perf_counter()
@@ -2181,6 +2184,11 @@ class TkinterBot(customtkinter.CTk):
         checkboxbroid = customtkinter.CTkCheckBox(framesettings3, text='', variable=cbbroidvar, command=cbbroidclicked, font=('Arial', 10))
         checkboxbroid.grid(row=0, column=1, padx=0, pady=0, sticky='w')
 
+        self.labelrunecd = tk.Label(framesettings3, anchor='w', justify='left', text="check rune every: ")
+        self.labelrunecd.grid(row=1, column=0, padx=1, pady=1, sticky='w')
+        self.entryrunecd = tk.Entry(framesettings3)
+        self.entryrunecd.insert(0, self.runecd)
+        self.entryrunecd.grid(row=1, column=1, padx=1, pady=1)
 
 
         self.framesettings2 = tk.Frame(self.tab6, bg='#f1f2f3', bd=0)
@@ -2199,6 +2207,7 @@ class TkinterBot(customtkinter.CTk):
         self.config.set('keybind', 'classtype', str(self.comboboxclasstype.get()))
         self.config.set('main', 'portaldisabled', str(self.portaldisabled))
         self.config.set('main', 'broiddisabled', str(self.broiddisabled))
+        self.config.set('main', 'runecd', str(self.entryrunecd.get()))
         with open('settings.ini', 'w') as f:
             self.config.write(f)
         self.character.setup(
@@ -2213,6 +2222,7 @@ class TkinterBot(customtkinter.CTk):
             maplehwnd=self.maplehwnd
         )
         self.character.refreshkeybind()
+        self.runecd=int(self.entryrunecd.get())
         self.rotation='default'
         rotation_list = self.character.get_rotation_list()
         self.comboboxrotation.configure(values=rotation_list)
