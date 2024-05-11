@@ -1,0 +1,10 @@
+pyinstaller
+interception-python
+dxcam
+mss
+numpy
+opencv-python
+pyautogui
+pyserial
+pywin32
+DeepImageSearch
