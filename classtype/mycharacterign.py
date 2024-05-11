@@ -20,7 +20,7 @@ class Mycharacterign(Action):
         self.offsetx=15
         self.goleft=True
         self.goright=False
-        self.randomlist = ['z', 'x', 'c', 'space', '2', '3', '0', 'f9', 'w', 'e', 'r', 't', 's', 'd', 'f', 'v']
+        self.randomlist = ['f1', 'f2', 'f3', 'f4', '1', '2', '3', '4', 'r', 'x', 'z', 'v', 's']
         # self.randomlist = []
         self.cosmicshowerplanttimer0=0
         self.cosmicshowerplanttimer=0
