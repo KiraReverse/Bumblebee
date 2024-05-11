@@ -85,7 +85,8 @@ class Helper:
         # hwnd = win32gui.FindWindow(None, "MapleStory")
         position = win32gui.GetWindowRect(hwnd)
         x, y, w, h = position
-        position1 = (x+11, y+88, x+200, y+200)  # void3
+        position1 = (x+11, y+88, x+200, y+200)  # msea
+        # position1 = (x+14, y+102, x+200, y+200)  # somehow gms map all has different size wtf
         while True:
             while True:
                 if pythonkeyboard.is_pressed("esc"):
@@ -104,6 +105,7 @@ class Helper:
                     print(img[45][35])
                     # hfakeclick(x+11+30,y+88+40)
                     # cv2.imshow('img',img)
+                    # cv2.imwrite('img.png',img)
                     # cv2.waitKey(0)
                     # cv2.destroyAllWindows()
                 if img[45][35][0] < 10 and img[45][35][1] < 10:

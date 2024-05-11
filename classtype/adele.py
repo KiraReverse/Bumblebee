@@ -64,7 +64,7 @@ class Adele(Action):
     async def perform_next_attack(self, x, y):
         # await self.limen1_7(x,y)
         # await self.clockwise(x,y)
-        print(f'{self.rotation=}')
+        # print(f'{self.rotation=}')
         await self.rotation_mapping[self.rotation](x,y)
         
     def get_rotation_list(self):
@@ -76,7 +76,7 @@ class Adele(Action):
 
     # basic 4x direction movement (goleft, goright, gooup, godown)
     async def goleftattack(self):
-        print(f'goleftattack')
+        # print(f'goleftattack')
         await self.leftp()
         await self.jumpp()
         await self.jumpr()    
@@ -87,7 +87,7 @@ class Adele(Action):
         await self.leftr()
 
     async def goleftattack2(self):
-        print(f'goleftattack2')
+        # print(f'goleftattack2')
         await self.leftp()
         await self.jumpp(222,388)
         await self.jumpr(3,11)    
@@ -98,7 +98,7 @@ class Adele(Action):
         await self.leftr()
 
     async def gorightattack(self):
-        print(f'gorightattack')
+        # print(f'gorightattack')
         await self.rightp()
         await self.jumpp()
         await self.jumpr()    
@@ -109,7 +109,7 @@ class Adele(Action):
         await self.rightr()
 
     async def gorightattack2(self):
-        print(f'gorightattack2')
+        # print(f'gorightattack2')
         await self.rightp()
         await self.jumpp(222,388)
         await self.jumpr(3,11)
@@ -120,18 +120,18 @@ class Adele(Action):
         await self.rightr()
 
     async def goupattack(self): # adele upjump
-        print(f'goupattack')
+        # print(f'goupattack')
         await sleep(.1)
         await self.jumpp()
         await self.jumpr()
-        print(f'press ropeconnect once. ')
+        # print(f'press ropeconnect once. ')
         await self.ropeconnectp(31,101)
         await self.ropeconnectr(31,101)
         await sleep(.555)
-        print(f'press ropeconnect twice. ')
+        # print(f'press ropeconnect twice. ')
         await self.ropeconnectp(31,101)
         await self.ropeconnectr(31,101)
-        print(f'attack.  ')
+        # print(f'attack.  ')
         await self.attackp()
         await self.attackr()
         await self.attackp()
@@ -139,18 +139,18 @@ class Adele(Action):
         await sleep(.1)
 
     async def goupattack2(self): # adele upjump
-        print(f'goupattack2')
+        # print(f'goupattack2')
         await sleep(.1)
         await self.jumpp()
         await self.jumpr()
-        print(f'press ropeconnect once. ')
+        # print(f'press ropeconnect once. ')
         await self.ropeconnectp(31,101)
         await self.ropeconnectr(31,101)
         await sleep(.888)
-        print(f'press ropeconnect twice. ')
+        # print(f'press ropeconnect twice. ')
         await self.ropeconnectp(31,101)
         await self.ropeconnectr(31,101)
-        print(f'attack.  ')
+        # print(f'attack.  ')
         await self.attackp()
         await self.attackr()
         await self.attackp()
@@ -158,7 +158,7 @@ class Adele(Action):
         await sleep(.1)
 
     async def godownattack(self):
-        print(f'godownattack')
+        # print(f'godownattack')
         await self.downp()    
         await self.jumpp()
         await self.jumpr()
@@ -168,7 +168,7 @@ class Adele(Action):
 
     # variation of 4 basic movement to make sequence more randomise.
     async def goleftattackk(self):
-        print(f'goleftattackk')
+        # print(f'goleftattackk')
         await self.leftp()
         await self.jumpp()
         await self.jumpr()    
@@ -181,7 +181,7 @@ class Adele(Action):
         await self.leftr()
         
     async def goattackleft(self):
-        print(f'goattackleft')
+        # print(f'goattackleft')
         await self.leftp()
         await self.attackp()
         await self.attackr()
@@ -193,7 +193,7 @@ class Adele(Action):
         await self.leftr()
 
     async def goattackkleft(self):
-        print(f'goattackleft')
+        # print(f'goattackleft')
         await self.leftp()
         await self.attackp()
         await self.attackr()
@@ -207,7 +207,7 @@ class Adele(Action):
         await self.leftr()
     
     async def gorightattackk(self):
-        print(f'gorightattackk')
+        # print(f'gorightattackk')
         await self.rightp()
         await self.jumpp()
         await self.jumpr()    
@@ -220,7 +220,7 @@ class Adele(Action):
         await self.rightr()
     
     async def goattackright(self):
-        print(f'goattackright')
+        # print(f'goattackright')
         await self.rightp()
         await self.attackp()
         await self.attackr()
@@ -232,7 +232,7 @@ class Adele(Action):
         await self.rightr()
 
     async def goattackkright(self):
-        print(f'goattackkright')
+        # print(f'goattackkright')
         await self.rightp()
         await self.attackp()
         await self.attackr()
@@ -246,7 +246,7 @@ class Adele(Action):
         await self.rightr()
 
     async def upjumpattack(self):
-        print(f'upjumpattack')
+        # print(f'upjumpattack')
         await sleep(.1)
         await self.jumpp()
         await self.jumpr()
@@ -261,7 +261,7 @@ class Adele(Action):
     # adele customization
 
     async def goleftattadele(self):
-        print(f'goleftattadele')
+        # print(f'goleftattadele')
         await self.leftp()
         await self.jumpp()
         await self.jumpr()    
@@ -274,7 +274,7 @@ class Adele(Action):
         await self.leftr()
 
     async def goleftattadele2(self):
-        print(f'goleftattadele2')
+        # print(f'goleftattadele2')
         await self.leftp()
         await self.jumpp()
         await self.jumpr()    
@@ -291,7 +291,7 @@ class Adele(Action):
         await self.leftr()
 
     async def gorightattadele(self):
-        print(f'gorightattadele')
+        # print(f'gorightattadele')
         await self.rightp()
         await self.jumpp()
         await self.jumpr()    
@@ -304,7 +304,7 @@ class Adele(Action):
         await self.rightr()
 
     async def gorightattadele2(self):
-        print(f'gorightattadele2')
+        # print(f'gorightattadele2')
         await self.rightp()
         await self.jumpp()
         await self.jumpr()    
@@ -718,7 +718,7 @@ class Adele(Action):
 
             
     async def moonbridge(self,x,y):
-        print(f'moonbridge adele: {x=} {y=} l={self.left} r={self.right} t={self.top} b={self.btm} ox={self.offsetx} oy={self.offsety}')
+        # print(f'moonbridge adele: {x=} {y=} l={self.left} r={self.right} t={self.top} b={self.btm} ox={self.offsetx} oy={self.offsety}')
         if self.goleft:
             if x >= self.left-self.offsetx and x <= self.left+self.offsetx:
                 if y > self.top-self.offsety and y <= self.top+self.offsety:
@@ -730,7 +730,7 @@ class Adele(Action):
                 else:
                     await random.choice([self.goupattack2])()
                     time.sleep(.2)
-                print(f'testing: heightdiff={y-self.top}')
+                # print(f'testing: heightdiff={y-self.top}')
             elif x < self.left:
                 await random.choice([self.gorightattack, self.gorightattackk, self.gorightattadele, self.gorightattadele2])()
             else:
@@ -879,7 +879,6 @@ class Adele(Action):
                 if y > self.top-self.offsety and y <= self.top+self.offsety:
                     self.goright=True
                     self.goleft=False
-                print(f'testing: heightdiff={y-self.top}')
             elif x < self.left:
                 await random.choice([self.gorightattack, self.gorightattackk])()
             else:
