@@ -36,7 +36,7 @@ class Mycharacterign(Action):
         self.solverune=True
         self.now=0
         self.rotation_list = ['default', 'leftright', 'leftrightlong', 'leftrightdownlong', 'leftrightuplong',
-            'moonbridge','arcana_lp', 'arigatou']
+            'moonbridge','arcana_lp', 'arigatou', 'OdiumAlley3']
         self.rotation='default'
         self.rotation_mapping = {
             'default': self.clockwise,
@@ -47,6 +47,7 @@ class Mycharacterign(Action):
             'moonbridge': self.moonbridge,
             'arcana_lp': self.arcana_lp,
             'arigatou': self.arigatou,
+            'OdiumAlley3': self.alley3
 
         }
 
@@ -899,8 +900,6 @@ class Mycharacterign(Action):
         else:
             print(f'exception coordinates .. please fix asap .. {x=} {y=}')
         await self.post_perform_action(x,y)
-        
-
 
     async def post_perform_action(self,x,y):
         self.now = perf_counter()
@@ -938,8 +937,6 @@ class Mycharacterign(Action):
 
         # if self.solverune:
         #     await self.runesolver.gotorune(self.g)
-
-
 
 
 
