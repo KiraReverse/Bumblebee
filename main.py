@@ -300,6 +300,10 @@ class TkinterBot(customtkinter.CTk):
                     runetimer0=now
 
     async def FindRuneCDIcon(self): # TODO: the newest screenshot crop it. 
+<<<<<<< HEAD
+=======
+        self.g.generate_newest_screenshot()
+>>>>>>> upstream/main
         img_gray = cv2.cvtColor(self.g.get_newest_screenshot(), cv2.COLOR_BGR2GRAY)                
         w, h = self.template.shape[::-1]    
         res = cv2.matchTemplate(img_gray,self.template,cv2.TM_CCOEFF_NORMED)
@@ -313,6 +317,148 @@ class TkinterBot(customtkinter.CTk):
         if len(loc[0]) > 0: return True
         return False
 
+<<<<<<< HEAD
+=======
+    async def async_function4(self): # this thread do all pixel detection / checker function. 
+        diedcheckercounter=0
+        liedetectorcounter=0
+        reddotcounter=0
+        whitedotcounter=0
+        runecdcounter=0
+        mapledcedcounter=0
+        self.cc=False
+        while True:
+            while self.pause:
+                time.sleep(1)
+                if self.stop_event.is_set():
+                    return                    
+            self.g.generate_newest_screenshot()
+            die, red, lie, whi = self.g.run_once_detect_all()
+
+            if die is not None:
+                print(f'{die=}')
+                diedcheckercounter+=1
+                if diedcheckercounter > 2: # usually check 3times to confirm character really died. 
+                    diedcheckercounter=0 # reset
+                    print(f'character died. attempt to press ok .. ')
+                    position = win32gui.GetWindowRect(self.maplehwnd)
+                    x, y, w, h = position
+                    if self.broiddisabled:
+                        await self.helper.move_to_and_click_and_move_away(x+440,y+400); time.sleep(.1) ## TODO: write a list of offset for all reso.
+                        await self.togglepause()
+                        print(f'no broid. stopping bot. TODO: click map and teleport back and continue botting. ')
+                    else:
+                        await self.helper.move_to_and_click_and_move_away(x+390,y+400); time.sleep(.1) ## all offsets are of 800x600 reso
+            
+            if red is not None:
+                print(f'{red=}')
+                reddotcounter+=1
+                if reddotcounter > 1: # usually check twice to confirm really has red dot. you can change to 0 to immediately change channel. 
+                    reddotcounter=0 # reset
+                    self.cc=True # we can't directly cc in this thread because cc-ing is a long process, it will block other detectors. 
+                    print(f'red dot detected. changing channel. {self.cc=}')
+
+            if lie is not None:
+                print(f'{lie=}')
+                liedetectorcounter+=1
+                if liedetectorcounter > 1: # usually check twice
+                    liedetectorcounter=0 # reset
+                    await self.togglepause()
+                    print(f'lie detector detector. stopping everything. [testing] {self.pause=} {self.scriptpausesignal=}')
+
+            if whi: # this is when accidentally pressed up and enter bounty portal and dialogue come out. 
+                print(f'{whi}')
+                whitedotcounter+=1
+                if whitedotcounter > 1: # usually check twice
+                    whitedotcounter=0 # reset
+                    print(f'accidentally pressed up on bounty portal? clicking end chat. [testing]')
+                    position = win32gui.GetWindowRect(self.maplehwnd)
+                    x, y, w, h = position
+                    await self.helper.move_to_and_click_and_move_away(x+222,y+410); time.sleep(.1)
+
+
+            # diedcheckerlocations = self.g.died_checker()
+            # if diedcheckerlocations is not None:
+            #     print(f'{diedcheckerlocations=}')
+            #     diedcheckercounter+=1
+            #     if diedcheckercounter > 2: # usually check 3times to confirm character really died. 
+            #         diedcheckercounter=0 # reset
+            #         print(f'character died. attempt to press ok .. ')
+            #         position = win32gui.GetWindowRect(self.maplehwnd)
+            #         x, y, w, h = position
+            #         if self.broiddisabled:
+            #             await self.helper.move_to_and_click_and_move_away(x+440,y+400); time.sleep(.1) ## TODO: write a list of offset for all reso.
+            #             await self.togglepause()
+            #             print(f'no broid. stopping bot. TODO: click map and teleport back and continue botting. ')
+            #         else:
+            #             await self.helper.move_to_and_click_and_move_away(x+390,y+400); time.sleep(.1) ## all offsets are of 800x600 reso
+            # reddotcheckerlocations = self.g.reddot_checker()
+            # if reddotcheckerlocations is not None:
+            #     print(f'{reddotcheckerlocations=}')
+            #     reddotcounter+=1
+            #     if reddotcounter > 1: # usually check twice to confirm really has red dot. you can change to 0 to immediately change channel. 
+            #         reddotcounter=0
+            #         self.cc=True # we can't directly cc in this thread because cc-ing is a long process, it will block other detectors. 
+            #         print(f'red dot detected. changing channel. {self.cc=}')
+            # liedetectorcheckerlocations = self.g.liedetector_checker()
+            # if liedetectorcheckerlocations is not None:
+            #     print(f'{liedetectorcheckerlocations=}')
+            #     liedetectorcounter+=1
+            #     if liedetectorcounter > 1: # usually check twice
+            #         liedetectorcounter=0
+            #         await self.togglepause()
+            #         print(f'lie detector detector. stopping everything. [testing] {self.pause=} {self.scriptpausesignal=}')
+            # whitedotcheckerlocations = self.g.white_dot_checker()
+            # if whitedotcheckerlocations: # this is when accidentally pressed up and enter bounty portal and dialogue come out. 
+            #     print(f'{whitedotcheckerlocations}')
+            #     whitedotcounter+=1
+            #     if whitedotcounter > 1: # usually check twice
+            #         whitedotcounter=0
+            #         print(f'accidentally pressed up on bounty portal? clicking end chat. [testing]')
+            #         position = win32gui.GetWindowRect(self.maplehwnd)
+            #         x, y, w, h = position
+            #         await self.helper.move_to_and_click_and_move_away(x+222,y+410); time.sleep(.1)
+
+            # runecdcheckerlocations = self.g.rune_cd_checker()
+            # if runecdcheckerlocations is None: # means rune no more cd
+            #     print(f'rune cd icon not found. {runecdcounter=}')
+            #     runecdcounter+=1
+            #     if runecdcounter>1: # even rune cd we checking twice!
+            #         runecdcounter=0
+            #         self.rune=True
+            #         print(f'rune cd is true (go solve rune!) {self.rune=}')
+            # else:
+            #     self.rune=False
+
+            # mapledcedcheckerlocations = self.g.maple_dced_checker() # this is redundant because the bot will stop anyway. 
+            # if mapledcedcheckerlocations:
+            #     print(f'maple login screen detected! {mapledcedcounter=}')
+            #     mapledcedcounter+=1
+            #     if mapledcedcounter>2: # we check 3 times for dc
+            #         mapledcedcounter=0
+            #         await self.togglepause()
+            #         print(f'maple dc-ed detected! (login screen) [testing] {self.pause=} {self.scriptpausesignal=}')
+                
+            # if not self.pausepolochecker and not self.portaldisabled: # i disable this because most user don't want to enter bounty portal
+            #     polocheckerlocations = self.g.polo_checker() # check for portal on minimap
+            #     if polocheckerlocations is not None:
+            #         print(f'{polocheckerlocations=}')
+            #         self.polochecker = True
+            #         self.gotoportal=True
+            # whitedotlocations = self.g.white_dot_checker() # this is when character botting, pressed up, accidentally entered portal, dialogue come out. 
+            # if whitedotlocations is not None:
+            #     whitedotcounter+=1
+            #     if whitedotcounter>1: # usually check twice to confirm character really entered portal by accident. 
+            #         self.whitedotoccur=True
+            #         self.polochecker=True
+            #         self.gotoportal=False
+            # elif whitedotlocations is None:
+            #     whitedotcounter=0
+            
+            time.sleep(4)
+            # time.sleep(2)
+
+>>>>>>> upstream/main
     async def async_function9(self):
         now=perf_counter()
         thirdtimer0=now
@@ -355,6 +501,7 @@ class TkinterBot(customtkinter.CTk):
                 elif thirdtimer >= 15:
                     second=True
 
+<<<<<<< HEAD
     async def async_function4(self): # this thread do all pixel detection / checker function. 
         diedcheckercounter=0
         liedetectorcounter=0
@@ -450,6 +597,8 @@ class TkinterBot(customtkinter.CTk):
             time.sleep(4)
             # time.sleep(2)
             
+=======
+>>>>>>> upstream/main
     async def async_function5(self): # gma_checker
         while True:
             while self.pause:

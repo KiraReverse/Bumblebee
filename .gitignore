@@ -22,3 +22,7 @@ test.txt
 testsleep.py
 /secret
 secret/secret.ini
+/classtype
+/classtype_backup
+/theinterception
+action.py
