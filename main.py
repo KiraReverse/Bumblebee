@@ -300,10 +300,8 @@ class TkinterBot(customtkinter.CTk):
                     runetimer0=now
 
     async def FindRuneCDIcon(self): # TODO: the newest screenshot crop it. 
-<<<<<<< HEAD
-=======
+
         self.g.generate_newest_screenshot()
->>>>>>> upstream/main
         img_gray = cv2.cvtColor(self.g.get_newest_screenshot(), cv2.COLOR_BGR2GRAY)                
         w, h = self.template.shape[::-1]    
         res = cv2.matchTemplate(img_gray,self.template,cv2.TM_CCOEFF_NORMED)
@@ -317,8 +315,6 @@ class TkinterBot(customtkinter.CTk):
         if len(loc[0]) > 0: return True
         return False
 
-<<<<<<< HEAD
-=======
     async def async_function4(self): # this thread do all pixel detection / checker function. 
         diedcheckercounter=0
         liedetectorcounter=0
@@ -458,7 +454,6 @@ class TkinterBot(customtkinter.CTk):
             time.sleep(4)
             # time.sleep(2)
 
->>>>>>> upstream/main
     async def async_function9(self):
         now=perf_counter()
         thirdtimer0=now
@@ -501,7 +496,6 @@ class TkinterBot(customtkinter.CTk):
                 elif thirdtimer >= 15:
                     second=True
 
-<<<<<<< HEAD
     async def async_function4(self): # this thread do all pixel detection / checker function. 
         diedcheckercounter=0
         liedetectorcounter=0
@@ -596,9 +590,7 @@ class TkinterBot(customtkinter.CTk):
             # await self.g.run_once_all_detect()
             time.sleep(4)
             # time.sleep(2)
-            
-=======
->>>>>>> upstream/main
+
     async def async_function5(self): # gma_checker
         while True:
             while self.pause:
