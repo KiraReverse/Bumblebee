@@ -135,13 +135,43 @@ class Game:
             return img.copy().tobytes()
 
     def generate_newest_screenshot(self):
-        self.newest_screenshot = self.get_screenshot()
+        self.newest_screenshot = self.get_screenshot()        
 
     def get_newest_screenshot(self):
         return self.newest_screenshot
 
-    def run_once_all_detect(self):
-        pass
+    def run_once_detect_all(self):
+        img = self.newest_screenshot        
+        img_cropped1 = img[300:400, 300:400] # died ok button
+        img_cropped2 = img[self.left:self.right, self.top:self.bottom] # minimap
+        img_cropped3 = img[375:376, 430:431] # lie detector ok button
+        img_cropped4 = img[329:330, 292:293] # white dialogue of polo frito especia accidentally pressed up
+        # img_cropped5 = img[329:330, 292:293] # 
+        
+        died_locations = self.mini_checker_function(img_cropped1,OKBGR)
+        red_dot_locations = self.mini_checker_function(img_cropped2,ENEMY_BGRA)
+        lie_detector_ok_locations = self.mini_checker_function(img_cropped3,LOBGR)
+        white_dot_locations = self.mini_checker_function(img_cropped4,WDBGR)
+
+        return (died_locations, red_dot_locations, lie_detector_ok_locations, white_dot_locations)
+
+    def mini_checker_function(self,img,THEBGR):
+        locations = []
+        sum_x, sum_y, count = 0, 0, 0
+        height, width = img.shape[0], img.shape[1]
+        img_reshaped = np.reshape(img, ((width * height), 4), order="C")
+        matches = np.where(np.all((img_reshaped == THEBGR), axis=1))[0]
+        for idx in matches:
+            sum_x += idx % width
+            sum_y += idx // width
+            count += 1
+        if count > 0:
+            x_pos = sum_x / count
+            y_pos = sum_y / count
+            locations.append((x_pos, y_pos))
+        return locations[0] if len(locations) > 0 else None
+        
+        
     
     def checker(self, *color, x=0,y=0,w=800,h=600):
         with gdi_capture.CaptureWindow(self.hwnd) as img:
