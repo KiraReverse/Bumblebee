@@ -1377,8 +1377,10 @@ class TkinterBot(customtkinter.CTk):
         time_label = customtkinter.CTkLabel(framerecord, text='0.0000s', font=('Helvetica', 12), text_color='black')
         time_label.pack(padx=1,pady=1)
         def save():
-            if len(self.scripttemp)!=0:
+            print(f'[TEST]! {len(self.input_events)=}')
+            if len(self.input_events)>0:
                 self.script=self.scripttemp
+                print(f'WARNING! {len(self.input_events)=}')
                 with open(f'script/{self.script}', 'w') as json_file:
                     json.dump(self.input_events, json_file, indent=4)
             pointA = (self.pointx,self.pointy)
@@ -1610,6 +1612,7 @@ class TkinterBot(customtkinter.CTk):
                             print(f'f9 detected. adjusting character back to point A. ')
                             # print('read f9')
                             await self.adjustcharacter(self.pointx,self.pointy)
+                            print(f'character is now at point A. continue script ..')
                         if action['button'] == 'f10':
                             # print('f10')
                             # await self.adjustcharacter(self.pointx,self.pointy)
