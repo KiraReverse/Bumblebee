@@ -1377,9 +1377,10 @@ class TkinterBot(customtkinter.CTk):
         time_label = customtkinter.CTkLabel(framerecord, text='0.0000s', font=('Helvetica', 12), text_color='black')
         time_label.pack(padx=1,pady=1)
         def save():
-            self.script=self.scripttemp
-            with open(f'script/{self.script}', 'w') as json_file:
-                json.dump(self.input_events, json_file, indent=4)
+            if len(self.scripttemp)!=0:
+                self.script=self.scripttemp
+                with open(f'script/{self.script}', 'w') as json_file:
+                    json.dump(self.input_events, json_file, indent=4)
             pointA = (self.pointx,self.pointy)
             with open(f'point/{self.script}', 'w') as json_file:
                 json.dump(pointA, json_file, indent=4)
@@ -1606,6 +1607,7 @@ class TkinterBot(customtkinter.CTk):
 
                     if action['type'] == 'keyDown':
                         if action['button'] == 'f9':
+                            print(f'f9 detected. adjusting character back to point A. ')
                             # print('read f9')
                             await self.adjustcharacter(self.pointx,self.pointy)
                         if action['button'] == 'f10':
@@ -1741,7 +1743,7 @@ class TkinterBot(customtkinter.CTk):
         self.input_events=[]
         def on_press(key):
             if key in self.unreleased_keys: 
-                print(f'unreleased: {key=} {self.unreleased_keys=}')
+                # print(f'unreleased: {key=} {self.unreleased_keys=}')
                 return
             else:
                 self.unreleased_keys.append(key)
