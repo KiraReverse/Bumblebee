@@ -32,7 +32,7 @@ from telegram.ext import Application, CommandHandler, MessageHandler, filters, C
 from attack import leftp, leftr, rightp, rightr, sleep, npcp, npcr
 from action import Action
 from runesolver import RuneSolver
-from initinterception import  move_relative, left_click, right_click, initiate_move, auto_capture_devices2, keydown, keyup, keyupall
+from initinterception import  move_relative, left_click, right_click, initiate_move, auto_capture_devices2, keydown, keyup, keyupall, keyupall_arrow
 from helper import Helper
 from character import Character
 
@@ -252,6 +252,7 @@ class TkinterBot(customtkinter.CTk):
                 self.pause=True
             if self.pause:
                 keyupall()
+                keyupall_arrow()
                 print(f'script is paused .. click resume to resume. ')
                 while self.pause:
                     time.sleep(1)
@@ -261,8 +262,12 @@ class TkinterBot(customtkinter.CTk):
                         return
                 print(f'script resumed ..')
             #
-            time.sleep(.411) # when testing ..
-            # time.sleep(.011) # when real botting ..
+            if self.character.ac.goingtoportal or self.character.ac.gotoportal1 or self.character.ac.gotoportal2 or self.character.ac.gotoportal3 or self.character.ac.gotoportal4:
+                time.sleep(.0001) # 
+            else:
+                time.sleep(.011) # 
+            # time.sleep(.811) # when testing ..
+            # time.sleep(.411) # when testing ..
             # time.sleep(.001) # when idk maybe you gone insane ..
             g_variable = self.g.get_player_location()
             x, y = (None, None) if g_variable is None else g_variable
@@ -279,25 +284,29 @@ class TkinterBot(customtkinter.CTk):
             else: #
                 xynotfound=0
                 await self.character.perform_next_attack(x,y) 
-                # await self.changechannel_zakum()
 
-                now=perf_counter()                
-                cctimer=now-cctimer0
-                if cctimer>3000: # 60sec * 50min = 3000sec
-                    # cc=True
-                    keyupall()
-                    await self.changechannel()
-                    cctimer0=perf_counter() # reset
-                    self.cc=False
-                if self.cc: # this is for red dot. 
-                    keyupall()
-                    await self.changechannel_zakum() # we don't go ardent because it has 5 min cd. 
-                    self.cc=False
-                runetimer=now-runetimer0
-                if runetimer > self.runecd:
-                    if not await self.FindRuneCDIcon():
-                        await self.character.gotorune() # and solve rune.
-                    runetimer0=now
+                if self.character.ac.goingtoportal or self.character.ac.gotoportal1 or self.character.ac.gotoportal2 or self.character.ac.gotoportal3 or self.character.ac.gotoportal4:
+                    pass
+                else:
+                    now=perf_counter()                
+                    cctimer=now-cctimer0
+                    if cctimer>3000: # 60sec * 50min = 3000sec
+                        # cc=True
+                        keyupall()
+                        keyupall_arrow()
+                        await self.changechannel()
+                        cctimer0=perf_counter() # reset
+                        self.cc=False
+                    if self.cc: # this is for red dot. 
+                        keyupall()
+                        keyupall_arrow()
+                        await self.changechannel_zakum() # we don't go ardent because it has 5 min cd. 
+                        self.cc=False
+                    runetimer=now-runetimer0
+                    if runetimer > self.runecd:
+                        if not await self.FindRuneCDIcon():
+                            await self.character.gotorune() # and solve rune.
+                        runetimer0=now
 
     async def FindRuneCDIcon(self): # TODO: the newest screenshot crop it. 
         self.g.generate_newest_screenshot()
@@ -765,6 +774,7 @@ class TkinterBot(customtkinter.CTk):
             self.character.ac.enablerune()
 
     async def togglepause(self):
+        print(f'togglepause')
         # self.pause=True
         self.resumebutton()
         self.scriptpausesignal=True
@@ -1583,6 +1593,7 @@ class TkinterBot(customtkinter.CTk):
                         print(f'yes p={self.scriptpausesignal}')
                     if self.scriptpausesignal:
                         keyupall()
+                        keyupall_arrow()
                         print(f'script is paused .. ')
                         while self.scriptpausesignal:
                             if self.scriptstopsignal:
@@ -1670,11 +1681,13 @@ class TkinterBot(customtkinter.CTk):
                         if cctimer>3000: # 60sec * 50min = 3000sec
                             # cc=True
                             keyupall()
+                            keyupall_arrow()
                             await self.changechannel()
                             cctimer0=perf_counter() # reset
                             self.cc=False
                         if self.cc:
                             keyupall()
+                            keyupall_arrow()
                             await self.changechannel_zakum() # this version of changing channel is from reddotdetector. 
                             self.cc=False                            
                         runetimer=now-runetimer0
@@ -1689,6 +1702,7 @@ class TkinterBot(customtkinter.CTk):
         while True:
             if self.scriptpausesignal:
                 keyupall()
+                keyupall_arrow()
                 return
             g_variable = self.g.get_player_location()
             x, y = (None, None) if g_variable is None else g_variable

@@ -50,6 +50,7 @@ We do not encourage botting. This project is only for research purpose.
 Part of the code taken from:
 - https://github.com/qlvbrknp/maple-bot
 - https://github.com/kennyhml/pyinterception
+- https://github.com/odangitsdjang/auto-maple
 
 # Bot Showcase:
 - soul master custom rotation at limen 1-7

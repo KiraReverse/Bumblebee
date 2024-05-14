@@ -120,19 +120,38 @@ def set_devices(keyboard: Optional[int] = None, mouse: Optional[int] = None) -> 
     interception.mouse = mouse or interception.mouse
 
 
-# interception.set_filter(interception.is_keyboard, FilterKeyState.FILTER_KEY_ALL.value)
-# print("Click any key on your keyboard.")
-# device = None
-# while True:
-#     device = interception.wait()
-#     print(device)
-#     if interception.is_keyboard(device):
-#         print(f"Bound to keyboard: {interception.get_HWID(device)}.")
-#         interception.set_filter(interception.is_keyboard, 0)
-#         break
+interception.set_filter(interception.is_keyboard, FilterKeyState.FILTER_KEY_ALL.value)
+print("Click any key on your keyboard.")
+device = None
+while True:
+    device = interception.wait()
+    print(device)
+    if interception.is_keyboard(device):
+        print(f"Bound to keyboard: {interception.get_HWID(device)}.")
+        interception.set_filter(interception.is_keyboard, 0)
+        break
 
-auto_capture_devices2()
 # auto_capture_devices2()
+# auto_capture_devices2()
+
+mouse_device="mouse"
+listener=None
+mouse_listener = MouseListener(on_click=lambda *args: False)
+print('mouse_device=')
+print(mouse_device)
+stroke: Stroke
+if mouse_device == "mouse":
+    listener, stroke, nums = mouse_listener, _TEST_MOUSE_STROKE, range(10, 20)
+listener.start()
+for num in nums:
+    interception.send(num, stroke)
+    time.sleep(random.uniform(0.1, 0.3))
+    if listener.is_alive():
+        print(f"No success on {mouse_device} {num}...")
+        continue
+    print(f"Success on {mouse_device} {num}! ")
+    set_devices(**{mouse_device: num})
+    break
 
 
 # essential functions
@@ -161,11 +180,11 @@ def _get_keycode(key: str) -> int:
 def keydown(key):
     # print(f'{KEYBOARD_MAPPING=}')
     keycode = _get_keycode(key)
-    # print(f'{keycode}')
+    # print(f'{key=} {keycode=}')
     stroke = KeyStroke(keycode, KeyState.KEY_DOWN, 0)
     # print(f'{stroke=}')
-    # interception.send(device,stroke)
-    interception.send_key(stroke)
+    interception.send(device,stroke)
+    # interception.send_key(stroke)
     # print(f'total_result: {interception.send_key(stroke)}')
 
 # key release function
@@ -175,14 +194,45 @@ def keyup(key):
     stroke = KeyStroke(keycode, KeyState.KEY_UP, 0)
     # stroke = KeyStroke(0, 0, 0)
     # print(f'{stroke}')
-    # interception.send(device,stroke)
-    interception.send_key(stroke)
+    interception.send(device,stroke)
+    # interception.send_key(stroke)
     # print(f'total_result: {interception.send_key(stroke)}')
 
 def keyupall():
     stroke = KeyStroke(0, 0, 0)
-    # interception.send(device,stroke)
-    interception.send_key(stroke)
+    interception.send(device,stroke)
+    # interception.send_key(stroke)
+
+def keydown_arrow(key):
+    # print(f'{KEYBOARD_MAPPING=}')
+    keycode = _get_keycode(key)
+    # print(f'keydown_arrow {key=} {keycode=}')
+    stroke = KeyStroke(keycode, 0x02, 0)
+    # print(f'{stroke=}')
+    interception.send(device,stroke)
+    # interception.send_key(stroke)
+    # print(f'total_result: {interception.send_key(stroke)}')
+
+def keyup_arrow(key):
+    # print(f'{KEYBOARD_MAPPING=}')
+    keycode = _get_keycode(key)
+    # print(f'keyup_arrow {key=} {keycode=}')
+    stroke = KeyStroke(keycode, 3, 0)
+    # print(f'{stroke=}')
+    interception.send(device,stroke)
+    # interception.send_key(stroke)
+    # print(f'total_result: {interception.send_key(stroke)}')
+
+def keyupall_arrow():
+    stroke = KeyStroke(77, 3, 0)
+    interception.send(device,stroke)
+    # interception.send_key(stroke)
+    stroke = KeyStroke(72, 3, 0)
+    interception.send(device,stroke)
+    stroke = KeyStroke(75, 3, 0)
+    interception.send(device,stroke)
+    stroke = KeyStroke(80, 3, 0)
+    interception.send(device,stroke)
 
 
 def _get_button_states(button: str, *, down: bool) -> int:
