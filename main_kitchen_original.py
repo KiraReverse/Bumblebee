@@ -277,13 +277,13 @@ class TkinterBot(customtkinter.CTk):
                     now=perf_counter()
                     continue
                 else:
-                    keydown('alt')
+                    keydown('n')
                     hide=True
                     # await sleep(.003)
             else:
                 if hide:
                     time.sleep(.2) # sometimes server delay
-                    keyup('alt')
+                    keyup('n')
                     await sleep(.101) # sleep a bit before continue to press arrow keys after stand up. 
                     hide=False
                 sequence = self.g.sequence_checker()
@@ -325,12 +325,12 @@ class TkinterBot(customtkinter.CTk):
                     await sleep(.001)
                 else:
                     if fever:
-                        await sleep(.303)
+                        await sleep(.303) # i know this is wrong but i won't change it cuz this is original version xp
                     else:
                         await sleep(.503)
             now=perf_counter()
             fevertimer=now-fevertimer0
-            if fevertimer>55:
+            if fevertimer>55: # i know this is wrong but i won't change it cuz this is original version xp
                 fever=True
 
 
