@@ -663,11 +663,6 @@ class Mycharacterign(Action):
         else:
             pass
 
-
-
-
-
-
     async def clockwise(self,x,y):
         if y > self.top and (y > self.btm-self.offsety and y <= self.btm+self.offsety):
             if x > self.left+self.offsetx:
@@ -713,10 +708,6 @@ class Mycharacterign(Action):
 
         await self.post_perform_action(x,y)
 
-
-
-
-            
     async def moonbridge(self,x,y):
         print(f'moonbridge adele: {x=} {y=} l={self.left} r={self.right} t={self.top} b={self.btm} ox={self.offsetx} oy={self.offsety}')
         if self.goleft:
@@ -868,8 +859,6 @@ class Mycharacterign(Action):
             print(f'exception coordinates .. please fix asap .. {x=} {y=}')
         # time.sleep(2)
         await self.post_perform_action(x,y)
-
-
 
     async def leftright(self,x,y):
         if self.goleft:
