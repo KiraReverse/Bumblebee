@@ -32,7 +32,7 @@ from telegram.ext import Application, CommandHandler, MessageHandler, filters, C
 from attack import leftp, leftr, rightp, rightr, sleep, npcp, npcr
 from action import Action
 from runesolver import RuneSolver
-from initinterception import  move_relative, left_click, right_click, initiate_move, auto_capture_devices2, keydown, keyup, keyupall, keyupall_arrow
+from initinterception import  move_relative, left_click, right_click, initiate_move, auto_capture_devices2, keydown, keyup, keyupall,  keydown_arrow, keyup_arrow, keyupall_arrow
 from helper import Helper
 from character import Character
 
@@ -220,17 +220,19 @@ class TkinterBot(customtkinter.CTk):
         self.loop10.run_until_complete(self.async_function10()) # auto clicker monster life
 
     def start_threads(self):
-        self.thread1.start()
+        # self.thread1.start()
         self.thread3.start()
-        self.thread6.start()
+        # self.thread6.start()
 
     async def async_function3(self):
         while not self.tkinter_started:
             time.sleep(1.01)
-        self.thread4 = threading.Thread(target=self.run_thread4)
-        self.thread4.start() # all the detector goes here
-        self.thread5 = threading.Thread(target=self.run_thread5)
-        self.thread5.start() # gma detector goes here
+        # self.thread4 = threading.Thread(target=self.run_thread4)
+        # self.thread4.start() # all the detector goes here
+        # self.thread5 = threading.Thread(target=self.run_thread5)
+        # self.thread5.start() # gma detector goes here
+        self.thread9 = threading.Thread(target=self.run_thread9)
+        self.thread9.start() # 
         self.ac=self.character.ac
         self.polocheckertimer0=0
         self.now=0
@@ -246,6 +248,12 @@ class TkinterBot(customtkinter.CTk):
         cc=False
         self.rune=False
         # ugly code ends here
+        hide=False
+        self.hidenow=False
+        lastfailing=False
+        fevertimer0=now
+        fevertimer=0
+        fever=False
         await initiate_move()
         while True:
             if pythonkeyboard.is_pressed("esc"):
@@ -257,68 +265,188 @@ class TkinterBot(customtkinter.CTk):
                 while self.pause:
                     time.sleep(1)
                     if self.stop_event.is_set():
-                        self.thread4.join()
-                        self.thread5.join()
+                        # self.thread4.join()
+                        # self.thread5.join()
+                        self.thread9.join()
                         return
-                print(f'script resumed ..')
-            #
-            if self.character.ac.goingtoportal or self.character.ac.gotoportal1 or self.character.ac.gotoportal2 or self.character.ac.gotoportal3 or self.character.ac.gotoportal4:
-                time.sleep(.0001) # 
+                # print(f'script resumed ..')
+                print(f'script resuming in 1 second .. because the arrows sequence detector is very sensitive!')
+                time.sleep(1)
+                fevertimer0=perf_counter()
+            if self.hidenow:
+                if hide:
+                    now=perf_counter()
+                    continue
+                else:
+                    # keydown('alt')
+                    keydown('n')
+                    hide=True
+                    # await sleep(.003)
             else:
-                time.sleep(.011) # 
+                if hide:
+                    time.sleep(.2) # sometimes server delay
+                    # keyup('alt')
+                    keyup('n')
+                    await sleep(.301) # sleep a bit before continue to press arrow keys after stand up. 
+                    hide=False
+                sequence = self.g.sequence_checker()
+                print(f'{sequence=}')
+                if sequence[0] == 0:
+                    print(f'sequence 0 detected. ')
+                    await sleep(.003)
+                    # await sleep(.503) # last working
+                    lastfailing=True
+                    continue
+                for s in sequence:
+                    if self.hidenow:
+                        break
+                    await sleep(random.uniform(.034,.037))
+                    if self.hidenow:
+                        break
+                    await sleep(random.uniform(.034,.037))
+                    if self.hidenow:
+                        break
+                    if lastfailing:
+                        await sleep(.001)
+                        # # keydown('alt')
+                        # keydown('n')
+                        # await sleep(.403)
+                        # # keyup('alt')
+                        # keyup('n')
+                        # await sleep(.203)
+                        lastfailing=False
+                    if s == 1: # UP
+                        print(f'1UP {perf_counter()-now:.10f} {fever=}')
+                        keydown_arrow('up')
+                        await sleep(.003)
+                        keyup_arrow('up')
+                        await sleep(.003)
+                    elif s == 2: # DOWN
+                        print(f'2DOWN {perf_counter()-now:.10f} {fever=} ')
+                        keydown_arrow('down')
+                        await sleep(.003)
+                        keyup_arrow('down')
+                        await sleep(.003)
+                    elif s == 3: # LEFT
+                        print(f'3LEFT {perf_counter()-now:.10f} {fever=} ')
+                        keydown_arrow('left')
+                        await sleep(.003)
+                        keyup_arrow('left')
+                        await sleep(.003)
+                    elif s == 4: # RIGHT
+                        print(f'4RIGHT {perf_counter()-now:.10f} {fever=} ')
+                        keydown_arrow('right')
+                        await sleep(.003)
+                        keyup_arrow('right')
+                        await sleep(.003)
+                    elif s == 0: # in fever mode, the flame will block the color, sometimes 0. 
+                        break # break immediately, recheck arrows sequence. 
+                if self.hidenow:
+                    await sleep(.001)
+                else:
+                    if fever:
+                        await sleep(.533)
+                        # await sleep(.453) # last working
+                    else:
+                        await sleep(.533)
+                        # await sleep(.573) # last working
+                now=perf_counter()
+                if not fever:
+                    fevertimer=now-fevertimer0
+                    if fevertimer>44:
+                        fever=True
+
+
+            # kitchen = self.g.kitchen_checker()
+            # if kitchen[0] > 0:
+            #     print(f'found kitchen. {perf_counter()-now:.10f}')
+            #     if hide:
+            #         now=perf_counter()
+            #         continue
+            #     else:
+            #         keydown('alt')
+            #         hide=True
+            #         # await sleep(.003)
+            # else:
+            #     if hide:
+            #         time.sleep(.2) # sometimes server delay
+            #         keyup('alt')
+            #         await sleep(.101) # sleep a bit before continue to press arrow keys after stand up. 
+            #         hide=False
+            # if kitchen[1] > 0:
+            #     # print(f'found arrows. {kitchen[1]=} {perf_counter()-now:.10f}')
+            #     if kitchen[1] == 1: # UP
+            #         print(f'UP {perf_counter()-now:.10f}')
+            #         keydown_arrow('up')
+            #         await sleep(.003)
+            #         keyup_arrow('up')
+            #         await sleep(.153)
+            #     elif kitchen[1] == 2: # DOWN
+            #         print(f'DOWN {perf_counter()-now:.10f}')
+            #         keydown_arrow('down')
+            #         await sleep(.003)
+            #         keyup_arrow('down')
+            #         await sleep(.153)
+            #     elif kitchen[1] == 3: # LEFT
+            #         print(f'LEFT {perf_counter()-now:.10f}')
+            #         keydown_arrow('left')
+            #         await sleep(.003)
+            #         keyup_arrow('left')
+            #         await sleep(.153)
+            #     elif kitchen[1] == 4: # RIGHT
+            #         print(f'RIGHT {perf_counter()-now:.10f}')
+            #         keydown_arrow('right')
+            #         await sleep(.003)
+            #         keyup_arrow('right')
+            #         await sleep(.153)
+            now=perf_counter()
+            #
+            # if self.character.ac.goingtoportal or self.character.ac.gotoportal1 or self.character.ac.gotoportal2 or self.character.ac.gotoportal3 or self.character.ac.gotoportal4:
+            #     time.sleep(.0001) # 
+            # else:
+            #     time.sleep(.011) # 
             # time.sleep(.811) # when testing ..
             # time.sleep(.411) # when testing ..
             # time.sleep(.001) # when idk maybe you gone insane ..
-            g_variable = self.g.get_player_location()
-            x, y = (None, None) if g_variable is None else g_variable
-            if x == None or y == None:
-                xynotfound+=1
-                if xynotfound > 70:
-                    t = time.localtime()
-                    currenttime = time.strftime("%H:%M:%S", t)
-                    print(f'something is wrong .. character not found .. exiting .. {currenttime}')
-                    # self.characternotfound=True # USE THIS TO INFORM TELEGRAM!!!
-                    await self.togglepause() # self.pause=True
-                print(f'x==None, pass ..')
-                time.sleep(.1)
-            else: #
-                xynotfound=0
-                await self.character.perform_next_attack(x,y) 
+            # g_variable = self.g.get_player_location()
+            # x, y = (None, None) if g_variable is None else g_variable
+            # x, y = (None, None)
+            # if x == None or y == None:
+            #     xynotfound+=1
+            #     if xynotfound > 70:
+            #         t = time.localtime()
+            #         currenttime = time.strftime("%H:%M:%S", t)
+            #         print(f'something is wrong .. character not found .. exiting .. {currenttime}')
+            #         # self.characternotfound=True # USE THIS TO INFORM TELEGRAM!!!
+            #         await self.togglepause() # self.pause=True
+            #     print(f'x==None, pass ..')
+            #     time.sleep(.1)
+            # else: #
+            #     xynotfound=0
+            #     await self.character.perform_next_attack(x,y) 
 
-                if self.character.ac.goingtoportal or self.character.ac.gotoportal1 or self.character.ac.gotoportal2 or self.character.ac.gotoportal3 or self.character.ac.gotoportal4:
-                    pass
-                else:
-                    now=perf_counter()                
-                    cctimer=now-cctimer0
-                    if cctimer>3000: # 60sec * 50min = 3000sec
-                        # cc=True
-                        keyupall()
-                        keyupall_arrow()
-                        await self.changechannel()
-                        cctimer0=perf_counter() # reset
-                        self.cc=False
-                    if self.cc: # this is for red dot. 
-                        keyupall()
-                        keyupall_arrow()
-                        await self.changechannel_zakum() # we don't go ardent because it has 5 min cd. 
-                        self.cc=False
-                    runetimer=now-runetimer0
-                    if runetimer > self.runecd:
-                        if not await self.FindRuneCDIcon():
-                            await self.character.gotorune() # and solve rune.
-                        runetimer0=now
-                        
-                    # # private server which has infinity rune buff. 
-                    # runetimer=now-runetimer0
-                    # print(f'{runetimer=}')
-                    # if runetimer > self.runecd:
-                    #     if await self.runechecker():
-                    #         await self.character.gotorune() # and solve rune.
-                    #         await self.character.ac.goleftattack(); time.sleep(.31)
-                    #         if await self.runechecker():
-                    #             print(f'still got rune. ')
-                    #         else:
-                    #             runetimer0=perf_counter()
+            #     if self.character.ac.goingtoportal or self.character.ac.gotoportal1 or self.character.ac.gotoportal2 or self.character.ac.gotoportal3 or self.character.ac.gotoportal4:
+            #         pass
+            #     else:
+            #         now=perf_counter()                
+            #         cctimer=now-cctimer0
+            #         if cctimer>3000: # 60sec * 50min = 3000sec
+            #             # cc=True
+            #             keyupall()
+            #             keyupall_arrow()
+            #             await self.changechannel()
+            #             cctimer0=perf_counter() # reset
+            #             self.cc=False
+            #         if self.cc: # this is for red dot. 
+            #             keyupall()
+            #             keyupall_arrow()
+            #             await self.changechannel_zakum() # we don't go ardent because it has 5 min cd. 
+            #             self.cc=False
+            #         runetimer=now-runetimer0
+            #         if runetimer > self.runecd:
+            #             if not await self.FindRuneCDIcon():
+            #                 await self.character.gotorune() # and solve rune.
+            #             runetimer0=now
 
     async def FindRuneCDIcon(self): # TODO: the newest screenshot crop it. 
         self.g.generate_newest_screenshot()
@@ -334,14 +462,6 @@ class TkinterBot(customtkinter.CTk):
             # cv2.imwrite('../image/res.png',img_rgb)
         if len(loc[0]) > 0: return True
         return False
-
-    async def runechecker(self):
-        g_variable = self.g.get_rune_location()
-        x, y = (None, None) if g_variable is None else g_variable
-        if x == None:
-            return False
-        else:
-            return True
 
     async def async_function4(self): # this thread do all pixel detection / checker function. 
         diedcheckercounter=0
@@ -483,6 +603,21 @@ class TkinterBot(customtkinter.CTk):
             # time.sleep(2)
 
     async def async_function9(self):
+        self.hidenow=False
+        now=perf_counter()
+        while True:
+            while self.pause:
+                time.sleep(1)
+                if self.stop_event.is_set():
+                    return     
+            kitchen = self.g.kitchen_checker()   
+            if kitchen > 0:
+                self.hidenow=True
+            else:
+                self.hidenow=False
+            now=perf_counter()
+
+    async def async_function9_(self):
         now=perf_counter()
         thirdtimer0=now
         thirdtimer=now
@@ -1515,7 +1650,7 @@ class TkinterBot(customtkinter.CTk):
         # set a limit for cc, in case character died, stop it from spamming cc! i've been banned once due to this spamming! no appeal. 
         for i in range(10): # set a limit on how many tries to attempt to move to zakum map to avoid BAN!
             print(f'this is try no.{i} ..')
-            if i > 8: await self.togglepause() # something wrong. you are done. # self.pause=True # hopefully this work. not tested. yet. #self.scriptstopsignal=True
+            if i > 8: self.togglepause() # something wrong. you are done. # self.pause=True # hopefully this work. not tested. yet. #self.scriptstopsignal=True
             if self.pause: return
             await self.character.ac.bossuipr() # remember set it in settings.ini
             await self.helper.move_to_and_click(x+104,y+204) # zakum 800x600
@@ -1553,7 +1688,7 @@ class TkinterBot(customtkinter.CTk):
             time.sleep(3)
         async def checkstillinardentmill():            
             for i in range(7):
-                if i > 5: await self.togglepause() # self.pause=True
+                if i > 5: self.togglepause() # self.pause=True
                 if self.pause: return False
                 weareinardentyesno = self.g.ardentdetector()
                 if self.g.ardentdetector() is None:
@@ -1581,7 +1716,7 @@ class TkinterBot(customtkinter.CTk):
         [await press(self.character.ac.uppr,.06) for _ in range(random.randint(4, 10))] # ideally TODO: check ardentmill map loaded. 
         time.sleep(2.) # coming out from ardent. TODO: check if back to hunting map.
         for i in range(10): # set a limit to check. 
-            if i > 8: await self.togglepause() # self.pause=True # set a limit
+            if i > 8: self.togglepause() # self.pause=True # set a limit
             if self.pause: return
             if self.g.ardentdetector() is None: # we not in ardent. 
                 if self.g.ardentmaploading() is not None: # still loading. (whole maple dark)
@@ -1598,8 +1733,8 @@ class TkinterBot(customtkinter.CTk):
         time.sleep(1)
         randomlist = ['b', '0', 'u', '9', 'a', 'c', 'r', 'z', 'ctrl', 'home', 'f', 'f', 'f']
         now=perf_counter()
-        randommtimer0=0
-        randommtimer=0
+        self.randommtimer0=0
+        self.randommtimer=0
         runetimer0=now
         runetimer=0
         rune=False
@@ -2544,9 +2679,9 @@ class TkinterBot(customtkinter.CTk):
         self.stop_event.set()
         self.telegram_keep_alive = False
         self.destroy()
-        self.thread1.join()
+        # self.thread1.join()
         self.thread3.join()
-        self.thread6.join()
+        # self.thread6.join()
 
 async def main2():
     mytkinter = TkinterBot()

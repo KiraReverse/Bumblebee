@@ -250,13 +250,14 @@ class TkinterBot(customtkinter.CTk):
         # ugly code ends here
         hide=False
         self.hidenow=False
+        lastfailing=False
         fevertimer0=now
         fevertimer=0
         fever=False
         await initiate_move()
         while True:
             if pythonkeyboard.is_pressed("esc"):
-                self.pause=True
+                await self.togglepause()
             if self.pause:
                 keyupall()
                 keyupall_arrow()
@@ -277,44 +278,63 @@ class TkinterBot(customtkinter.CTk):
                     now=perf_counter()
                     continue
                 else:
-                    keydown('alt')
+                    # keydown('alt')
+                    keydown('n')
                     hide=True
                     # await sleep(.003)
             else:
                 if hide:
                     time.sleep(.2) # sometimes server delay
-                    keyup('alt')
-                    await sleep(.101) # sleep a bit before continue to press arrow keys after stand up. 
+                    # keyup('alt')
+                    keyup('n')
+                    await sleep(.301) # sleep a bit before continue to press arrow keys after stand up. 
                     hide=False
                 sequence = self.g.sequence_checker()
                 print(f'{sequence=}')
                 if sequence[0] == 0:
                     print(f'sequence 0 detected. ')
-                    await sleep(.503)
+                    await sleep(.003)
+                    # await sleep(.503) # last working
+                    lastfailing=True
                     continue
                 for s in sequence:
                     if self.hidenow:
                         break
+                    await sleep(random.uniform(.034,.037))
+                    if self.hidenow:
+                        break
+                    await sleep(random.uniform(.034,.037))
+                    if self.hidenow:
+                        break
+                    if lastfailing:
+                        await sleep(.001)
+                        # # keydown('alt')
+                        # keydown('n')
+                        # await sleep(.403)
+                        # # keyup('alt')
+                        # keyup('n')
+                        # await sleep(.203)
+                        lastfailing=False
                     if s == 1: # UP
-                        print(f'1UP {perf_counter()-now:.10f}')
+                        print(f'1UP {perf_counter()-now:.10f} {fever=}')
                         keydown_arrow('up')
                         await sleep(.003)
                         keyup_arrow('up')
                         await sleep(.003)
                     elif s == 2: # DOWN
-                        print(f'2DOWN {perf_counter()-now:.10f}')
+                        print(f'2DOWN {perf_counter()-now:.10f} {fever=} ')
                         keydown_arrow('down')
                         await sleep(.003)
                         keyup_arrow('down')
                         await sleep(.003)
                     elif s == 3: # LEFT
-                        print(f'3LEFT {perf_counter()-now:.10f}')
+                        print(f'3LEFT {perf_counter()-now:.10f} {fever=} ')
                         keydown_arrow('left')
                         await sleep(.003)
                         keyup_arrow('left')
                         await sleep(.003)
                     elif s == 4: # RIGHT
-                        print(f'4RIGHT {perf_counter()-now:.10f}')
+                        print(f'4RIGHT {perf_counter()-now:.10f} {fever=} ')
                         keydown_arrow('right')
                         await sleep(.003)
                         keyup_arrow('right')
@@ -325,13 +345,16 @@ class TkinterBot(customtkinter.CTk):
                     await sleep(.001)
                 else:
                     if fever:
-                        await sleep(.303)
+                        await sleep(.533)
+                        # await sleep(.453) # last working
                     else:
-                        await sleep(.503)
-            now=perf_counter()
-            fevertimer=now-fevertimer0
-            if fevertimer>55:
-                fever=True
+                        await sleep(.533)
+                        # await sleep(.573) # last working
+                now=perf_counter()
+                if not fever:
+                    fevertimer=now-fevertimer0
+                    if fevertimer>44:
+                        fever=True
 
 
             # kitchen = self.g.kitchen_checker()
