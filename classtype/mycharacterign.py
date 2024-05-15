@@ -20,7 +20,7 @@ class Mycharacterign(Action):
         self.offsetx=15
         self.goleft=True
         self.goright=False
-        self.randomlist = ['z', 'x', 'c', 'space', '2', '3', '0', 'f9', 'w', 'e', 'r', 't', 's', 'd', 'f', 'v']
+        self.randomlist = ['1', '2', '4', 'f1', 'f2', 'f3', 'f4', 'w', 'e', 'y']
         # self.randomlist = []
         self.cosmicshowerplanttimer0=0
         self.cosmicshowerplanttimer=0
@@ -36,7 +36,7 @@ class Mycharacterign(Action):
         self.solverune=True
         self.now=0
         self.rotation_list = ['default', 'leftright', 'leftrightlong', 'leftrightdownlong', 'leftrightuplong',
-            'moonbridge','arcana_lp', 'arigatou', 'OdiumAlley3']
+            'moonbridge','arcana_lp', 'arigatou']
         self.rotation='default'
         self.rotation_mapping = {
             'default': self.clockwise,
@@ -47,7 +47,6 @@ class Mycharacterign(Action):
             'moonbridge': self.moonbridge,
             'arcana_lp': self.arcana_lp,
             'arigatou': self.arigatou,
-            'OdiumAlley3': self.alley3
 
         }
 
@@ -128,7 +127,7 @@ class Mycharacterign(Action):
         print(f'press ropeconnect once. ')
         await self.ropeconnectp(31,101)
         await self.ropeconnectr(31,101)
-        await sleep(.555)
+        await sleep(.775)
         print(f'press ropeconnect twice. ')
         await self.ropeconnectp(31,101)
         await self.ropeconnectr(31,101)
