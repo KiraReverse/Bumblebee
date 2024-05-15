@@ -3,10 +3,6 @@
 import ctypes
 import ctypes.wintypes
 from ctypes import WinDLL
-
-from ctypes import windll, byref, c_ubyte
-from ctypes.wintypes import RECT, HWND
-
 import pyautogui
 from collections import namedtuple
 import time
@@ -32,7 +28,7 @@ from telegram.ext import Application, CommandHandler, MessageHandler, filters, C
 from game import Game
 from runesolver import RuneSolver
 from action import Action
-from initinterception import keydown, keyup, keyupall, sleep, sleeplol
+from initinterception import keydown, keyup, keyupall, keydown_arrow, keyup_arrow, keyupall_arrow, sleep, sleeplol
 from mss import mss as mss_module
 # from mss.windows import MSS as mss
 import mss
@@ -44,7 +40,6 @@ import keyboard as pythonkeyboard
 from pynput.mouse import Listener, Button
 from pynput import keyboard
 import pygetwindow
-import cv2
 
 
 
@@ -109,35 +104,6 @@ user32, kernel32, shcore = (
 #     end = now + dur
 #     while perf_counter() < end:
 #         pass
-
-
-user32 = ctypes.windll.user32
-user32.SetProcessDPIAware()
-
-GetDC = windll.user32.GetDC
-CreateCompatibleDC = windll.gdi32.CreateCompatibleDC
-GetClientRect = windll.user32.GetClientRect
-CreateCompatibleBitmap = windll.gdi32.CreateCompatibleBitmap
-SelectObject = windll.gdi32.SelectObject
-BitBlt = windll.gdi32.BitBlt
-SRCCOPY = 0x00CC0020
-GetBitmapBits = windll.gdi32.GetBitmapBits
-DeleteObject = windll.gdi32.DeleteObject
-ReleaseDC = windll.user32.ReleaseDC
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 def _mouseMoveDrag(moveOrDrag, x, y, xOffset, yOffset, duration, tween, button=None):    
     def getPointOnLine(x1, y1, x2, y2, n):
@@ -837,12 +803,71 @@ async def main():
     #     print("An error occurred:", e)
     
     # while True:
-    #     for i in range(10):
-    #         keydown('a')
-    #         # keyup('a')
+    #     for i in range(1):
+    #         print(f'left. ')
+    #         keydown('left')
+    #         time.sleep(3.5)
+    #         keyup('left')
+    #         # keyupall()
+    #         time.sleep(.1)
+    #     for i in range(1):
+    #         print(f'right. ')
+    #         keydown('right')
+    #         time.sleep(3.5)
+    #         keyup('right')
+    #         # keyupall()
+    #         time.sleep(.1)
+    #     for i in range(1):
+    #         print(f'cccc. ')
+    #         keydown('c')
+    #         time.sleep(.5)
     #         keyupall()
     #         time.sleep(.1)
     #     print(f'end. ')
+    #     time.sleep(4)
+    
+    while True:
+        for i in range(2):
+            keydown_arrow('right')
+            time.sleep(.111)
+            for j in range(20):
+                keydown_arrow('up')
+                time.sleep(.031)
+                keyup_arrow('up')
+                time.sleep(.011)
+            keyup_arrow('right')
+            time.sleep(.011)
+            time.sleep(1.011)
+            keydown_arrow('left')
+            time.sleep(.111)
+            for j in range(20):
+                keydown_arrow('up')
+                time.sleep(.031)
+                keyup_arrow('up')
+                time.sleep(.011)
+            time.sleep(.011)
+            keyup_arrow('left')
+            time.sleep(1.011)
+        # for i in range(1):
+        #     keydown_arrow('right')
+        #     time.sleep(3.011)
+        #     keyupall_arrow()
+        #     time.sleep(1.011)
+        #     keydown_arrow('up')
+        #     time.sleep(3.011)
+        # keyupall_arrow()
+        # for i in range(1):
+        #     keydown_arrow('left')
+        #     time.sleep(3.011)
+        #     keyupall_arrow()
+        #     time.sleep(1.011)
+        #     keydown_arrow('up')
+        #     time.sleep(3.011)
+        # # keydown('enter')
+        keyupall()
+        keyupall_arrow()
+        print(f'end. ')
+        time.sleep(4)
 
     # while True:
     #     for i in range(100):
@@ -887,50 +912,7 @@ async def main():
     #         listener.join()
     #     except Exception as e:
     #         print(f'exception. {e=}')
-    
-    # img_rgb = cv2.imread('../image/1.png')
-    # assert img_rgb is not None, "file could not be read, check with os.path.exists()"
-    # img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
-    # template = cv2.imread('sealed_rune.png', cv2.IMREAD_GRAYSCALE)
-    # assert template is not None, "file could not be read, check with os.path.exists()"
-    # w, h = template.shape[::-1]    
-    # res = cv2.matchTemplate(img_gray,template,cv2.TM_CCOEFF_NORMED)
-    # threshold = 0.8
-    # loc = np.where( res >= threshold)
-    # for pt in zip(*loc[::-1]):
-    #     cv2.rectangle(img_rgb, pt, (pt[0] + w, pt[1] + h), (0,0,255), 2)
-    #     cv2.imwrite('../image/res.png',img_rgb)
 
-
-    # 开始截图
-    handle = user32.FindWindowW(None, "MapleStory")
-    r = RECT()
-    GetClientRect(handle, byref(r))
-    width, height = r.right, r.bottom
-    dc = GetDC(handle)
-    cdc = CreateCompatibleDC(dc)
-    bitmap = CreateCompatibleBitmap(dc, width, height)
-    SelectObject(cdc, bitmap)
-    while True:
-        if pythonkeyboard.is_pressed("esc"):
-            print(f'break'); break
-        now=perf_counter()
-        BitBlt(cdc, 0, 0, width, height, dc, 0, 0, SRCCOPY)
-        # 截图是BGRA排列，因此总元素个数需要乘以4
-        total_bytes = width*height*4
-        buffer = bytearray(total_bytes)
-        byte_array = c_ubyte*total_bytes
-        GetBitmapBits(bitmap, total_bytes, byte_array.from_buffer(buffer))
-        img = np.frombuffer(buffer, dtype=np.uint8).reshape(height, width, 4)
-        print(f'{perf_counter()-now:.10f}')
-        cv2.imshow('img',img)
-        cv2.waitKey(1)
-    DeleteObject(bitmap)
-    DeleteObject(cdc)
-    ReleaseDC(handle, dc)
-    # 返回截图数据为numpy.ndarray
-    # return np.frombuffer(buffer, dtype=np.uint8).reshape(height, width, 4)
-    cv2.destroyAllWindows()
 
 
 

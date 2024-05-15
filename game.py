@@ -140,6 +140,10 @@ class Game:
     def get_newest_screenshot(self):
         return self.newest_screenshot
 
+    def save_newest_screenshot(self):
+        cv2.imwrite(f'history/img.png',self.newest_screenshot)
+        pass
+
     def run_once_detect_all(self):
         img = self.newest_screenshot        
         img_cropped1 = img[300:400, 300:400] # died ok button
