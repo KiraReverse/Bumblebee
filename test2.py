@@ -901,36 +901,38 @@ async def main():
     #     cv2.rectangle(img_rgb, pt, (pt[0] + w, pt[1] + h), (0,0,255), 2)
     #     cv2.imwrite('../image/res.png',img_rgb)
 
+    # # 开始截图
+    # handle = user32.FindWindowW(None, "MapleStory")
+    # r = RECT()
+    # GetClientRect(handle, byref(r))
+    # width, height = r.right, r.bottom
+    # dc = GetDC(handle)
+    # cdc = CreateCompatibleDC(dc)
+    # bitmap = CreateCompatibleBitmap(dc, width, height)
+    # SelectObject(cdc, bitmap)
+    # while True:
+    #     if pythonkeyboard.is_pressed("esc"):
+    #         print(f'break'); break
+    #     now=perf_counter()
+    #     BitBlt(cdc, 0, 0, width, height, dc, 0, 0, SRCCOPY)
+    #     # 截图是BGRA排列，因此总元素个数需要乘以4
+    #     total_bytes = width*height*4
+    #     buffer = bytearray(total_bytes)
+    #     byte_array = c_ubyte*total_bytes
+    #     GetBitmapBits(bitmap, total_bytes, byte_array.from_buffer(buffer))
+    #     img = np.frombuffer(buffer, dtype=np.uint8).reshape(height, width, 4)
+    #     print(f'{perf_counter()-now:.10f}')
+    #     cv2.imshow('img',img)
+    #     cv2.waitKey(1)
+    # DeleteObject(bitmap)
+    # DeleteObject(cdc)
+    # ReleaseDC(handle, dc)
+    # # 返回截图数据为numpy.ndarray
+    # # return np.frombuffer(buffer, dtype=np.uint8).reshape(height, width, 4)
+    # cv2.destroyAllWindows()
 
-    # 开始截图
-    handle = user32.FindWindowW(None, "MapleStory")
-    r = RECT()
-    GetClientRect(handle, byref(r))
-    width, height = r.right, r.bottom
-    dc = GetDC(handle)
-    cdc = CreateCompatibleDC(dc)
-    bitmap = CreateCompatibleBitmap(dc, width, height)
-    SelectObject(cdc, bitmap)
-    while True:
-        if pythonkeyboard.is_pressed("esc"):
-            print(f'break'); break
-        now=perf_counter()
-        BitBlt(cdc, 0, 0, width, height, dc, 0, 0, SRCCOPY)
-        # 截图是BGRA排列，因此总元素个数需要乘以4
-        total_bytes = width*height*4
-        buffer = bytearray(total_bytes)
-        byte_array = c_ubyte*total_bytes
-        GetBitmapBits(bitmap, total_bytes, byte_array.from_buffer(buffer))
-        img = np.frombuffer(buffer, dtype=np.uint8).reshape(height, width, 4)
-        print(f'{perf_counter()-now:.10f}')
-        cv2.imshow('img',img)
-        cv2.waitKey(1)
-    DeleteObject(bitmap)
-    DeleteObject(cdc)
-    ReleaseDC(handle, dc)
-    # 返回截图数据为numpy.ndarray
-    # return np.frombuffer(buffer, dtype=np.uint8).reshape(height, width, 4)
-    cv2.destroyAllWindows()
+    sequence = (1,2,3,4,5,6,7,8)
+    print(sequence)
 
 
 
