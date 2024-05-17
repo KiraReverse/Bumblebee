@@ -282,6 +282,7 @@ class TkinterBot(customtkinter.CTk):
                 print(f'script resuming in 1 second .. because the arrows sequence detector is very sensitive!')
                 time.sleep(1)
                 fevertimer0=perf_counter()
+                fever=False
             if self.hidenow:
                 if hide:
                     now=perf_counter()
