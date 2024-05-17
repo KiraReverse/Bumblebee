@@ -238,8 +238,8 @@ class TkinterBot(customtkinter.CTk):
         # self.thread5.start() # gma detector goes here
         self.thread9 = threading.Thread(target=self.run_thread9)
         self.thread9.start() # 
-        self.thread11 = threading.Thread(target=self.run_thread11)
-        self.thread11.start() # 
+        # self.thread11 = threading.Thread(target=self.run_thread11)
+        # self.thread11.start() # 
         self.ac=self.character.ac
         self.polocheckertimer0=0
         self.now=0
@@ -276,7 +276,7 @@ class TkinterBot(customtkinter.CTk):
                         # self.thread4.join()
                         # self.thread5.join()
                         self.thread9.join()
-                        self.thread11.join()
+                        # self.thread11.join()
                         return
                 # print(f'script resumed ..')
                 print(f'script resuming in 1 second .. because the arrows sequence detector is very sensitive!')
@@ -489,12 +489,13 @@ class TkinterBot(customtkinter.CTk):
                 if self.stop_event.is_set():
                     return
             now=perf_counter()
-            pytesseracttimer = now-pytesseracttimer0
-            if pytesseracttimer > 1: # 3 seconds
-                self.g.read_score()
-                pytesseracttimer=now
-            else:
-                time.sleep(1)
+            # pytesseracttimer = now-pytesseracttimer0
+            # if pytesseracttimer > 1: # 3 seconds
+            #     self.g.read_score()
+            #     pytesseracttimer=now
+            # else:
+            #     pass
+            time.sleep(1)
 
     async def FindRuneCDIcon(self): # TODO: the newest screenshot crop it. 
         self.g.generate_newest_screenshot()

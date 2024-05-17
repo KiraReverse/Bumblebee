@@ -6,8 +6,8 @@ from time import perf_counter
 # from PIL import ImageGrab
 # import win32gui
 # import pygetwindow
-import pytesseract
-pytesseract.pytesseract.tesseract_cmd = "C:\\Program Files\\Tesseract-OCR\\tesseract.exe"
+# import pytesseract
+# pytesseract.pytesseract.tesseract_cmd = "C:\\Program Files\\Tesseract-OCR\\tesseract.exe"
 
 alpha=255
 # alpha=0
@@ -807,32 +807,32 @@ class Game:
                 # RIGHTBGR = (170,187,51,alpha) # mapril island kitchen minigame RIGHT
             return count
             
-    def read_score(self):        
-        img_cropped = self.get_screenshot()
-        img_cropped = img_cropped[139:151, 1309:1338]
-        # img_cropped = self.newest_screenshot[139:151, 1309:1338]
-        # img_cropped = self.newest_screenshot
-        img_cropped = cv2.resize(img_cropped, (290,120), interpolation=cv2.INTER_LINEAR)
-        img_cropped = cv2.cvtColor(img_cropped, cv2.COLOR_BGR2GRAY)
-        _, img_cropped = cv2.threshold(img_cropped, 128, 255, cv2.THRESH_BINARY)
-        try:
-            # imgstring = pytesseract.image_to_string(img_cropped, config='digits')
-            # imgstring = pytesseract.image_to_string(img_cropped, config='--psm 10 --oem 3 digits')
-            imgstring = pytesseract.image_to_string(img_cropped, config='--psm 6 --oem 3 digits')
-            # imgstring = pytesseract.image_to_string(img_cropped, config='--psm 10 --oem 3')
-            # imgstring = pytesseract.image_to_string(img_cropped, lang='eng', boxes=False, config='--psm 10 --oem 3')
-            # imgstring = pytesseract.image_to_string(img_cropped, config='--psm 6')
-            # imgstring = pytesseract.image_to_string(img_cropped)
-            imgstring = imgstring.replace('\n', '')
-            filename = imgstring+''
-            print(f"PYTESSERACT!!!!!!!!! = {imgstring=} {type(imgstring)=} {type('string')=} {filename=}")
-            # print(f"PYTESSERACT!!!!!!!!! = ")
-            cv2.imwrite(f'../image/{filename}.png', img_cropped)
-            # cv2.imwrite(f'../image/{imgstring}_.png', img_cropped)
-        except Exception as e:
-            print(f'pytesseract e: {e=}')
-        # finally:
-            # print(f'finally')
+    # def read_score(self):        
+    #     img_cropped = self.get_screenshot()
+    #     img_cropped = img_cropped[139:151, 1309:1338]
+    #     # img_cropped = self.newest_screenshot[139:151, 1309:1338]
+    #     # img_cropped = self.newest_screenshot
+    #     img_cropped = cv2.resize(img_cropped, (290,120), interpolation=cv2.INTER_LINEAR)
+    #     img_cropped = cv2.cvtColor(img_cropped, cv2.COLOR_BGR2GRAY)
+    #     _, img_cropped = cv2.threshold(img_cropped, 128, 255, cv2.THRESH_BINARY)
+    #     try:
+    #         # imgstring = pytesseract.image_to_string(img_cropped, config='digits')
+    #         # imgstring = pytesseract.image_to_string(img_cropped, config='--psm 10 --oem 3 digits')
+    #         imgstring = pytesseract.image_to_string(img_cropped, config='--psm 6 --oem 3 digits')
+    #         # imgstring = pytesseract.image_to_string(img_cropped, config='--psm 10 --oem 3')
+    #         # imgstring = pytesseract.image_to_string(img_cropped, lang='eng', boxes=False, config='--psm 10 --oem 3')
+    #         # imgstring = pytesseract.image_to_string(img_cropped, config='--psm 6')
+    #         # imgstring = pytesseract.image_to_string(img_cropped)
+    #         imgstring = imgstring.replace('\n', '')
+    #         filename = imgstring+''
+    #         print(f"PYTESSERACT!!!!!!!!! = {imgstring=} {type(imgstring)=} {type('string')=} {filename=}")
+    #         # print(f"PYTESSERACT!!!!!!!!! = ")
+    #         cv2.imwrite(f'../image/{filename}.png', img_cropped)
+    #         # cv2.imwrite(f'../image/{imgstring}_.png', img_cropped)
+    #     except Exception as e:
+    #         print(f'pytesseract e: {e=}')
+    #     # finally:
+    #         # print(f'finally')
 
     ## UPBGR = (0,118,205,alpha) # mapril island kitchen minigame UP 
     # DOWNBGR = (119,51,187,alpha) # mapril island kitchen minigame DOWN
