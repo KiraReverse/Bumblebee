@@ -45,6 +45,7 @@ from pynput.mouse import Listener, Button
 from pynput import keyboard
 import pygetwindow
 import cv2
+import pytesseract
 
 
 
@@ -931,8 +932,34 @@ async def main():
     # # return np.frombuffer(buffer, dtype=np.uint8).reshape(height, width, 4)
     # cv2.destroyAllWindows()
 
-    sequence = (1,2,3,4,5,6,7,8)
-    print(sequence)
+    # sequence = (1,2,3,4,5,6,7,8)
+    # print(sequence)
+
+    ## https://www.youtube.com/watch?v=HHHkh9IOqhI
+    tessdata_dir_config = r'--tessdata-dir "C:\\Program Files\\Tesseract-OCR"'
+    g = Game((8, 63, 200, 150)) #
+    # img = g.get_screenshot()
+    # img = cv2.imread("score.png")
+    # img = cv2.imread("../image/34.png")    
+    img = cv2.imread("../image/pytesseract.png")    
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    # cv2.imshow('img',img)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
+    print(f'{type(img)=}')
+    pytesseract.pytesseract.tesseract_cmd = "C:\\Program Files\\Tesseract-OCR\\tesseract.exe"
+    while True:
+        try:
+            now=perf_counter()
+            # imgstring = pytesseract.image_to_string(img, lang='eng')
+            # imgstring = pytesseract.image_to_string(img, lang='eng', config='--psm 6')
+            # imgstring = pytesseract.image_to_string(img, config='--psm 6 --tessdata-dir \"C:\\Program Files\\Tesseract-OCR\\tesseract.exe"')
+            # imgstring = pytesseract.image_to_string(img, config='--psm 6')
+            # print(f"PYTESSERACT!!!!!!!!! = {imgstring} {perf_counter()-now:.10f}")
+            g.read_score()
+            time.sleep(.5)
+        except Exception as e:
+            print(f'pytesseract e: {e=}')
 
 
 

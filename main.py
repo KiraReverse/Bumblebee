@@ -32,7 +32,7 @@ from telegram.ext import Application, CommandHandler, MessageHandler, filters, C
 from attack import leftp, leftr, rightp, rightr, sleep, npcp, npcr
 from action import Action
 from runesolver import RuneSolver
-from initinterception import  move_relative, left_click, right_click, initiate_move, auto_capture_devices2, keydown, keyup, keyupall, keyupall_arrow
+from initinterception import left_click, right_click, initiate_move, auto_capture_devices2, keydown, keyup, keyupall, keydown_arrow, keyup_arrow, keyupall_arrow
 from helper import Helper
 from character import Character
 
@@ -1642,11 +1642,17 @@ class TkinterBot(customtkinter.CTk):
                             pass
                         key = action['button']
                         # print(f'press {key=}')
-                        keydown(key)
+                        if key in ['up', 'down', 'left', 'right']:
+                            keydown_arrow(key)
+                        else:
+                            keydown(key)
                     elif action['type'] == 'keyUp':
                         key = action['button']
                         # print(f'release {key=}')
-                        keyup(key)
+                        if key in ['up', 'down', 'left', 'right']:
+                            keyup_arrow(key)
+                        else:
+                            keyup(key)
                     try:
                         next_action = data[index + 1]
                     except IndexError:

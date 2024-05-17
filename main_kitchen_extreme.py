@@ -125,6 +125,7 @@ class TkinterBot(customtkinter.CTk):
         self.loop8 = asyncio.new_event_loop()
         self.loop9 = asyncio.new_event_loop()
         self.loop10 = asyncio.new_event_loop()
+        self.loop11 = asyncio.new_event_loop()
         self.thread1 = threading.Thread(target=self.run_thread1)
         self.thread3 = threading.Thread(target=self.run_thread3)
         self.thread6 = threading.Thread(target=self.run_thread6)
@@ -213,11 +214,15 @@ class TkinterBot(customtkinter.CTk):
 
     def run_thread9(self):
         asyncio.set_event_loop(self.loop9)
-        self.loop9.run_until_complete(self.async_function9()) # 
+        self.loop9.run_until_complete(self.async_function9()) # all mini game
 
     def run_thread10(self):
         asyncio.set_event_loop(self.loop10)
         self.loop10.run_until_complete(self.async_function10()) # auto clicker monster life
+
+    def run_thread11(self):
+        asyncio.set_event_loop(self.loop11)
+        self.loop11.run_until_complete(self.async_function11()) # pytesserat
 
     def start_threads(self):
         # self.thread1.start()
@@ -233,6 +238,8 @@ class TkinterBot(customtkinter.CTk):
         # self.thread5.start() # gma detector goes here
         self.thread9 = threading.Thread(target=self.run_thread9)
         self.thread9.start() # 
+        self.thread11 = threading.Thread(target=self.run_thread11)
+        self.thread11.start() # 
         self.ac=self.character.ac
         self.polocheckertimer0=0
         self.now=0
@@ -251,6 +258,7 @@ class TkinterBot(customtkinter.CTk):
         hide=False
         self.hidenow=False
         lastfailing=False
+        lastfailingcount=0
         fevertimer0=now
         fevertimer=0
         fever=False
@@ -268,6 +276,7 @@ class TkinterBot(customtkinter.CTk):
                         # self.thread4.join()
                         # self.thread5.join()
                         self.thread9.join()
+                        self.thread11.join()
                         return
                 # print(f'script resumed ..')
                 print(f'script resuming in 1 second .. because the arrows sequence detector is very sensitive!')
@@ -287,54 +296,58 @@ class TkinterBot(customtkinter.CTk):
                     time.sleep(.2) # sometimes server delay
                     # keyup('alt')
                     keyup('n')
-                    await sleep(.301) # sleep a bit before continue to press arrow keys after stand up. 
+                    await sleep(.201) # sleep a bit before continue to press arrow keys after stand up. 
                     hide=False
                 sequence = self.g.sequence_checker()
                 print(f'{sequence=}')
                 if sequence[0] == 0:
-                    print(f'sequence 0 detected. ')
-                    await sleep(.003)
-                    # await sleep(.503) # last working
-                    lastfailing=True
+                    # print(f'sequence 0 detected. ')
+                    # await sleep(.003)
+                    # for i in range(10):
+                        # await sleep(1.003) # last working
+                    await sleep(1.003) # last working
+                    lastfailingcount+=1
+                    if lastfailingcount>3:
+                        lastfailing=True
                     continue
                 for s in sequence:
                     if self.hidenow:
                         break
-                    await sleep(random.uniform(.034,.037))
-                    if self.hidenow:
-                        break
-                    await sleep(random.uniform(.034,.037))
-                    if self.hidenow:
-                        break
+                    for i in range(2):
+                        await sleep(random.uniform(.034,.037))
+                        # await sleep(random.uniform(.014,.017))
+                        if self.hidenow:
+                            break
                     if lastfailing:
                         await sleep(.001)
-                        # # keydown('alt')
-                        # keydown('n')
-                        # await sleep(.403)
-                        # # keyup('alt')
-                        # keyup('n')
-                        # await sleep(.203)
+                        # keydown('alt')
+                        keydown('n')
+                        await sleep(.403)
+                        # keyup('alt')
+                        keyup('n')
+                        await sleep(.203)
                         lastfailing=False
+                        lastfailingcount=0
                     if s == 1: # UP
-                        print(f'1UP {perf_counter()-now:.10f} {fever=}')
+                        # print(f'1UP {perf_counter()-now:.10f} {fever=}')
                         keydown_arrow('up')
                         await sleep(.003)
                         keyup_arrow('up')
                         await sleep(.003)
                     elif s == 2: # DOWN
-                        print(f'2DOWN {perf_counter()-now:.10f} {fever=} ')
+                        # print(f'2DOWN {perf_counter()-now:.10f} {fever=} ')
                         keydown_arrow('down')
                         await sleep(.003)
                         keyup_arrow('down')
                         await sleep(.003)
                     elif s == 3: # LEFT
-                        print(f'3LEFT {perf_counter()-now:.10f} {fever=} ')
+                        # print(f'3LEFT {perf_counter()-now:.10f} {fever=} ')
                         keydown_arrow('left')
                         await sleep(.003)
                         keyup_arrow('left')
                         await sleep(.003)
                     elif s == 4: # RIGHT
-                        print(f'4RIGHT {perf_counter()-now:.10f} {fever=} ')
+                        # print(f'4RIGHT {perf_counter()-now:.10f} {fever=} ')
                         keydown_arrow('right')
                         await sleep(.003)
                         keyup_arrow('right')
@@ -447,6 +460,40 @@ class TkinterBot(customtkinter.CTk):
             #             if not await self.FindRuneCDIcon():
             #                 await self.character.gotorune() # and solve rune.
             #             runetimer0=now
+
+    async def async_function9(self):
+        self.hidenow=False
+        now=perf_counter()
+        while True:
+            while self.pause:
+                time.sleep(1)
+                if self.stop_event.is_set():
+                    return     
+            kitchen = self.g.kitchen_checker()   
+            if kitchen > 0:
+                self.hidenow=True
+            else:
+                self.hidenow=False
+            now=perf_counter()
+
+    async def async_function11(self):
+        self.hidenow=False
+        now=perf_counter()
+        pytesseracttimer0=now
+        pytesseracttimer=0
+        pytesseract=False
+        while True:
+            while self.pause:
+                time.sleep(1)
+                if self.stop_event.is_set():
+                    return
+            now=perf_counter()
+            pytesseracttimer = now-pytesseracttimer0
+            if pytesseracttimer > 1: # 3 seconds
+                self.g.read_score()
+                pytesseracttimer=now
+            else:
+                time.sleep(1)
 
     async def FindRuneCDIcon(self): # TODO: the newest screenshot crop it. 
         self.g.generate_newest_screenshot()
@@ -601,21 +648,6 @@ class TkinterBot(customtkinter.CTk):
             
             time.sleep(4)
             # time.sleep(2)
-
-    async def async_function9(self):
-        self.hidenow=False
-        now=perf_counter()
-        while True:
-            while self.pause:
-                time.sleep(1)
-                if self.stop_event.is_set():
-                    return     
-            kitchen = self.g.kitchen_checker()   
-            if kitchen > 0:
-                self.hidenow=True
-            else:
-                self.hidenow=False
-            now=perf_counter()
 
     async def async_function9_(self):
         now=perf_counter()
