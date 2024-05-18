@@ -17,7 +17,7 @@ class Mycharacterign(Action):
     def __init__(self):
         super().__init__()
         self.offsety=5
-        self.offsetx=15
+        self.offsetx=10
         self.goleft=True
         self.goright=False
         self.randomlist = ['1', '2', '4', 'f1', 'f2', 'f3', 'f4', 'w', 'e', 'y']
