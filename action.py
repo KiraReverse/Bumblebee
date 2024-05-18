@@ -424,7 +424,66 @@ class Action:
         r = random.randint(x, y)
         r /= 1000
         await sleep(r)
-        
+
+    async def endp(selfself,x=31,y=101):
+        keydown('end')
+        r = random.randint(x, y)
+        r /= 1000
+        await sleep(r)
+
+    async def endr(selfself, x=31, y=101):
+        keyup('end')
+        r = random.randint(x, y)
+        r /= 1000
+        await sleep(r)
+
+    async def sevenp(selfself,x=31,y=101):
+        keydown('7')
+        r = random.randint(x, y)
+        r /= 1000
+        await sleep(r)
+
+    async def sevenr(selfself, x=31, y=101):
+        keyup('7')
+        r = random.randint(x, y)
+        r /= 1000
+        await sleep(r)
+
+    async def eightp(selfself, x=31, y=101):
+        keydown('8')
+        r = random.randint(x, y)
+        r /= 1000
+        await sleep(r)
+
+    async def eightr(selfself, x=31, y=101):
+        keyup('8')
+        r = random.randint(x, y)
+        r /= 1000
+        await sleep(r)
+
+    async def ninep(selfself, x=31, y=101):
+        keydown('9')
+        r = random.randint(x, y)
+        r /= 1000
+        await sleep(r)
+
+    async def niner(selfself, x=31, y=101):
+        keyup('9')
+        r = random.randint(x, y)
+        r /= 1000
+        await sleep(r)
+
+    async def shiftrightp(selfself, x=31, y=101):
+        keydown('shiftright')
+        r = random.randint(x, y)
+        r /= 1000
+        await sleep(r)
+
+    async def shiftrightr(selfself, x=31, y=101):
+        keyup('shiftright')
+        r = random.randint(x, y)
+        r /= 1000
+        await sleep(r)
     async def fp(self,x=31,y=101):
         keydown('f')
         r = random.randint(x, y)

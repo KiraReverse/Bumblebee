@@ -128,6 +128,7 @@ class TkinterBot(customtkinter.CTk):
         self.thread1 = threading.Thread(target=self.run_thread1)
         self.thread3 = threading.Thread(target=self.run_thread3)
         self.thread6 = threading.Thread(target=self.run_thread6)
+        self.loop99 = asyncio.new_event_loop()
 
     def init_tkinter(self):
         self.title("chrome")
@@ -307,6 +308,8 @@ class TkinterBot(customtkinter.CTk):
                         if not await self.FindRuneCDIcon():
                             await self.character.gotorune() # and solve rune.
                         runetimer0=now
+
+
 
     async def FindRuneCDIcon(self): # TODO: the newest screenshot crop it. 
 
@@ -541,7 +544,7 @@ class TkinterBot(customtkinter.CTk):
                 if reddotcounter > 1: # usually check twice to confirm really has red dot. you can change to 0 to immediately change channel. 
                     reddotcounter=0
                     self.cc=True # we can't directly cc in this thread because cc-ing is a long process, it will block other detectors. 
-                    print(f'red dot detected. changing channel. {self.cc=}')
+                    print(f'red dot detected. changing  . {self.cc=}')
             liedetectorcheckerlocations = self.g.liedetector_checker()
             if liedetectorcheckerlocations is not None:
                 print(f'{liedetectorcheckerlocations=}')
@@ -635,6 +638,104 @@ class TkinterBot(customtkinter.CTk):
     async def async_function10(self): # auto clicker monster life
         await self.autoclicker()
 
+    async def async_function99(self): # antimacro_checker
+        while True:
+            while self.pause:
+                time.sleep(1)
+                if self.stop_event.is_set():
+                    return  1
+            if self.chathwnd:
+                antimacrocheckerlocations = self.seperate_antimacro_detector()
+                if antimacrocheckerlocations:
+                    print(f'got Antimacro')
+                    bot_token = '6615554981:AAGxys8k9QDX1lhHtJnZjROPXvQE643-EbU'
+                    chat_id = '-1002053722567'
+                    message_to_send = "Anti Macro!"
+                    num_messages = 10
+                    self.resumebutton()
+                    for _ in range(num_messages):
+                        await self.send_telegram_message(bot_token, chat_id, message_to_send)
+                else:
+                    print(f'no Antimacro')
+            else:
+                print(f'chat window not found. ')
+
+            time.sleep(5)
+
+    def seperate_antimacro_detector(self):
+        if self.chathwnd == None:
+            print(f'seperate_antimacro_detector: chat window not found. ')
+            return
+        try:
+            position = win32gui.GetWindowRect(self.chathwnd)
+            x, y, w, h = position
+            print(f'{x} {y} {w} {h}')
+            chatposition = (x,y+385,w-15,h-25)
+            screenshot = ImageGrab.grab(chatposition)
+            screenshot = np.array(screenshot)
+            img = cv2.cvtColor(screenshot, cv2.COLOR_RGB2BGR)
+            # cv2.imshow('img', img)
+            # cv2.waitKey(0)
+            # cv2.destroyAllWindows()
+            img_antimacro_1 = cv2.imread('C:/Bot/Bumblebee/image/img_antimacro.png', cv2.IMREAD_COLOR)
+            result_1 = cv2.matchTemplate(img, img_antimacro_1, cv2.TM_CCOEFF_NORMED)
+            img_antimacro_2 = cv2.imread('C:/Bot/Bumblebee/image/img_antimacro2.png', cv2.IMREAD_COLOR)
+            result_2 = cv2.matchTemplate(img, img_antimacro_2, cv2.TM_CCOEFF_NORMED)
+            img_antimacro_3 = cv2.imread('C:/Bot/Bumblebee/image/img_antimacro3.png', cv2.IMREAD_COLOR)
+            result_3 = cv2.matchTemplate(img, img_antimacro_3, cv2.TM_CCOEFF_NORMED)
+
+            locations_1 = np.where(result_1 >= 0.9)
+            locations_2 = np.where(result_2 >= 0.9)
+            locations_3 = np.where(result_3 >= 0.9)
+
+            match_centers = []
+            for loc in zip(*locations_1[::-1]):
+                top_left = loc
+                h, w, _ = img_antimacro_1.shape
+                center_x = top_left[0] + w / 2
+                center_y = top_left[1] + h / 2
+                match_centers.append((center_x, center_y))
+
+            for loc in zip(*locations_2[::-1]):
+                top_left = loc
+                h, w, _ = img_antimacro_2.shape
+                center_x = top_left[0] + w / 2
+                center_y = top_left[1] + h / 2
+                match_centers.append((center_x, center_y))
+
+            for loc in zip(*locations_3[::-1]):
+                top_left = loc
+                h, w, _ = img_antimacro_3.shape
+                center_x = top_left[0] + w / 2
+                center_y = top_left[1] + h / 2
+                match_centers.append((center_x, center_y))
+
+            return match_centers
+        except Exception as e:
+            print(f'seperate_antimacro_detector: {e=}')
+
+    async def send_telegram_message(self, bot_token, chat_id, message):
+        print(f'telegramstatus')
+        now = perf_counter()
+        photo0 = self.g.get_screenshot()
+
+        success, photo0_encoded = cv2.imencode('.png', photo0)
+        photo0_bytes = photo0_encoded.tobytes()
+
+        files = {'photo': photo0_bytes}
+        payload = {
+            'chat_id': self.chat_id,
+            'caption': 'Lie Detector Active'
+        }
+        response = requests.post('https://api.telegram.org/bot' + self.TOKEN + '/sendPhoto', data=payload, files=files)
+        if response.status_code == 200:
+            print(f'{perf_counter()-now =}')
+            print(f"success {response.json().get('description')}")
+            print(f"success {response.json()}")
+        else:
+            print(f"Request failed with status code_: {response.status_code}")
+            print(f"{response.json().get('description')}")
+        pass
     def init_maple_windows(self):
         windows=[]
         winlist=[]
@@ -1779,7 +1880,7 @@ class TkinterBot(customtkinter.CTk):
                         #         else:
                         #             runetimer0=perf_counter() # reset
                         cctimer=now-cctimer0
-                        if cctimer>3000: # 60sec * 50min = 3000sec
+                        if cctimer>1800: # 60sec * 50min = 3000sec
                             # cc=True
                             keyupall()
                             keyupall_arrow()

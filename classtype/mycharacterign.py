@@ -17,11 +17,36 @@ class Mycharacterign(Action):
     def __init__(self):
         super().__init__()
         self.offsety=5
-        self.offsetx=10
+        self.offsetx=8
         self.goleft=True
         self.goright=False
         self.randomlist = ['1', '2', '4', 'f1', 'f2', 'f3', 'f4', 'w', 'e', 'y']
         # self.randomlist = []
+
+        self.x2exptimer0 = 0
+        self.x2exptimer = 0
+        self.x2exp = True
+
+        self.x2exp30mtimer0 = 0
+        self.x2exp30mtimer = 0
+        self.x2exp30m = True
+
+        self.extraexp30mtimer0 = 0
+        self.extraexp30mtimer = 0
+        self.extraexp30m = True
+
+        self.kishintimer0 = 0
+        self.kishintimer = 0
+        self.kishin = 0
+
+        self.ignitiontimer0 = 0
+        self.ignitiontimer = 1800
+        self.ignition = 0
+
+        self.cctimer0 = 0
+        self.cctimer = 1800
+        self.cc = True
+
         self.cosmicshowerplanttimer0=0
         self.cosmicshowerplanttimer=0
         self.cosmicshowerplant=True
@@ -664,14 +689,16 @@ class Mycharacterign(Action):
             pass
 
     async def clockwise(self,x,y):
+
+
         if y > self.top and (y > self.btm-self.offsety and y <= self.btm+self.offsety):
             if x > self.left+self.offsetx:
-                if x < self.left+self.offsetx+5:
+                if x < self.left+self.offsetx:
                     await random.choice([self.leftwalk])()
                 else:
                     await random.choice([self.goleftattack, self.goleftattackk])()
             elif x < self.left-self.offsetx:
-                if x > self.left-self.offsetx-5:
+                if x > self.left-self.offsetx:
                     await random.choice([self.rightwalk])()
                 else:
                     await random.choice([self.gorightattack, self.gorightattackk])()
@@ -705,6 +732,8 @@ class Mycharacterign(Action):
                     await random.choice([self.godownattack])()
         else:
             await random.choice([self.godownattack])()
+
+
 
         await self.post_perform_action(x,y)
 
@@ -900,14 +929,55 @@ class Mycharacterign(Action):
                 print(f'randomiser {code=}')
                 await self.send2(code)
                 await self.send3(code)
-        if self.replaceropeconnect==True:
-            if runonce:
-                replaceropeconnecttimer0=self.now
-                runonce=False
-            replaceropeconnecttimer = self.now - replaceropeconnecttimer0
-            if replaceropeconnecttimer > 90:
-                self.replaceropeconnect=False
-                runonce=True
+
+       # if self.replaceropeconnect==True:
+        #    if runonce:
+         #       replaceropeconnecttimer0=self.now
+         #       runonce=False
+          #  replaceropeconnecttimer = self.now - replaceropeconnecttimer0
+           # if replaceropeconnecttimer > 90:
+            #    self.replaceropeconnect=False
+             #   runonce=True
+
+        self.kishintimer = self.now - self.kishintimer0
+        if self.kishintimer > random.uniform(800, 900):
+            time.sleep(.4)
+            print(f'kishin pressed. ')
+            await self.endp()
+            await self.endr()
+            time.sleep(.1)
+            self.kishintimer0 = self.now
+
+        self.extraexp30mtimer = self.now - self.extraexp30mtimer0
+        if self.extraexp30mtimer > 1800:
+            time.sleep(.4)
+            print(f'additional exp pressed. ')
+            await self.sevenp()
+            await self.sevenr()
+            time.sleep(.1)
+            self.extraexp30mtimer0 = self.now
+
+        self.x2exp30mtimer = self.now - self.x2exp30mtimer0
+        if self.x2exp30mtimer > 1800:
+            time.sleep(.4)
+            print(f'x2 exp pressed. ')
+            await self.eightp()
+            await self.eightr()
+            time.sleep(.1)
+            self.x2exp30mtimer0 = self.now
+
+        self.ignitiontimer = self.now - self.ignitiontimer0
+        if self.ignitiontimer > 1800:
+            time.sleep(.4)
+            print(f'ignition pressed. ')
+            await self.shiftrightp()
+            await self.shiftrightr()
+            time.sleep(.1)
+            self.ignitiontimer0 = self.now
+
+
+
+
         # self.cosmicshowerplanttimer = self.now - self.cosmicshowerplanttimer0
         # if self.cosmicshowerplanttimer > 59:
         #     self.cosmicshowerplant = True
