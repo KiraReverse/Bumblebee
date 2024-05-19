@@ -39,7 +39,7 @@ class Mycharacterign(Action):
         self.kishintimer = 0
         self.kishin = 0
 
-        self.ignitiontimer0 = 0
+        self.ignitiontimer0 = 01
         self.ignitiontimer = 1800
         self.ignition = 0
 
@@ -746,7 +746,7 @@ class Mycharacterign(Action):
                     self.goleft=False
                     await random.choice([self.gorightattack, self.gorightattackk, self.gorightattadele, self.gorightattadele2])()
                 elif y <= self.top-self.offsety:
-                    await random.choice([self.godownattack])()
+ad                    await random.choice([self.godownattack])()
                 else:
                     await random.choice([self.goupattack2])()
                     time.sleep(.2)
@@ -949,7 +949,7 @@ class Mycharacterign(Action):
             self.kishintimer0 = self.now
 
         self.extraexp30mtimer = self.now - self.extraexp30mtimer0
-        if self.extraexp30mtimer > 1800:
+        if self.extraexp30mtimer > 1830:
             time.sleep(.4)
             print(f'additional exp pressed. ')
             await self.sevenp()
@@ -967,7 +967,7 @@ class Mycharacterign(Action):
             self.x2exp30mtimer0 = self.now
 
         self.ignitiontimer = self.now - self.ignitiontimer0
-        if self.ignitiontimer > 1800:
+        if self.ignitiontimer > 1830:
             time.sleep(.4)
             print(f'ignition pressed. ')
             await self.shiftrightp()
@@ -976,7 +976,7 @@ class Mycharacterign(Action):
             self.ignitiontimer0 = self.now
 
         self.cctimer = self.now - self.cctimer0
-        if self.cctimer > 1800:
+        if self.cctimer > 1830:
             time.sleep(.4)
             print(f'changing channel ')
             time.sleep(7)  # number of seconds to stop hitting. If your class has auto hitting skills adjust for longer
