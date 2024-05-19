@@ -39,12 +39,12 @@ class Mycharacterign(Action):
         self.kishintimer = 0
         self.kishin = 0
 
-        self.ignitiontimer0 = 01
-        self.ignitiontimer = 1800
+        self.ignitiontimer0 = 0
+        self.ignitiontimer = 1830
         self.ignition = 0
 
         self.cctimer0 = 0
-        self.cctimer = 1800
+        self.cctimer = 1830
         self.cc = True
 
         self.cosmicshowerplanttimer0=0
@@ -746,7 +746,7 @@ class Mycharacterign(Action):
                     self.goleft=False
                     await random.choice([self.gorightattack, self.gorightattackk, self.gorightattadele, self.gorightattadele2])()
                 elif y <= self.top-self.offsety:
-ad                    await random.choice([self.godownattack])()
+                    await random.choice([self.godownattack])()
                 else:
                     await random.choice([self.goupattack2])()
                     time.sleep(.2)
