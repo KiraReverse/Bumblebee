@@ -295,13 +295,13 @@ class TkinterBot(customtkinter.CTk):
                         # cc=True
                         keyupall()
                         keyupall_arrow()
-                        await self.changechannel()
+                        # await self.changechannel()
                         cctimer0=perf_counter() # reset
                         self.cc=False
                     if self.cc: # this is for red dot. 
                         keyupall()
                         keyupall_arrow()
-                        await self.changechannel_zakum() # we don't go ardent because it has 5 min cd. 
+                        # await self.changechannel_zakum() # we don't go ardent because it has 5 min cd.
                         self.cc=False
                     runetimer=now-runetimer0
                     if runetimer > self.runecd:
