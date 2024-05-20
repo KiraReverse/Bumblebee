@@ -14,6 +14,7 @@ import keyboard as pythonkeyboard
 from pynput import keyboard, mouse
 from pynput.keyboard import Listener as KeyListener  # type: ignore[import]
 from pynput.mouse import Listener as MouseListener  # type: ignore[import]
+from pynput.mouse import Button as pynputButton
 from PIL import ImageGrab
 from datetime import datetime
 from game import Game
@@ -2077,8 +2078,8 @@ class TkinterBot(customtkinter.CTk):
 
 
     def setup_tab5(self):
-        frametab41 = customtkinter.CTkFrame(self.tab5)
-        frametab41.pack(padx=1, pady=(1,1))
+        frametab51 = customtkinter.CTkFrame(self.tab5)
+        frametab51.pack(padx=1, pady=(1,1))
         position = win32gui.GetWindowRect(self.maplehwnd)
         x0, y0, w, h = position
         self.autoclickerstop=False
@@ -2160,21 +2161,21 @@ class TkinterBot(customtkinter.CTk):
                     time.sleep(.08) # server lag
                     self.character.ac.enterpr_special(3,11)
                     time.sleep(.08) # server lag
-        autoclickerbutton = customtkinter.CTkButton(frametab41, text="autoclicker GO!", command=autoclicker)
+        autoclickerbutton = customtkinter.CTkButton(frametab51, text="autoclicker GO!", command=autoclicker)
         autoclickerbutton.pack(padx=(1,1),pady=(1,1))
-        frametab42 = customtkinter.CTkFrame(self.tab5)
-        frametab42.pack(padx=1, pady=(1,1))
-        labelmonsternumber = customtkinter.CTkLabel(frametab42,text='how many monster slot?')
+        frametab52 = customtkinter.CTkFrame(self.tab5)
+        frametab52.pack(padx=1, pady=(1,1))
+        labelmonsternumber = customtkinter.CTkLabel(frametab52,text='how many monster slot?')
         labelmonsternumber.pack(padx=(1,1),pady=(1,1))
-        inputmonsternumber = customtkinter.CTkEntry(frametab42, placeholder_text='20')
+        inputmonsternumber = customtkinter.CTkEntry(frametab52, placeholder_text='20')
         inputmonsternumber.pack(padx=(1,1),pady=(1,1))
-        labelcboxslot = customtkinter.CTkLabel(frametab42,text='CGrade Mob Box slot (1/2/3/4/5):')
+        labelcboxslot = customtkinter.CTkLabel(frametab52,text='CGrade Mob Box slot (1/2/3/4/5):')
         labelcboxslot.pack(padx=(1,1),pady=(1,1))
-        inputcboxslot = customtkinter.CTkEntry(frametab42, placeholder_text='2')
+        inputcboxslot = customtkinter.CTkEntry(frametab52, placeholder_text='2')
         inputcboxslot.pack(padx=(1,1),pady=(1,1))
-        labelmonsterslot = customtkinter.CTkLabel(frametab42,text='which monster slot to discharge (2/3/4/5/6/7)?')
+        labelmonsterslot = customtkinter.CTkLabel(frametab52,text='which monster slot to discharge (2/3/4/5/6/7)?')
         labelmonsterslot.pack(padx=(1,1),pady=(1,1))
-        inputmonsterslot = customtkinter.CTkEntry(frametab42, placeholder_text='7')
+        inputmonsterslot = customtkinter.CTkEntry(frametab52, placeholder_text='7')
         inputmonsterslot.pack(padx=(1,1),pady=(1,1))
         def resetmaple():
             position = win32gui.GetWindowRect(self.maplehwnd)
@@ -2218,8 +2219,85 @@ class TkinterBot(customtkinter.CTk):
         self.repeatcount=floor(100/self.monsternumber)
         self.cboxslot=199
         self.monsterslot=456
-        resetmaplebutton = customtkinter.CTkButton(frametab42, text="set all variable to current value", command=resetmaple)
+        resetmaplebutton = customtkinter.CTkButton(frametab52, text="set all variable to current value", command=resetmaple)
         resetmaplebutton.pack(padx=(1,1),pady=(10,1))
+
+        frametab53 = customtkinter.CTkFrame(self.tab5)
+        frametab53.pack(padx=1, pady=(1,1))
+        labelautocuber = customtkinter.CTkLabel(frametab53,text='welcome to auto-cuber')
+        labelautocuber.pack(padx=(1,1),pady=(1,1))
+
+        frametab54 = customtkinter.CTkFrame(self.tab5)
+        frametab54.pack(padx=1, pady=(1,1))
+        def calibratemouse():
+            print(f'Mouse calibrate position started. Click on anywhere on screen. Esc to quit. ')
+            position = win32gui.GetWindowRect(self.maplehwnd)
+            x0, y0, w, h = position
+            def on_press(key):
+                if key == keyboard.Key.esc:
+                    print(f'esc')
+                    mouse_listener.stop()
+                    return False
+            def on_click(x, y, button, pressed):
+                if pressed and button == pynputButton.left:
+                    # print(f'Mouse Position=({x},{y})')
+                    print(f'Mouse Position=({x},{y}) Maple Top Left=({x0},{y0}) | MP-MTLa.k.a.Offset=({x-x0},{y-y0})')
+            mouse_listener = MouseListener(on_click=on_click)
+            mouse_listener.start()
+            with keyboard.Listener(on_press=on_press) as listener:
+                try:
+                    listener.join()
+                except Exception as e:
+                    print(f'exception. {e=}')
+        calibratebutton = customtkinter.CTkButton(frametab53, text="calibrate mouse", command=calibratemouse)
+        calibratebutton.pack(padx=(1,1),pady=(1,1))
+        
+        position = win32gui.GetWindowRect(self.maplehwnd)
+        x0, y0, w, h = position
+        x=x0+670
+        y=y0+536
+        labelpositionx = customtkinter.CTkLabel(frametab54,text='Mouse Position X: ')
+        labelpositionx.pack(padx=(1,1),pady=(1,1))
+        inputposx = customtkinter.CTkEntry(frametab54, placeholder_text=f'{x}')
+        inputposx.insert(0,str(x))
+        inputposx.pack(padx=(1,1),pady=(1,1))
+        labelpositiony = customtkinter.CTkLabel(frametab54,text='Mouse Position Y: ')
+        labelpositiony.pack(padx=(1,1),pady=(1,1))
+        inputposy = customtkinter.CTkEntry(frametab54, placeholder_text=f'{y}')
+        inputposy.insert(0,str(y))
+        inputposy.pack(padx=(1,1),pady=(1,1))
+        
+        def go():            
+            x=inputposx.get()
+            if x.isnumeric():
+                x=int(x)
+            else:
+                print(f'offset_x error {inputposx.get()}. return None.')
+                return
+            y=inputposy.get()
+            if y.isnumeric():
+                y=int(y)
+            else:
+                print(f'offset_y error {inputposy.get()}. return None.')
+                return
+            self.autoclickerstop=False
+            self.thread10 = threading.Thread(target=self.run_thread10)
+            self.thread10.start()
+            while True:
+                if self.autoclickerstop:
+                    print(f'{self.autoclickerstop=}')
+                    self.thread10.join()
+                    return
+                self.helper.movetoandclick(x,y)
+                time.sleep(.2)
+                self.character.ac.enterpr_special(3,11)
+                time.sleep(.2)
+                self.character.ac.enterpr_special(3,11)
+                time.sleep(.2)
+                self.character.ac.enterpr_special(3,11)
+                time.sleep(1.2)
+        gobutton = customtkinter.CTkButton(frametab54, text="Done Calibrating? Press this and GO. ", command=go)
+        gobutton.pack(padx=(1,1),pady=(10,1))
 
 
     async def autoclicker(self):
