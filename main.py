@@ -793,10 +793,12 @@ class TkinterBot(customtkinter.CTk):
             self.button.configure(text='Resume', fg_color='tomato')
             self.runesolver.disablerune()
             self.character.ac.disablerune()
+            print(f'stopping all rune solving action. ')
         else:
             self.button.configure(text='Pause', fg_color='lime')
             self.runesolver.enablerune()
             self.character.ac.enablerune()
+            print(f'rune solving set to enabled. ')
 
     async def togglepause(self):
         print(f'togglepause')
@@ -1619,8 +1621,7 @@ class TkinterBot(customtkinter.CTk):
                 for index, action in enumerate(data):
                     # print(f'running: {index=} {action=}')
                     if pythonkeyboard.is_pressed("esc"):
-                        self.scriptpausesignal=True
-                        self.scriptbuttonstop.configure(state='normal')
+                        await self.togglepause()
                         print(f'yes p={self.scriptpausesignal}')
                     if self.scriptpausesignal:
                         keyupall()
