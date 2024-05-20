@@ -26,3 +26,16 @@ secret/secret.ini
 /classtype_backup
 /theinterception
 action.py
+*.pyc
+/theinterception/__pycache__
+theinterception/__pycache__/__init__.cpython-312.pyc
+theinterception/__pycache__/_consts.cpython-312.pyc
+theinterception/__pycache__/_keycodes.cpython-312.pyc
+theinterception/__pycache__/_utils.cpython-312.pyc
+theinterception/__pycache__/device.cpython-312.pyc
+theinterception/__pycache__/exceptions.cpython-312.pyc
+theinterception/__pycache__/inputs.cpython-312.pyc
+theinterception/__pycache__/interception.cpython-312.pyc
+theinterception/__pycache__/strokes.cpython-312.pyc
+*.pyc
+*.pyc

@@ -49,6 +49,7 @@ from pynput.mouse import Listener as MouseListener  # type: ignore[import]
 from contextlib import contextmanager
 import functools
 
+
 def requires_driver(func):
     """Wraps any function that requires the interception driver to be installed
     such that, if it is not installed, a `DriverNotFoundError` is raised"""
@@ -61,13 +62,14 @@ def requires_driver(func):
 
     return wrapper
 
+
 from theinterception import Interception
 from theinterception import KEYBOARD_MAPPING
 from theinterception import _utils
 from theinterception import exceptions
 from theinterception import KeyStroke, MouseStroke, Stroke
 from theinterception import (FilterKeyState, FilterMouseState, KeyState, MouseFlag,
-                      MouseRolling, MouseState)
+                             MouseRolling, MouseState)
 from theinterception.types import MouseButton
 
 try:
@@ -83,6 +85,7 @@ from typing import Literal, Optional
 
 _TEST_MOUSE_STROKE = MouseStroke(MouseState.MOUSE_MIDDLE_BUTTON_UP, 0, 0, 0, 0, 0)
 _TEST_KEY_STROKE = KeyStroke(KEYBOARD_MAPPING["space"], KeyState.KEY_UP, 0)
+
 
 def auto_capture_devices2(*, keyboard: bool = True, mouse: bool = True, verbose: bool = False):
     mouse_listener = MouseListener(on_click=lambda *args: False)
@@ -108,6 +111,7 @@ def auto_capture_devices2(*, keyboard: bool = True, mouse: bool = True, verbose:
             break
     # print("Devices set.")    
 
+
 def set_devices(keyboard: Optional[int] = None, mouse: Optional[int] = None) -> None:
     """Sets the devices on the current context. Keyboard devices should be from 0 to 10
     and mouse devices from 10 to 20 (both non-inclusive).
@@ -120,38 +124,40 @@ def set_devices(keyboard: Optional[int] = None, mouse: Optional[int] = None) -> 
     interception.mouse = mouse or interception.mouse
 
 
-interception.set_filter(interception.is_keyboard, FilterKeyState.FILTER_KEY_ALL.value)
-print("Click any key on your keyboard.")
-device = None
-while True:
-    device = interception.wait()
-    print(device)
-    if interception.is_keyboard(device):
-        print(f"Bound to keyboard: {interception.get_HWID(device)}.")
-        interception.set_filter(interception.is_keyboard, 0)
-        break
+# interception.set_filter(interception.is_keyboard, FilterKeyState.FILTER_KEY_ALL.value)
+# print("Click any key on your keyboard.")
+# device = None
+# while True:
+#     device = interception.wait()
+#     print(device)
+#     if interception.is_keyboard(device):
+#         print(f"Bound to keyboard: {interception.get_HWID(device)}.")
+#         interception.set_filter(interception.is_keyboard, 0)
+#         break
+
+auto_capture_devices2()
+
 
 # auto_capture_devices2()
-# auto_capture_devices2()
 
-mouse_device="mouse"
-listener=None
-mouse_listener = MouseListener(on_click=lambda *args: False)
-print('mouse_device=')
-print(mouse_device)
-stroke: Stroke
-if mouse_device == "mouse":
-    listener, stroke, nums = mouse_listener, _TEST_MOUSE_STROKE, range(10, 20)
-listener.start()
-for num in nums:
-    interception.send(num, stroke)
-    time.sleep(random.uniform(0.1, 0.3))
-    if listener.is_alive():
-        print(f"No success on {mouse_device} {num}...")
-        continue
-    print(f"Success on {mouse_device} {num}! ")
-    set_devices(**{mouse_device: num})
-    break
+# mouse_device="mouse"
+# listener=None
+# mouse_listener = MouseListener(on_click=lambda *args: False)
+# print('mouse_device=')
+# print(mouse_device)
+# stroke: Stroke
+# if mouse_device == "mouse":
+#     listener, stroke, nums = mouse_listener, _TEST_MOUSE_STROKE, range(10, 20)
+# listener.start()
+# for num in nums:
+#     interception.send(num, stroke)
+#     time.sleep(random.uniform(0.1, 0.3))
+#     if listener.is_alive():
+#         print(f"No success on {mouse_device} {num}...")
+#         continue
+#     print(f"Success on {mouse_device} {num}! ")
+#     set_devices(**{mouse_device: num})
+#     break
 
 
 # essential functions
@@ -161,11 +167,13 @@ async def sleep(dur):
     while perf_counter() < end:
         pass
 
-def sleeplol(dur): # async is not needed buddy. :))
+
+def sleeplol(dur):  # async is not needed buddy. :))
     now = perf_counter()
     end = now + dur
     while perf_counter() < end:
         pass
+
 
 # to convert keycode
 def _get_keycode(key: str) -> int:
@@ -183,9 +191,10 @@ def keydown(key):
     # print(f'{key=} {keycode=}')
     stroke = KeyStroke(keycode, KeyState.KEY_DOWN, 0)
     # print(f'{stroke=}')
-    interception.send(device,stroke)
-    # interception.send_key(stroke)
+    # interception.send(device,stroke)
+    interception.send_key(stroke)
     # print(f'total_result: {interception.send_key(stroke)}')
+
 
 # key release function
 def keyup(key):
@@ -194,14 +203,16 @@ def keyup(key):
     stroke = KeyStroke(keycode, KeyState.KEY_UP, 0)
     # stroke = KeyStroke(0, 0, 0)
     # print(f'{stroke}')
-    interception.send(device,stroke)
-    # interception.send_key(stroke)
+    # interception.send(device,stroke)
+    interception.send_key(stroke)
     # print(f'total_result: {interception.send_key(stroke)}')
+
 
 def keyupall():
     stroke = KeyStroke(0, 0, 0)
-    interception.send(device,stroke)
-    # interception.send_key(stroke)
+    # interception.send(device,stroke)
+    interception.send_key(stroke)
+
 
 def keydown_arrow(key):
     # print(f'{KEYBOARD_MAPPING=}')
@@ -209,9 +220,10 @@ def keydown_arrow(key):
     # print(f'keydown_arrow {key=} {keycode=}')
     stroke = KeyStroke(keycode, 0x02, 0)
     # print(f'{stroke=}')
-    interception.send(device,stroke)
-    # interception.send_key(stroke)
+    # interception.send(device,stroke)
+    interception.send_key(stroke)
     # print(f'total_result: {interception.send_key(stroke)}')
+
 
 def keyup_arrow(key):
     # print(f'{KEYBOARD_MAPPING=}')
@@ -219,20 +231,24 @@ def keyup_arrow(key):
     # print(f'keyup_arrow {key=} {keycode=}')
     stroke = KeyStroke(keycode, 3, 0)
     # print(f'{stroke=}')
-    interception.send(device,stroke)
-    # interception.send_key(stroke)
+    # interception.send(device,stroke)
+    interception.send_key(stroke)
     # print(f'total_result: {interception.send_key(stroke)}')
+
 
 def keyupall_arrow():
     stroke = KeyStroke(77, 3, 0)
-    interception.send(device,stroke)
-    # interception.send_key(stroke)
+    # interception.send(device,stroke)
+    interception.send_key(stroke)
     stroke = KeyStroke(72, 3, 0)
-    interception.send(device,stroke)
+    # interception.send(device,stroke)
+    interception.send_key(stroke)
     stroke = KeyStroke(75, 3, 0)
-    interception.send(device,stroke)
+    # interception.send(device,stroke)
+    interception.send_key(stroke)
     stroke = KeyStroke(80, 3, 0)
-    interception.send(device,stroke)
+    # interception.send(device,stroke)
+    interception.send_key(stroke)
 
 
 def _get_button_states(button: str, *, down: bool) -> int:
@@ -242,19 +258,25 @@ def _get_button_states(button: str, *, down: bool) -> int:
     except KeyError:
         raise exceptions.UnknownButtonError(button)
 
+
 # button :class:`Literal["left", "right", "middle", "mouse4", "mouse5"] | str`:
-def mousedown(button):    
+def mousedown(button):
     button_state = _get_button_states(button, down=True)
     stroke = MouseStroke(button_state, MouseFlag.MOUSE_MOVE_ABSOLUTE, 0, 0, 0, 0)
     interception.send_mouse(stroke)
 
-def mouseup(button):    
+
+def mouseup(button):
     button_state = _get_button_states(button, down=False)
     stroke = MouseStroke(button_state, MouseFlag.MOUSE_MOVE_ABSOLUTE, 0, 0, 0, 0)
     interception.send_mouse(stroke)
-    
+
+
 from typing import Literal, Optional
+
 MOUSE_BUTTON_DELAY = 0.03
+
+
 def mouse_down(button: MouseButton, delay: Optional[float] = None) -> None:
     """Holds a mouse button down, will not be released automatically.
 
@@ -266,12 +288,14 @@ def mouse_down(button: MouseButton, delay: Optional[float] = None) -> None:
     interception.send_mouse(stroke)
     time.sleep(delay or MOUSE_BUTTON_DELAY)
 
+
 def mouse_up(button: MouseButton, delay: Optional[float] = None) -> None:
     """Releases a mouse button."""
     button_state = _get_button_states(button, down=False)
     stroke = MouseStroke(button_state, MouseFlag.MOUSE_MOVE_ABSOLUTE, 0, 0, 0, 0)
     interception.send_mouse(stroke)
     time.sleep(delay or MOUSE_BUTTON_DELAY)
+
 
 def move_to(x: int | tuple[int, int], y: Optional[int] = None) -> None:
     """Moves to a given absolute (x, y) location on the screen.
@@ -299,6 +323,7 @@ def move_to(x: int | tuple[int, int], y: Optional[int] = None) -> None:
     stroke = MouseStroke(0, MouseFlag.MOUSE_MOVE_ABSOLUTE, 0, x, y, 0)
     interception.send_mouse(stroke)
 
+
 def move_relative(x: int = 0, y: int = 0) -> None:
     """Moves relatively from the current cursor position by the given amounts.
 
@@ -319,13 +344,14 @@ def move_relative(x: int = 0, y: int = 0) -> None:
     stroke = MouseStroke(0, MouseFlag.MOUSE_MOVE_RELATIVE, 0, x, y, 0)
     interception.send_mouse(stroke)
 
+
 def click(
-    x: Optional[int | tuple[int, int]] = None,
-    y: Optional[int] = None,
-    button: MouseButton | str = "left",
-    clicks: int = 1,
-    interval: int | float = 0.1,
-    delay: int | float = 0.3,
+        x: Optional[int | tuple[int, int]] = None,
+        y: Optional[int] = None,
+        button: MouseButton | str = "left",
+        clicks: int = 1,
+        interval: int | float = 0.1,
+        delay: int | float = 0.3,
 ) -> None:
     """Presses a mouse button at a specific location (if given).
 
@@ -354,6 +380,7 @@ def click(
         if clicks > 1:
             time.sleep(interval)
 
+
 # decided against using functools.partial for left_click and right_click
 # because it makes it less clear that the method attribute is a function
 # and might be misunderstood. It also still allows changing the button
@@ -362,9 +389,11 @@ def left_click(clicks: int = 1, interval: int | float = 0.1) -> None:
     """Thin wrapper for the `click` function with the left mouse button."""
     click(button="left", clicks=clicks, interval=interval)
 
+
 def right_click(clicks: int = 1, interval: int | float = 0.1) -> None:
     """Thin wrapper for the `click` function with the right mouse button."""
     click(button="right", clicks=clicks, interval=interval)
+
 
 def mouse_position() -> tuple[int, int]:
     """Returns the current position of the cursor as `(x, y)` coordinate.
@@ -372,6 +401,7 @@ def mouse_position() -> tuple[int, int]:
     This does nothing special like other conventional mouse position functions.
     """
     return _utils.get_cursor_pos()
+
 
 @requires_driver
 @contextmanager
@@ -389,71 +419,73 @@ def hold_mouse(button: MouseButton):
     finally:
         mouse_up(button=button)
 
-async def movetoandleftclick(x,y):
+
+async def movetoandleftclick(x, y):
     # move_to(x,y)
-    await custommoveto(x,y)
+    await custommoveto(x, y)
     # hc.move_to(x,y)
     time.sleep(.3)
     left_click()
 
-async def custommoveto(targetx,targety):    
+
+async def custommoveto(targetx, targety):
     print(f'moving mouse .. {targetx=}, {targety=} ')
     # hc.move_to(targetx,targety)
     # while True:
     for i in range(1500):
-        x,y = mouse_position()
+        x, y = mouse_position()
         print(f'custom mouse test {i=} {x=},{y=}')
         # print(f'{x=},{y=}')
-        if x >= targetx-3 and x <= targetx+3:
-            if y>= targety-3 and y <= targety+3:
+        if x >= targetx - 3 and x <= targetx + 3:
+            if y >= targety - 3 and y <= targety + 3:
                 break
-        if targetx-x < 0:
-            r = random.randint(1,5)
-            move_relative(-r,0)
-            r/=1000
+        if targetx - x < 0:
+            r = random.randint(1, 5)
+            move_relative(-r, 0)
+            r /= 1000
             await sleep(r)
             # time.sleep(r)
         else:
-            r = random.randint(1,5)
-            move_relative(r,0)
-            r/=1000
+            r = random.randint(1, 5)
+            move_relative(r, 0)
+            r /= 1000
             await sleep(r)
             # time.sleep(r)
-        if targety-y < 0:
-            r = random.randint(1,5)
-            move_relative(0,-r)
-            r/=1000
+        if targety - y < 0:
+            r = random.randint(1, 5)
+            move_relative(0, -r)
+            r /= 1000
             await sleep(r)
             # time.sleep(r)
         else:
-            r = random.randint(1,5)
-            move_relative(0,r)
-            r/=1000
+            r = random.randint(1, 5)
+            move_relative(0, r)
+            r /= 1000
             await sleep(r)
             # time.sleep(r)
         # print(f'moved. ')
         # time.sleep(.5)
     print(f'moved finished. ')
 
-    
+
 async def initiate_move():
     for i in range(10):
-        r = random.randint(1,5)
-        move_relative(r,r)
-        r/=1000
+        r = random.randint(1, 5)
+        move_relative(r, r)
+        r /= 1000
         await sleep(r)
     for i in range(10):
-        r = random.randint(1,5)
-        move_relative(-r,r)
-        r/=1000
+        r = random.randint(1, 5)
+        move_relative(-r, r)
+        r /= 1000
         await sleep(r)
     for i in range(10):
-        r = random.randint(1,5)
-        move_relative(-r,-r)
-        r/=1000
+        r = random.randint(1, 5)
+        move_relative(-r, -r)
+        r /= 1000
         await sleep(r)
     for i in range(10):
-        r = random.randint(1,5)
-        move_relative(r,-r)
-        r/=1000
+        r = random.randint(1, 5)
+        move_relative(r, -r)
+        r /= 1000
         await sleep(r)

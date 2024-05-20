@@ -27,9 +27,9 @@ class Mycharacterign(Action):
         self.x2exptimer = 0
         self.x2exp = True
 
-        self.x2exp30mtimer0 = 0
-        self.x2exp30mtimer = 0
-        self.x2exp30m = True
+        self.exp30mtimer0 = 0
+        self.exp30mtimer = 0
+        self.exp30m = True
 
         self.extraexp30mtimer0 = 0
         self.extraexp30mtimer = 0
@@ -44,7 +44,7 @@ class Mycharacterign(Action):
         self.ignition = 0
 
         self.cctimer0 = 0
-        self.cctimer = 1830
+        self.cctimer = 930
         self.cc = True
 
         self.cosmicshowerplanttimer0=0
@@ -957,23 +957,15 @@ class Mycharacterign(Action):
             time.sleep(.1)
             self.extraexp30mtimer0 = self.now
 
-        self.x2exp30mtimer = self.now - self.x2exp30mtimer0
-        if self.x2exp30mtimer > 1800:
+        self.exp30mtimer = self.now - self.exp30mtimer0
+        if self.exp30mtimer > 930:
             time.sleep(.4)
             print(f'x2 exp pressed. ')
             await self.eightp()
             await self.eightr()
             time.sleep(.1)
-            self.x2exp30mtimer0 = self.now
+            self.exp30mtimer0 = self.now
 
-        self.ignitiontimer = self.now - self.ignitiontimer0
-        if self.ignitiontimer > 1830:
-            time.sleep(.4)
-            print(f'ignition pressed. ')
-            await self.shiftrightp()
-            await self.shiftrightr()
-            time.sleep(.1)
-            self.ignitiontimer0 = self.now
 
         self.cctimer = self.now - self.cctimer0
         if self.cctimer > 1830:
@@ -995,10 +987,14 @@ class Mycharacterign(Action):
             time.sleep(.1)
             self.cctimer0 = self.now
 
-
-
-
-
+        self.ignitiontimer = self.now - self.ignitiontimer0
+        if self.ignitiontimer > 1830:
+            time.sleep(.4)
+            print(f'ignition pressed. ')
+            await self.shiftrightp()
+            await self.shiftrightr()
+            time.sleep(.1)
+            self.ignitiontimer0 = self.now
 
         # self.cosmicshowerplanttimer = self.now - self.cosmicshowerplanttimer0
         # if self.cosmicshowerplanttimer > 59:
