@@ -329,10 +329,15 @@ class TkinterBot(customtkinter.CTk):
         loc = np.where( res >= threshold)
         # print(f'{type(loc)=} {len(loc)=} {len(loc[0])=} {loc=}')
         # for pt in zip(*loc[::-1]):
-            # print(f'{type(pt)=} {pt=}')
-            # cv2.rectangle(img_rgb, pt, (pt[0] + w, pt[1] + h), (0,0,255), 2)
-            # cv2.imwrite('../image/res.png',img_rgb)
-        if len(loc[0]) > 0: return True
+        #     print(f'{type(pt)=} {pt=}')
+        #     cv2.rectangle(img_gray, pt, (pt[0] + w, pt[1] + h), (0,0,255), 2)
+            # cv2.imshow('img',img_gray)
+            # cv2.waitKey(0)
+            # cv2.destroyAllWindows()
+            # cv2.imwrite('../image/res.png',img_gray)
+        if len(loc[0]) > 0:
+            print(f'{len(loc[0])=} return True please you idiot code')
+            return True
         return False
 
     async def runechecker(self):
@@ -1732,10 +1737,12 @@ class TkinterBot(customtkinter.CTk):
                             keyupall()
                             keyupall_arrow()
                             await self.changechannel_zakum() # this version of changing channel is from reddotdetector. 
-                            self.cc=False                            
+                            self.cc=False
                         runetimer=now-runetimer0
                         if runetimer > self.runecd:
-                            if not await self.FindRuneCDIcon():
+                            result = await self.FindRuneCDIcon()
+                            print(f'{result=}')
+                            if not result:
                                 await self.character.gotorune() # and solve rune.
                             runetimer0=now
                 print(f'script finished. {self.script} ..')
@@ -1743,6 +1750,10 @@ class TkinterBot(customtkinter.CTk):
     async def adjustcharacter(self,a=10,b=10):
         xynotfound=0
         while True:
+            if pythonkeyboard.is_pressed("esc"):
+                self.scriptpausesignal=True
+                self.scriptbuttonstop.configure(state='normal')
+                print(f'yes p={self.scriptpausesignal}')
             if self.scriptpausesignal:
                 keyupall()
                 keyupall_arrow()

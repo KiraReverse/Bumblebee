@@ -299,14 +299,15 @@ class TkinterBot(customtkinter.CTk):
                     keyup('n')
                     await sleep(.201) # sleep a bit before continue to press arrow keys after stand up. 
                     hide=False
-                sequence = self.g.sequence_checker()
+                # sequence = self.g.sequence_checker()
+                sequence = self.g.sequence_checker_extreme()
                 print(f'{sequence=}')
                 if sequence[0] == 0:
                     # print(f'sequence 0 detected. ')
                     # await sleep(.003)
                     # for i in range(10):
                         # await sleep(1.003) # last working
-                    await sleep(1.003) # last working
+                    await sleep(.503) # last working
                     lastfailingcount+=1
                     if lastfailingcount>3:
                         lastfailing=True
@@ -319,42 +320,42 @@ class TkinterBot(customtkinter.CTk):
                         # await sleep(random.uniform(.014,.017))
                         if self.hidenow:
                             break
-                    if lastfailing:
-                        await sleep(.001)
-                        # keydown('alt')
-                        keydown('n')
-                        await sleep(.403)
-                        # keyup('alt')
-                        keyup('n')
-                        await sleep(.203)
-                        lastfailing=False
-                        lastfailingcount=0
-                    if s == 1: # UP
-                        # print(f'1UP {perf_counter()-now:.10f} {fever=}')
-                        keydown_arrow('up')
-                        await sleep(.003)
-                        keyup_arrow('up')
-                        await sleep(.003)
-                    elif s == 2: # DOWN
-                        # print(f'2DOWN {perf_counter()-now:.10f} {fever=} ')
-                        keydown_arrow('down')
-                        await sleep(.003)
-                        keyup_arrow('down')
-                        await sleep(.003)
-                    elif s == 3: # LEFT
-                        # print(f'3LEFT {perf_counter()-now:.10f} {fever=} ')
-                        keydown_arrow('left')
-                        await sleep(.003)
-                        keyup_arrow('left')
-                        await sleep(.003)
-                    elif s == 4: # RIGHT
-                        # print(f'4RIGHT {perf_counter()-now:.10f} {fever=} ')
-                        keydown_arrow('right')
-                        await sleep(.003)
-                        keyup_arrow('right')
-                        await sleep(.003)
-                    elif s == 0: # in fever mode, the flame will block the color, sometimes 0. 
-                        break # break immediately, recheck arrows sequence. 
+                    # if lastfailing:
+                    #     await sleep(.001)
+                    #     # keydown('alt')
+                    #     keydown('n')
+                    #     await sleep(.403)
+                    #     # keyup('alt')
+                    #     keyup('n')
+                    #     await sleep(.203)
+                    #     lastfailing=False
+                    #     lastfailingcount=0
+                    # if s == 1: # UP
+                    #     # print(f'1UP {perf_counter()-now:.10f} {fever=}')
+                    #     keydown_arrow('up')
+                    #     await sleep(.003)
+                    #     keyup_arrow('up')
+                    #     await sleep(.003)
+                    # elif s == 2: # DOWN
+                    #     # print(f'2DOWN {perf_counter()-now:.10f} {fever=} ')
+                    #     keydown_arrow('down')
+                    #     await sleep(.003)
+                    #     keyup_arrow('down')
+                    #     await sleep(.003)
+                    # elif s == 3: # LEFT
+                    #     # print(f'3LEFT {perf_counter()-now:.10f} {fever=} ')
+                    #     keydown_arrow('left')
+                    #     await sleep(.003)
+                    #     keyup_arrow('left')
+                    #     await sleep(.003)
+                    # elif s == 4: # RIGHT
+                    #     # print(f'4RIGHT {perf_counter()-now:.10f} {fever=} ')
+                    #     keydown_arrow('right')
+                    #     await sleep(.003)
+                    #     keyup_arrow('right')
+                    #     await sleep(.003)
+                    # elif s == 0: # in fever mode, the flame will block the color, sometimes 0. 
+                    #     break # break immediately, recheck arrows sequence. 
                 if self.hidenow:
                     await sleep(.001)
                 else:

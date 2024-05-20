@@ -26,3 +26,4 @@ secret/secret.ini
 /classtype_backup
 /theinterception
 action.py
+initinterception_auto_version.py

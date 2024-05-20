@@ -834,20 +834,52 @@ class Game:
     #     # finally:
     #         # print(f'finally')
 
-    ## UPBGR = (0,118,205,alpha) # mapril island kitchen minigame UP 
-    # DOWNBGR = (119,51,187,alpha) # mapril island kitchen minigame DOWN
-    # LEFTBGR = (0,187,136,alpha) # mapril island kitchen minigame LEFT
+    ## UPBGR = (0,118,205,alpha) # mapril island kitchen minigame UP (0,122,205) (0,125,210) (0,119,210)
+    ## DOWNBGR = (17,92,214,alpha) # mapril island kitchen minigame DOWN (87,74,205) (17,85,214)
+    ## LEFTBGR = (0,155,168,alpha) # mapril island kitchen minigame LEFT (0,163,160,alpha)
     ## RIGHTBGR = (136,156,92,alpha) # mapril island kitchen minigame RIGHT
     def check_arrows_extreme8(self, img):
+        matches = np.where((img[:,0] == 0))[0]
+        for idx in matches:
+            matches1 = np.where((img[:,1] == 118) or (img[:,1] == 119) or (img[:,1] == 122) or (img[:,1] == 125))[0]
+            for idx1 in matches1:
+                return 1
+            matches2 = np.where((img[:,1] == 155) or (img[:,1] == 163))[0]
+            for idx2 in matches2:
+                return 3
+        matches3 = np.where((img[:,0] == 17))[0]
+        for idx3 in matches3:
+            return 2
+        matches4 = np.where((img[:,0] == 136))[0]
+        for idx4 in matches4:
+            return 4
         return 0
 
     ## UPBGR = (0,125,196,alpha) # mapril island kitchen minigame UP 
+    ## DOWNBGR = (111,51,192,alpha) # mapril island kitchen minigame DOWN (103,53,196)
+    ## LEFTBGR = (0,169,152,alpha) # mapril island kitchen minigame LEFT (0,178,144）
+    ## RIGHTBGR = (159,178,65,alpha) # mapril island kitchen minigame RIGHT (159,1799,65)
+    def check_arrows_extreme7(self, img):
+        matches = np.where((img[:,0] == 0))[0]
+        for idx in matches:
+            matches1 = np.where((img[:,1] == 125))[0]
+            for idx1 in matches1:
+                return 1
+            matches2 = np.where((img[:,1] == 169) or (img[:,1] == 178))[0]
+            for idx2 in matches2:
+                return 3
+        matches3 = np.where((img[:,0] == 111) or (img[:,0] == 103))[0]
+        for idx3 in matches3:
+            return 2
+        matches4 = np.where((img[:,0] == 159))[0]
+        for idx4 in matches4:
+            return 4
+        return 0
+
+    # UPBGR = (0,136,187,alpha) # mapril island kitchen minigame UP 
     # DOWNBGR = (119,51,187,alpha) # mapril island kitchen minigame DOWN
     # LEFTBGR = (0,187,136,alpha) # mapril island kitchen minigame LEFT
     # RIGHTBGR = (170,187,51,alpha) # mapril island kitchen minigame RIGHT
-    def check_arrows_extreme7(self, img):
-        return 0
-
     def check_arrows_extreme6(self, img):
         matches = np.where((img[:,0] == 0))[0]
         for idx in matches:
@@ -865,10 +897,6 @@ class Game:
             return 4
         return 0
 
-    # UPBGR = (0,136,187,alpha) # mapril island kitchen minigame UP 
-    # DOWNBGR = (119,51,187,alpha) # mapril island kitchen minigame DOWN
-    # LEFTBGR = (0,187,136,alpha) # mapril island kitchen minigame LEFT
-    # RIGHTBGR = (170,187,51,alpha) # mapril island kitchen minigame RIGHT
     def check_arrows(self, img):        
         if img[:,0] == 0:
             if img[:,1] == 136:
@@ -956,10 +984,15 @@ class Game:
                 img_cropped4 = img[446:447, 1033:1034] # 793, 873, 953, 1033, 1113, 1193, 1273, 1353 / 446
                 img_cropped5 = img[446:447, 1113:1114] # 793, 873, 953, 1033, 1113, 1193, 1273, 1353 / 446
                 img_cropped6 = img[445:448, 1184:1202] # 1184~1202 3 pixels height
-                img_cropped7 = img[446:447, 1264:1282] # 1264~1282
-                img_cropped8 = img[446:447, 1344:1362] # 1344~1362
+                img_cropped7 = img[445:448, 1264:1282] # 1264~1282
+                # img_cropped7 = img[446:447, 1264:1282] # 1264~1282
+                img_cropped8 = img[445:448, 1344:1362] # 1344~1362 # 491 514 
+                # img_cropped8 = img[446:447, 1344:1362] # 1344~1362 # 491 514 
+                img_cropped77 = img[460:483, 1247:1251] # 1264~1282 # 491 514 1248 1252
+                img_cropped88 = img[460:483, 1327:1331] # 1344~1362 # 491 514 #1328 1332
                 height, width = img_cropped.shape[0], img_cropped.shape[1]
                 height6, width6 = img_cropped6.shape[0], img_cropped6.shape[1]
+                height77, width77 = img_cropped77.shape[0], img_cropped77.shape[1]
                 img_reshaped = np.reshape(img_cropped, ((width * height), 4), order="C")
                 img_reshaped1 = np.reshape(img_cropped1, ((width * height), 4), order="C")
                 img_reshaped2 = np.reshape(img_cropped2, ((width * height), 4), order="C")
@@ -969,6 +1002,8 @@ class Game:
                 img_reshaped6 = np.reshape(img_cropped6, ((width6 * height6), 4), order="C")
                 img_reshaped7 = np.reshape(img_cropped7, ((width6 * height6), 4), order="C")
                 img_reshaped8 = np.reshape(img_cropped8, ((width6 * height6), 4), order="C")
+                img_reshaped77 = np.reshape(img_cropped77, ((width77 * height77), 4), order="C")
+                img_reshaped88 = np.reshape(img_cropped88, ((width77 * height77), 4), order="C")
                 # img_reshaped2 = np.reshape(img_cropped2, ((width * height), 4), order="C")
                 # print(f'{img_reshaped=} {img_reshaped2=}')
                 for c in color:
@@ -991,6 +1026,16 @@ class Game:
                     next_arrow6 = self.check_arrows_extreme6(img_reshaped6)
                     next_arrow7 = self.check_arrows_extreme7(img_reshaped7)
                     next_arrow8 = self.check_arrows_extreme8(img_reshaped8)
+                    if next_arrow7 == 0:
+                        next_arrow7 = self.check_arrows_extreme7(img_reshaped77)
+                        print(f'color not found, searching vertical pixels. {next_arrow7=}')
+                    else:
+                        print(f'arrow_7th = {next_arrow7} and {self.check_arrows_extreme7(img_reshaped77)}, same?? diff??')
+                    if next_arrow8 == 0:
+                        next_arrow8 = self.check_arrows_extreme8(img_reshaped88)
+                        print(f'color not found, searching vertical pixels. {next_arrow8=}')
+                    else:
+                        print(f'arrow_8th = {next_arrow8} and {self.check_arrows_extreme8(img_reshaped88)}, same?? diff??')
                     # if img_reshaped2[:,0] == 0:
                     #     if img_reshaped2[:,1] == 136:
                     #         return (count, 1) # UP
