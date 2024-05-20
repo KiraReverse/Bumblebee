@@ -1745,9 +1745,25 @@ class TkinterBot(customtkinter.CTk):
                             result = await self.FindRuneCDIcon()
                             print(f'{result=}')
                             if not result:
+                                x,y = await self.savecurrentposition()
                                 await self.character.gotorune() # and solve rune.
+                                await self.gobackjustnowposition(x,y)
                             runetimer0=now
                 print(f'script finished. {self.script} ..')
+
+    async def savecurrentposition(self):
+        while True:
+            g_variable = self.g.get_player_location()
+            x, y = (None, None) if g_variable is None else g_variable
+            if x == None or y == None:
+                print(f'character not found. function=savecurrentposition()')
+                time.sleep(1)
+            else:
+                return x,y
+    
+    async def gobackjustnowposition(self,x,y):
+        print(f'going back position before solving rune. thanks Astra. ')
+        await self.adjustcharacter(a=x,b=10)
 
     async def adjustcharacter(self,a=10,b=10):
         xynotfound=0
@@ -2267,7 +2283,7 @@ class TkinterBot(customtkinter.CTk):
         inputposy.insert(0,str(y))
         inputposy.pack(padx=(1,1),pady=(1,1))
         
-        def go():            
+        def go():
             x=inputposx.get()
             if x.isnumeric():
                 x=int(x)
