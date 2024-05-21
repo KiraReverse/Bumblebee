@@ -1765,7 +1765,7 @@ class TkinterBot(customtkinter.CTk):
     
     async def gobackjustnowposition(self,x,y):
         print(f'going back position before solving rune. thanks Astra. ')
-        await self.adjustcharacter(a=x,b=10)
+        await self.adjustcharacter(a=x,b=y)
 
     async def adjustcharacter(self,a=10,b=10):
         xynotfound=0
