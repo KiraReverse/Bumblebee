@@ -803,10 +803,13 @@ class TkinterBot(customtkinter.CTk):
 
     async def togglepause(self):
         print(f'togglepause')
-        # self.pause=True
-        self.resumebutton()
-        self.scriptpausesignal=True
-        self.scriptbuttonstop.configure(state='normal')        
+        if not self.scriptpausesignal: # that means script is running. 
+            self.scriptpausesignal=True
+            self.scriptbuttonstop.configure(state='normal')
+            self.character.ac.disablerune()
+            print(f'script: stopping all rune solving action. ')
+        else: # that means script is not running. 
+            self.resumebutton()
 
     async def pausewrapper(self, func):
         if not self.pause:
@@ -1625,7 +1628,7 @@ class TkinterBot(customtkinter.CTk):
                     # print(f'running: {index=} {action=}')
                     if pythonkeyboard.is_pressed("esc"):
                         await self.togglepause()
-                        print(f'yes p={self.scriptpausesignal}')
+                        print(f'hello this is \'esc\'. yes scriptpaused={self.scriptpausesignal}')
                     if self.scriptpausesignal:
                         keyupall()
                         keyupall_arrow()
@@ -1637,6 +1640,7 @@ class TkinterBot(customtkinter.CTk):
                             time.sleep(1)
                             if self.stop_event.is_set():
                                 return
+                        self.character.ac.enablerune()
                         print(f'script resumed ..')
 
                     if action['type'] == 'keyDown':
@@ -1772,12 +1776,12 @@ class TkinterBot(customtkinter.CTk):
         xynotfound=0
         while True:
             if pythonkeyboard.is_pressed("esc"):
-                self.scriptpausesignal=True
-                self.scriptbuttonstop.configure(state='normal')
-                print(f'yes p={self.scriptpausesignal}')
+                await self.togglepause()
+                print(f'adjustcharacter return: yes pausingscript={self.scriptpausesignal}')
             if self.scriptpausesignal:
                 keyupall()
                 keyupall_arrow()
+                self.character.ac.enablerune()
                 return
             g_variable = self.g.get_player_location()
             x, y = (None, None) if g_variable is None else g_variable
