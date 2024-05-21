@@ -45,8 +45,8 @@ from pynput.mouse import Listener, Button
 from pynput import keyboard
 import pygetwindow
 import cv2
-# import pytesseract
-# pytesseract.pytesseract.tesseract_cmd = "C:\\Program Files\\Tesseract-OCR\\tesseract.exe"
+import pytesseract
+pytesseract.pytesseract.tesseract_cmd = "C:\\Program Files\\Tesseract-OCR\\tesseract.exe"
 
 
 
@@ -936,36 +936,46 @@ async def main():
     # sequence = (1,2,3,4,5,6,7,8)
     # print(sequence)
 
-    # ## https://www.youtube.com/watch?v=HHHkh9IOqhI
+    ## https://www.youtube.com/watch?v=HHHkh9IOqhI
     # tessdata_dir_config = r'--tessdata-dir "C:\\Program Files\\Tesseract-OCR"'
     # g = Game((8, 63, 200, 150)) #
-    # # img = g.get_screenshot()
-    # # img = cv2.imread("score.png")
-    # # img = cv2.imread("../image/34.png")    
-    # # img = cv2.imread("../image/pytesseract.png")    
-    # # img = cv2.imread("../image/2/4275__.png")    
+    # img = g.get_screenshot()
+    # img = cv2.imread("score.png")
+    # img = cv2.imread("../image/34.png")    
+    # img = cv2.imread("../image/pytesseract.png")    
+    # img = cv2.imread("../image/2/4275__.png")    
     # img = cv2.imread("../image/3/49.png")    
+    img = cv2.imread("../image/liedetector.png")
     # img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    hsv_image = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    lower_background = np.array([35, 40, 40])
+    upper_background = np.array([85, 255, 255])
+    background_mask = cv2.inRange(hsv_image, lower_background, upper_background)
+    foreground_mask = cv2.bitwise_not(background_mask)
+    kernel = np.ones((3, 3), np.uint8)
+    cleaned_foreground_mask = cv2.morphologyEx(foreground_mask, cv2.MORPH_OPEN, kernel, iterations=2)
+    cleaned_foreground_mask = cv2.morphologyEx(cleaned_foreground_mask, cv2.MORPH_CLOSE, kernel, iterations=2)
+    img = cv2.bitwise_and(img, img, mask=cleaned_foreground_mask)
     # _, img = cv2.threshold(img, 128, 255, cv2.THRESH_BINARY)    
     # img = cv2.bitwise_not(img)
-    # print(f'{type(img)=}')
-    # cv2.imshow('img',img)
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows()
-    # while True:
-    #     try:
-    #         now=perf_counter()
-    #         # imgstring = pytesseract.image_to_string(img, lang='eng')
-    #         # imgstring = pytesseract.image_to_string(img, config='--psm 6 --tessdata-dir \"C:\\Program Files\\Tesseract-OCR\\tesseract.exe"')
-    #         # imgstring = pytesseract.image_to_string(img, config='--psm 6')
-    #         # imgstring = pytesseract.image_to_string(img, lang='eng', config='--psm 6')
-    #         # imgstring = pytesseract.image_to_string(img, config='--psm 6 digits')
-    #         imgstring = pytesseract.image_to_string(img, config='--psm 6 --oem 3 digits')
-    #         print(f"PYTESSERACT!!!!!!!!! = {imgstring} {perf_counter()-now:.10f}")
-    #         # g.read_score()
-    #         time.sleep(.5)
-    #     except Exception as e:
-    #         print(f'pytesseract e: {e=}')
+    print(f'{type(img)=}')
+    cv2.imshow('img',img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+    while True:
+        try:
+            now=perf_counter()
+            # imgstring = pytesseract.image_to_string(img, lang='eng')
+            # imgstring = pytesseract.image_to_string(img, config='--psm 6 --tessdata-dir \"C:\\Program Files\\Tesseract-OCR\\tesseract.exe"')
+            # imgstring = pytesseract.image_to_string(img, config='--psm 6')
+            imgstring = pytesseract.image_to_string(img, lang='eng', config='--psm 6')
+            # imgstring = pytesseract.image_to_string(img, config='--psm 6 digits')
+            # imgstring = pytesseract.image_to_string(img, config='--psm 6 --oem 3 digits')
+            print(f"PYTESSERACT!!!!!!!!! = {imgstring} {perf_counter()-now:.10f}")
+            # g.read_score()
+            time.sleep(.5)
+        except Exception as e:
+            print(f'pytesseract e: {e=}')
 
 
 

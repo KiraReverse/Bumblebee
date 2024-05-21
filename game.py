@@ -6,6 +6,8 @@ from time import perf_counter
 # from PIL import ImageGrab
 # import win32gui
 # import pygetwindow
+# import pytesseract
+# pytesseract.pytesseract.tesseract_cmd = "C:\\Program Files\\Tesseract-OCR\\tesseract.exe"
 
 alpha=255
 # alpha=0
@@ -42,6 +44,11 @@ GMBGR = (222,218,206, alpha) #
 DABGR = (0,0,0, alpha) # 
 ARDENTBGR = (17,85,170, alpha) # # the icon of the ardent minimap, there is this orange-ish brown roofttop in the tiny icon. 
 ROBGR = (187,187,204, alpha) # mapril island infinity race rock light brown bgr value
+KITCHENBGR = (0,0,204,alpha) # mapril island kitchen minigame red color angry chef
+UPBGR = (0,136,187,alpha) # mapril island kitchen minigame UP 
+DOWNBGR = (119,51,187,alpha) # mapril island kitchen minigame DOWN
+LEFTBGR = (0,187,136,alpha) # mapril island kitchen minigame LEFT
+RIGHTBGR = (170,187,51,alpha) # mapril island kitchen minigame RIGHT
 
 
 class Game:
@@ -337,6 +344,18 @@ class Game:
         location = self.checkertest5(DABGR,x=435,y=719,w=1034,h=720) # 1366x768 # use this for 49 combo perfect score! best of the best!
         # location = self.checkertest5(DABGR,x=392,y=671,w=991,h=672) # 1280x720 # not as good because the pink gap is narrower unfortunately
         # location = self.checkertest5(DABGR,x=264,y=719,w=863,h=720) # 1024x768 # even worse, very narrow and the V speed is too fast. 
+        return location
+
+    def kitchen_checker(self):
+        location = self.checkertest7(KITCHENBGR,x=435,y=719,w=1034,h=720)
+        return location
+
+    def sequence_checker(self):
+        location = self.checkertest8(KITCHENBGR,x=435,y=719,w=1034,h=720)
+        return location
+
+    def sequence_checker_extreme(self):
+        location = self.checkertest9(KITCHENBGR,x=435,y=719,w=1034,h=720)
         return location
 
     def ardentdetector(self):
@@ -709,7 +728,329 @@ class Game:
                     #     locations.append((x_pos, y_pos))
                     # print(f'{locations=}')
             return 0
+
+    def checkertest6(self, *color, x,y,w,h):
+        with gdi_capture.CaptureWindow(self.hwnd) as img:
+            locations = []
+            if img is None:
+                print("MapleStory.exe was not found.")
+            else:
+                img_cropped = img[100:101, 489:490]
+                img_cropped2 = img[444:445, 679:680]
+                # img_cropped3 = img[444:445, 679:680] # 793, 873, 953, 1033, 1113, 1193, 1273, 1353 / 446
+                height, width = img_cropped.shape[0], img_cropped.shape[1]
+                img_reshaped = np.reshape(img_cropped, ((width * height), 4), order="C")
+                img_reshaped2 = np.reshape(img_cropped2, ((width * height), 4), order="C")
+                # print(f'{img_reshaped=} {img_reshaped2=}')
+                for c in color:
+                    sum_x, sum_y, count = 0, 0, 0
+                    matches = np.where(np.all((img_reshaped == KITCHENBGR), axis=1))[0]
+                    for idx in matches:
+                        sum_x += idx % width
+                        sum_y += idx // width
+                        count += 1
+                    # if count > 0:
+                    #     x_pos = sum_x / count
+                    #     y_pos = sum_y / count
+                    #     locations.append((x_pos, y_pos))
+                    if img_reshaped2[:,0] == 0:
+                        if img_reshaped2[:,1] == 136:
+                            return (count, 1) # UP
+                        elif img_reshaped2[:,1] == 187:
+                            return (count, 3) # LEFT
+                    elif img_reshaped2[:,0] == 119:
+                        return (count,2) # DOWN
+                    elif img_reshaped2[:,0] == 170:
+                        return (count,4) # RIGHT
+                # UPBGR = (0,136,187,alpha) # mapril island kitchen minigame UP 
+                # DOWNBGR = (119,51,187,alpha) # mapril island kitchen minigame DOWN
+                # LEFTBGR = (0,187,136,alpha) # mapril island kitchen minigame LEFT
+                # RIGHTBGR = (170,187,51,alpha) # mapril island kitchen minigame RIGHT
+            return (0,0)
+
+    def checkertest7(self, *color, x,y,w,h):
+        with gdi_capture.CaptureWindow(self.hwnd) as img:
+            locations = []
+            if img is None:
+                print("MapleStory.exe was not found.")
+            else:
+                img_cropped = img[100:101, 489:490]
+                # img_cropped2 = img[444:445, 679:680]
+                # img_cropped3 = img[444:445, 679:680] # 793, 873, 953, 1033, 1113, 1193, 1273, 1353 / 446
+                height, width = img_cropped.shape[0], img_cropped.shape[1]
+                img_reshaped = np.reshape(img_cropped, ((width * height), 4), order="C")
+                # img_reshaped2 = np.reshape(img_cropped2, ((width * height), 4), order="C")
+                # print(f'{img_reshaped=} {img_reshaped2=}')
+                for c in color:
+                    sum_x, sum_y, count = 0, 0, 0
+                    matches = np.where(np.all((img_reshaped == KITCHENBGR), axis=1))[0]
+                    for idx in matches:
+                        sum_x += idx % width
+                        sum_y += idx // width
+                        count += 1
+                    # if count > 0:
+                    #     x_pos = sum_x / count
+                    #     y_pos = sum_y / count
+                    #     locations.append((x_pos, y_pos))
+                    # if img_reshaped2[:,0] == 0:
+                    #     if img_reshaped2[:,1] == 136:
+                    #         return (count, 1) # UP
+                    #     elif img_reshaped2[:,1] == 187:
+                    #         return (count, 3) # LEFT
+                    # elif img_reshaped2[:,0] == 119:
+                    #     return (count,2) # DOWN
+                    # elif img_reshaped2[:,0] == 170:
+                    #     return (count,4) # RIGHT
+                # UPBGR = (0,136,187,alpha) # mapril island kitchen minigame UP 
+                # DOWNBGR = (119,51,187,alpha) # mapril island kitchen minigame DOWN
+                # LEFTBGR = (0,187,136,alpha) # mapril island kitchen minigame LEFT
+                # RIGHTBGR = (170,187,51,alpha) # mapril island kitchen minigame RIGHT
+            return count
             
+    # def read_score(self):        
+    #     img_cropped = self.get_screenshot()
+    #     img_cropped = img_cropped[139:151, 1309:1338]
+    #     # img_cropped = self.newest_screenshot[139:151, 1309:1338]
+    #     # img_cropped = self.newest_screenshot
+    #     img_cropped = cv2.resize(img_cropped, (290,120), interpolation=cv2.INTER_LINEAR)
+    #     img_cropped = cv2.cvtColor(img_cropped, cv2.COLOR_BGR2GRAY)
+    #     _, img_cropped = cv2.threshold(img_cropped, 128, 255, cv2.THRESH_BINARY)
+    #     try:
+    #         # imgstring = pytesseract.image_to_string(img_cropped, config='digits')
+    #         # imgstring = pytesseract.image_to_string(img_cropped, config='--psm 10 --oem 3 digits')
+    #         imgstring = pytesseract.image_to_string(img_cropped, config='--psm 6 --oem 3 digits')
+    #         # imgstring = pytesseract.image_to_string(img_cropped, config='--psm 10 --oem 3')
+    #         # imgstring = pytesseract.image_to_string(img_cropped, lang='eng', boxes=False, config='--psm 10 --oem 3')
+    #         # imgstring = pytesseract.image_to_string(img_cropped, config='--psm 6')
+    #         # imgstring = pytesseract.image_to_string(img_cropped)
+    #         imgstring = imgstring.replace('\n', '')
+    #         filename = imgstring+''
+    #         print(f"PYTESSERACT!!!!!!!!! = {imgstring=} {type(imgstring)=} {type('string')=} {filename=}")
+    #         # print(f"PYTESSERACT!!!!!!!!! = ")
+    #         cv2.imwrite(f'../image/{filename}.png', img_cropped)
+    #         # cv2.imwrite(f'../image/{imgstring}_.png', img_cropped)
+    #     except Exception as e:
+    #         print(f'pytesseract e: {e=}')
+    #     # finally:
+    #         # print(f'finally')
+
+    ## UPBGR = (0,118,205,alpha) # mapril island kitchen minigame UP (0,122,205) (0,125,210) (0,119,210)
+    ## DOWNBGR = (17,92,214,alpha) # mapril island kitchen minigame DOWN (87,74,205) (17,85,214)
+    ## LEFTBGR = (0,155,168,alpha) # mapril island kitchen minigame LEFT (0,163,160,alpha)
+    ## RIGHTBGR = (136,156,92,alpha) # mapril island kitchen minigame RIGHT
+    def check_arrows_extreme8(self, img):
+        matches = np.where((img[:,0] == 0))[0]
+        for idx in matches:
+            matches1 = np.where((img[:,1] == 118) or (img[:,1] == 119) or (img[:,1] == 122) or (img[:,1] == 125))[0]
+            for idx1 in matches1:
+                return 1
+            matches2 = np.where((img[:,1] == 155) or (img[:,1] == 163))[0]
+            for idx2 in matches2:
+                return 3
+        matches3 = np.where((img[:,0] == 17))[0]
+        for idx3 in matches3:
+            return 2
+        matches4 = np.where((img[:,0] == 136))[0]
+        for idx4 in matches4:
+            return 4
+        return 0
+
+    ## UPBGR = (0,125,196,alpha) # mapril island kitchen minigame UP 
+    ## DOWNBGR = (111,51,192,alpha) # mapril island kitchen minigame DOWN (103,53,196)
+    ## LEFTBGR = (0,169,152,alpha) # mapril island kitchen minigame LEFT (0,178,144）
+    ## RIGHTBGR = (159,178,65,alpha) # mapril island kitchen minigame RIGHT (159,1799,65)
+    def check_arrows_extreme7(self, img):
+        matches = np.where((img[:,0] == 0))[0]
+        for idx in matches:
+            matches1 = np.where((img[:,1] == 125))[0]
+            for idx1 in matches1:
+                return 1
+            matches2 = np.where((img[:,1] == 169) or (img[:,1] == 178))[0]
+            for idx2 in matches2:
+                return 3
+        matches3 = np.where((img[:,0] == 111) or (img[:,0] == 103))[0]
+        for idx3 in matches3:
+            return 2
+        matches4 = np.where((img[:,0] == 159))[0]
+        for idx4 in matches4:
+            return 4
+        return 0
+
+    # UPBGR = (0,136,187,alpha) # mapril island kitchen minigame UP 
+    # DOWNBGR = (119,51,187,alpha) # mapril island kitchen minigame DOWN
+    # LEFTBGR = (0,187,136,alpha) # mapril island kitchen minigame LEFT
+    # RIGHTBGR = (170,187,51,alpha) # mapril island kitchen minigame RIGHT
+    def check_arrows_extreme6(self, img):
+        matches = np.where((img[:,0] == 0))[0]
+        for idx in matches:
+            matches1 = np.where((img[:,1] == 136))[0]
+            for idx1 in matches1:
+                return 1
+            matches2 = np.where((img[:,1] == 187))[0]
+            for idx2 in matches2:
+                return 3
+        matches3 = np.where((img[:,0] == 119))[0]
+        for idx3 in matches3:
+            return 2
+        matches4 = np.where((img[:,0] == 170))[0]
+        for idx4 in matches4:
+            return 4
+        return 0
+
+    def check_arrows(self, img):        
+        if img[:,0] == 0:
+            if img[:,1] == 136:
+                return 1 # UP
+            elif img[:,1] == 187:
+                return 3 # LEFT
+        elif img[:,0] == 119:
+            return 2 # DOWN
+        elif img[:,0] == 170:
+            return 4 # RIGHT
+        return 0
+
+    def checkertest8(self, *color, x,y,w,h):
+        with gdi_capture.CaptureWindow(self.hwnd) as img:
+            locations = []
+            if img is None:
+                print("MapleStory.exe was not found.")
+            else:
+                self.newest_screenshot=img
+                # img_cropped = img[100:101, 489:490]
+                img_cropped = img[444:445, 679:680]
+                img_cropped1 = img[446:447, 793:794] # 793, 873, 953, 1033, 1113, 1193, 1273, 1353 / 446
+                img_cropped2 = img[446:447, 873:874] # 793, 873, 953, 1033, 1113, 1193, 1273, 1353 / 446
+                img_cropped3 = img[446:447, 953:954] # 793, 873, 953, 1033, 1113, 1193, 1273, 1353 / 446
+                img_cropped4 = img[446:447, 1033:1034] # 793, 873, 953, 1033, 1113, 1193, 1273, 1353 / 446
+                img_cropped5 = img[446:447, 1113:1114] # 793, 873, 953, 1033, 1113, 1193, 1273, 1353 / 446
+                img_cropped6 = img[446:447, 1193:1194] # 793, 873, 953, 1033, 1113, 1193, 1273, 1353 / 446
+                img_cropped7 = img[446:447, 1273:1274] # 793, 873, 953, 1033, 1113, 1193, 1273, 1353 / 446
+                img_cropped8 = img[446:447, 1353:1354] # 793, 873, 953, 1033, 1113, 1193, 1273, 1353 / 446
+                height, width = img_cropped.shape[0], img_cropped.shape[1]
+                img_reshaped = np.reshape(img_cropped, ((width * height), 4), order="C")
+                img_reshaped1 = np.reshape(img_cropped1, ((width * height), 4), order="C")
+                img_reshaped2 = np.reshape(img_cropped2, ((width * height), 4), order="C")
+                img_reshaped3 = np.reshape(img_cropped3, ((width * height), 4), order="C")
+                img_reshaped4 = np.reshape(img_cropped4, ((width * height), 4), order="C")
+                img_reshaped5 = np.reshape(img_cropped5, ((width * height), 4), order="C")
+                img_reshaped6 = np.reshape(img_cropped6, ((width * height), 4), order="C")
+                img_reshaped7 = np.reshape(img_cropped7, ((width * height), 4), order="C")
+                img_reshaped8 = np.reshape(img_cropped8, ((width * height), 4), order="C")
+                # img_reshaped2 = np.reshape(img_cropped2, ((width * height), 4), order="C")
+                # print(f'{img_reshaped=} {img_reshaped2=}')
+                for c in color:
+                    sum_x, sum_y, count = 0, 0, 0
+                    # matches = np.where(np.all((img_reshaped == KITCHENBGR), axis=1))[0]
+                    # for idx in matches:
+                    #     sum_x += idx % width
+                    #     sum_y += idx // width
+                    #     count += 1
+                    # if count > 0:
+                    #     x_pos = sum_x / count
+                    #     y_pos = sum_y / count
+                    #     locations.append((x_pos, y_pos))
+                    current_arrow = self.check_arrows(img_reshaped)
+                    next_arrow1 = self.check_arrows(img_reshaped1)
+                    next_arrow2 = self.check_arrows(img_reshaped2)
+                    next_arrow3 = self.check_arrows(img_reshaped3)
+                    next_arrow4 = self.check_arrows(img_reshaped4)
+                    next_arrow5 = self.check_arrows(img_reshaped5)
+                    next_arrow6 = self.check_arrows(img_reshaped6)
+                    next_arrow7 = self.check_arrows(img_reshaped7)
+                    next_arrow8 = self.check_arrows(img_reshaped8)
+                    # if img_reshaped2[:,0] == 0:
+                    #     if img_reshaped2[:,1] == 136:
+                    #         return (count, 1) # UP
+                    #     elif img_reshaped2[:,1] == 187:
+                    #         return (count, 3) # LEFT
+                    # elif img_reshaped2[:,0] == 119:
+                    #     return (count,2) # DOWN
+                    # elif img_reshaped2[:,0] == 170:
+                    #     return (count,4) # RIGHT
+            return (current_arrow, next_arrow1, next_arrow2, next_arrow3, next_arrow4, next_arrow5, next_arrow6, next_arrow7, next_arrow8)
+
+    #### EXTREME VERSION #####
+    def checkertest9(self, *color, x,y,w,h):
+        with gdi_capture.CaptureWindow(self.hwnd) as img:
+            locations = []
+            if img is None:
+                print("MapleStory.exe was not found.")
+            else:
+                # img_cropped = img[100:101, 489:490]
+                img_cropped = img[444:445, 679:680]
+                img_cropped1 = img[446:447, 793:794] # 793, 873, 953, 1033, 1113, 1193, 1273, 1353 / 446
+                img_cropped2 = img[446:447, 873:874] # 793, 873, 953, 1033, 1113, 1193, 1273, 1353 / 446
+                img_cropped3 = img[446:447, 953:954] # 793, 873, 953, 1033, 1113, 1193, 1273, 1353 / 446
+                img_cropped4 = img[446:447, 1033:1034] # 793, 873, 953, 1033, 1113, 1193, 1273, 1353 / 446
+                img_cropped5 = img[446:447, 1113:1114] # 793, 873, 953, 1033, 1113, 1193, 1273, 1353 / 446
+                img_cropped6 = img[445:448, 1184:1202] # 1184~1202 3 pixels height
+                img_cropped7 = img[445:448, 1264:1282] # 1264~1282
+                # img_cropped7 = img[446:447, 1264:1282] # 1264~1282
+                img_cropped8 = img[445:448, 1344:1362] # 1344~1362 # 491 514 
+                # img_cropped8 = img[446:447, 1344:1362] # 1344~1362 # 491 514 
+                img_cropped77 = img[460:483, 1247:1251] # 1264~1282 # 491 514 1248 1252
+                img_cropped88 = img[460:483, 1327:1331] # 1344~1362 # 491 514 #1328 1332
+                height, width = img_cropped.shape[0], img_cropped.shape[1]
+                height6, width6 = img_cropped6.shape[0], img_cropped6.shape[1]
+                height77, width77 = img_cropped77.shape[0], img_cropped77.shape[1]
+                img_reshaped = np.reshape(img_cropped, ((width * height), 4), order="C")
+                img_reshaped1 = np.reshape(img_cropped1, ((width * height), 4), order="C")
+                img_reshaped2 = np.reshape(img_cropped2, ((width * height), 4), order="C")
+                img_reshaped3 = np.reshape(img_cropped3, ((width * height), 4), order="C")
+                img_reshaped4 = np.reshape(img_cropped4, ((width * height), 4), order="C")
+                img_reshaped5 = np.reshape(img_cropped5, ((width * height), 4), order="C")
+                img_reshaped6 = np.reshape(img_cropped6, ((width6 * height6), 4), order="C")
+                img_reshaped7 = np.reshape(img_cropped7, ((width6 * height6), 4), order="C")
+                img_reshaped8 = np.reshape(img_cropped8, ((width6 * height6), 4), order="C")
+                img_reshaped77 = np.reshape(img_cropped77, ((width77 * height77), 4), order="C")
+                img_reshaped88 = np.reshape(img_cropped88, ((width77 * height77), 4), order="C")
+                # img_reshaped2 = np.reshape(img_cropped2, ((width * height), 4), order="C")
+                # print(f'{img_reshaped=} {img_reshaped2=}')
+                for c in color:
+                    sum_x, sum_y, count = 0, 0, 0
+                    # matches = np.where(np.all((img_reshaped == KITCHENBGR), axis=1))[0]
+                    # for idx in matches:
+                    #     sum_x += idx % width
+                    #     sum_y += idx // width
+                    #     count += 1
+                    # if count > 0:
+                    #     x_pos = sum_x / count
+                    #     y_pos = sum_y / count
+                    #     locations.append((x_pos, y_pos))
+                    current_arrow = self.check_arrows(img_reshaped)
+                    next_arrow1 = self.check_arrows(img_reshaped1)
+                    next_arrow2 = self.check_arrows(img_reshaped2)
+                    next_arrow3 = self.check_arrows(img_reshaped3)
+                    next_arrow4 = self.check_arrows(img_reshaped4)
+                    next_arrow5 = self.check_arrows(img_reshaped5)
+                    next_arrow6 = self.check_arrows_extreme6(img_reshaped6)
+                    next_arrow7 = self.check_arrows_extreme7(img_reshaped7)
+                    next_arrow8 = self.check_arrows_extreme8(img_reshaped8)
+                    if next_arrow7 == 0:
+                        next_arrow7 = self.check_arrows_extreme7(img_reshaped77)
+                        print(f'color not found, searching vertical pixels. {next_arrow7=}')
+                    else:
+                        print(f'arrow_7th = {next_arrow7} and {self.check_arrows_extreme7(img_reshaped77)}, same?? diff??')
+                    if next_arrow8 == 0:
+                        next_arrow8 = self.check_arrows_extreme8(img_reshaped88)
+                        print(f'color not found, searching vertical pixels. {next_arrow8=}')
+                    else:
+                        print(f'arrow_8th = {next_arrow8} and {self.check_arrows_extreme8(img_reshaped88)}, same?? diff??')
+                    # if img_reshaped2[:,0] == 0:
+                    #     if img_reshaped2[:,1] == 136:
+                    #         return (count, 1) # UP
+                    #     elif img_reshaped2[:,1] == 187:
+                    #         return (count, 3) # LEFT
+                    # elif img_reshaped2[:,0] == 119:
+                    #     return (count,2) # DOWN
+                    # elif img_reshaped2[:,0] == 170:
+                    #     return (count,4) # RIGHT
+                # UPBGR = (0,136,187,alpha) # mapril island kitchen minigame UP 
+                # DOWNBGR = (119,51,187,alpha) # mapril island kitchen minigame DOWN
+                # LEFTBGR = (0,187,136,alpha) # mapril island kitchen minigame LEFT
+                # RIGHTBGR = (170,187,51,alpha) # mapril island kitchen minigame RIGHT
+            return (current_arrow, next_arrow1, next_arrow2, next_arrow3, next_arrow4, next_arrow5, next_arrow6, next_arrow7, next_arrow8)
+
     def checkerrune(self, *color, x,y,w,h):
         with gdi_capture.CaptureWindow(self.hwnd) as img:
             locations = []

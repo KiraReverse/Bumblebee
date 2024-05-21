@@ -14,7 +14,6 @@ import keyboard as pythonkeyboard
 from pynput import keyboard, mouse
 from pynput.keyboard import Listener as KeyListener  # type: ignore[import]
 from pynput.mouse import Listener as MouseListener  # type: ignore[import]
-from pynput.mouse import Button as pynputButton
 from PIL import ImageGrab
 from datetime import datetime
 from game import Game
@@ -33,7 +32,7 @@ from telegram.ext import Application, CommandHandler, MessageHandler, filters, C
 from attack import leftp, leftr, rightp, rightr, sleep, npcp, npcr
 from action import Action
 from runesolver import RuneSolver
-from initinterception import left_click, right_click, initiate_move, auto_capture_devices2, keydown, keyup, keyupall, keydown_arrow, keyup_arrow, keyupall_arrow
+from initinterception import  move_relative, left_click, right_click, initiate_move, auto_capture_devices2, keydown, keyup, keyupall,  keydown_arrow, keyup_arrow, keyupall_arrow
 from helper import Helper
 from character import Character
 
@@ -129,7 +128,6 @@ class TkinterBot(customtkinter.CTk):
         self.thread1 = threading.Thread(target=self.run_thread1)
         self.thread3 = threading.Thread(target=self.run_thread3)
         self.thread6 = threading.Thread(target=self.run_thread6)
-        self.loop99 = asyncio.new_event_loop()
 
     def init_tkinter(self):
         self.title("chrome")
@@ -222,17 +220,19 @@ class TkinterBot(customtkinter.CTk):
         self.loop10.run_until_complete(self.async_function10()) # auto clicker monster life
 
     def start_threads(self):
-        self.thread1.start()
+        # self.thread1.start()
         self.thread3.start()
-        self.thread6.start()
+        # self.thread6.start()
 
     async def async_function3(self):
         while not self.tkinter_started:
             time.sleep(1.01)
-        self.thread4 = threading.Thread(target=self.run_thread4)
-        self.thread4.start() # all the detector goes here
-        self.thread5 = threading.Thread(target=self.run_thread5)
-        self.thread5.start() # gma detector goes here
+        # self.thread4 = threading.Thread(target=self.run_thread4)
+        # self.thread4.start() # all the detector goes here
+        # self.thread5 = threading.Thread(target=self.run_thread5)
+        # self.thread5.start() # gma detector goes here
+        self.thread9 = threading.Thread(target=self.run_thread9)
+        self.thread9.start() # 
         self.ac=self.character.ac
         self.polocheckertimer0=0
         self.now=0
@@ -248,6 +248,12 @@ class TkinterBot(customtkinter.CTk):
         cc=False
         self.rune=False
         # ugly code ends here
+        hide=False
+        self.hidenow=False
+        lastfailing=False
+        fevertimer0=now
+        fevertimer=0
+        fever=False
         await initiate_move()
         while True:
             if pythonkeyboard.is_pressed("esc"):
@@ -259,73 +265,191 @@ class TkinterBot(customtkinter.CTk):
                 while self.pause:
                     time.sleep(1)
                     if self.stop_event.is_set():
-                        self.thread4.join()
-                        self.thread5.join()
+                        # self.thread4.join()
+                        # self.thread5.join()
+                        self.thread9.join()
                         return
-                print(f'script resumed ..')
-            #
-            if self.character.ac.goingtoportal or self.character.ac.gotoportal1 or self.character.ac.gotoportal2 or self.character.ac.gotoportal3 or self.character.ac.gotoportal4:
-                time.sleep(.0001) # 
+                # print(f'script resumed ..')
+                print(f'script resuming in 1 second .. because the arrows sequence detector is very sensitive!')
+                time.sleep(1)
+                fevertimer0=perf_counter()
+                fever=False
+            if self.hidenow:
+                if hide:
+                    now=perf_counter()
+                    continue
+                else:
+                    # keydown('alt')
+                    keydown('n')
+                    hide=True
+                    # await sleep(.003)
             else:
-                time.sleep(.011) # 
+                if hide:
+                    time.sleep(.2) # sometimes server delay
+                    # keyup('alt')
+                    keyup('n')
+                    await sleep(.301) # sleep a bit before continue to press arrow keys after stand up. 
+                    hide=False
+                sequence = self.g.sequence_checker()
+                print(f'{sequence=}')
+                if sequence[0] == 0:
+                    print(f'sequence 0 detected. ')
+                    await sleep(.003)
+                    # await sleep(.503) # last working
+                    lastfailing=True
+                    continue
+                for s in sequence:
+                    if self.hidenow:
+                        break
+                    await sleep(random.uniform(.034,.037))
+                    if self.hidenow:
+                        break
+                    await sleep(random.uniform(.034,.037))
+                    if self.hidenow:
+                        break
+                    if lastfailing:
+                        await sleep(.001)
+                        # # keydown('alt')
+                        # keydown('n')
+                        # await sleep(.403)
+                        # # keyup('alt')
+                        # keyup('n')
+                        # await sleep(.203)
+                        lastfailing=False
+                    if s == 1: # UP
+                        print(f'1UP {perf_counter()-now:.10f} {fever=}')
+                        keydown_arrow('up')
+                        await sleep(.003)
+                        keyup_arrow('up')
+                        await sleep(.003)
+                    elif s == 2: # DOWN
+                        print(f'2DOWN {perf_counter()-now:.10f} {fever=} ')
+                        keydown_arrow('down')
+                        await sleep(.003)
+                        keyup_arrow('down')
+                        await sleep(.003)
+                    elif s == 3: # LEFT
+                        print(f'3LEFT {perf_counter()-now:.10f} {fever=} ')
+                        keydown_arrow('left')
+                        await sleep(.003)
+                        keyup_arrow('left')
+                        await sleep(.003)
+                    elif s == 4: # RIGHT
+                        print(f'4RIGHT {perf_counter()-now:.10f} {fever=} ')
+                        keydown_arrow('right')
+                        await sleep(.003)
+                        keyup_arrow('right')
+                        await sleep(.003)
+                    elif s == 0: # in fever mode, the flame will block the color, sometimes 0. 
+                        break # break immediately, recheck arrows sequence. 
+                if self.hidenow:
+                    await sleep(.001)
+                else:
+                    if fever:
+                        await sleep(.533)
+                        # await sleep(.453) # last working
+                    else:
+                        await sleep(.533)
+                        # await sleep(.573) # last working
+                now=perf_counter()
+                if not fever:
+                    fevertimer=now-fevertimer0
+                    if fevertimer>44:
+                        fever=True
+
+
+            # kitchen = self.g.kitchen_checker()
+            # if kitchen[0] > 0:
+            #     print(f'found kitchen. {perf_counter()-now:.10f}')
+            #     if hide:
+            #         now=perf_counter()
+            #         continue
+            #     else:
+            #         keydown('alt')
+            #         hide=True
+            #         # await sleep(.003)
+            # else:
+            #     if hide:
+            #         time.sleep(.2) # sometimes server delay
+            #         keyup('alt')
+            #         await sleep(.101) # sleep a bit before continue to press arrow keys after stand up. 
+            #         hide=False
+            # if kitchen[1] > 0:
+            #     # print(f'found arrows. {kitchen[1]=} {perf_counter()-now:.10f}')
+            #     if kitchen[1] == 1: # UP
+            #         print(f'UP {perf_counter()-now:.10f}')
+            #         keydown_arrow('up')
+            #         await sleep(.003)
+            #         keyup_arrow('up')
+            #         await sleep(.153)
+            #     elif kitchen[1] == 2: # DOWN
+            #         print(f'DOWN {perf_counter()-now:.10f}')
+            #         keydown_arrow('down')
+            #         await sleep(.003)
+            #         keyup_arrow('down')
+            #         await sleep(.153)
+            #     elif kitchen[1] == 3: # LEFT
+            #         print(f'LEFT {perf_counter()-now:.10f}')
+            #         keydown_arrow('left')
+            #         await sleep(.003)
+            #         keyup_arrow('left')
+            #         await sleep(.153)
+            #     elif kitchen[1] == 4: # RIGHT
+            #         print(f'RIGHT {perf_counter()-now:.10f}')
+            #         keydown_arrow('right')
+            #         await sleep(.003)
+            #         keyup_arrow('right')
+            #         await sleep(.153)
+            now=perf_counter()
+            #
+            # if self.character.ac.goingtoportal or self.character.ac.gotoportal1 or self.character.ac.gotoportal2 or self.character.ac.gotoportal3 or self.character.ac.gotoportal4:
+            #     time.sleep(.0001) # 
+            # else:
+            #     time.sleep(.011) # 
             # time.sleep(.811) # when testing ..
             # time.sleep(.411) # when testing ..
             # time.sleep(.001) # when idk maybe you gone insane ..
-            g_variable = self.g.get_player_location()
-            x, y = (None, None) if g_variable is None else g_variable
-            if x == None or y == None:
-                xynotfound+=1
-                if xynotfound > 70:
-                    t = time.localtime()
-                    currenttime = time.strftime("%H:%M:%S", t)
-                    print(f'something is wrong .. character not found .. exiting .. {currenttime}')
-                    # self.characternotfound=True # USE THIS TO INFORM TELEGRAM!!!
-                    await self.togglepause() # self.pause=True
-                print(f'x==None, pass ..')
-                time.sleep(.1)
-            else: #
-                xynotfound=0
-                await self.character.perform_next_attack(x,y) 
+            # g_variable = self.g.get_player_location()
+            # x, y = (None, None) if g_variable is None else g_variable
+            # x, y = (None, None)
+            # if x == None or y == None:
+            #     xynotfound+=1
+            #     if xynotfound > 70:
+            #         t = time.localtime()
+            #         currenttime = time.strftime("%H:%M:%S", t)
+            #         print(f'something is wrong .. character not found .. exiting .. {currenttime}')
+            #         # self.characternotfound=True # USE THIS TO INFORM TELEGRAM!!!
+            #         await self.togglepause() # self.pause=True
+            #     print(f'x==None, pass ..')
+            #     time.sleep(.1)
+            # else: #
+            #     xynotfound=0
+            #     await self.character.perform_next_attack(x,y) 
 
-                if self.character.ac.goingtoportal or self.character.ac.gotoportal1 or self.character.ac.gotoportal2 or self.character.ac.gotoportal3 or self.character.ac.gotoportal4:
-                    pass
-                else:
-                    now=perf_counter()                
-                    cctimer=now-cctimer0
-                    if cctimer>3000: # 60sec * 50min = 3000sec
-                        # cc=True
-                        keyupall()
-                        keyupall_arrow()
-                        # await self.changechannel()
-                        cctimer0=perf_counter() # reset
-                        self.cc=False
-                    if self.cc: # this is for red dot. 
-                        keyupall()
-                        keyupall_arrow()
-                        # await self.changechannel_zakum() # we don't go ardent because it has 5 min cd.
-                        self.cc=False
-                    runetimer=now-runetimer0
-                    if runetimer > self.runecd:
-                        if not await self.FindRuneCDIcon():
-                            await self.character.gotorune() # and solve rune.
-                        runetimer0=now
-                        
-                    # # private server which has infinity rune buff. 
-                    # runetimer=now-runetimer0
-                    # print(f'{runetimer=}')
-                    # if runetimer > self.runecd:
-                    #     if await self.runechecker():
-                    #         await self.character.gotorune() # and solve rune.
-                    #         await self.character.ac.goleftattack(); time.sleep(.31)
-                    #         if await self.runechecker():
-                    #             print(f'still got rune. ')
-                    #         else:
-                    #             runetimer0=perf_counter()
-
-
+            #     if self.character.ac.goingtoportal or self.character.ac.gotoportal1 or self.character.ac.gotoportal2 or self.character.ac.gotoportal3 or self.character.ac.gotoportal4:
+            #         pass
+            #     else:
+            #         now=perf_counter()                
+            #         cctimer=now-cctimer0
+            #         if cctimer>3000: # 60sec * 50min = 3000sec
+            #             # cc=True
+            #             keyupall()
+            #             keyupall_arrow()
+            #             await self.changechannel()
+            #             cctimer0=perf_counter() # reset
+            #             self.cc=False
+            #         if self.cc: # this is for red dot. 
+            #             keyupall()
+            #             keyupall_arrow()
+            #             await self.changechannel_zakum() # we don't go ardent because it has 5 min cd. 
+            #             self.cc=False
+            #         runetimer=now-runetimer0
+            #         if runetimer > self.runecd:
+            #             if not await self.FindRuneCDIcon():
+            #                 await self.character.gotorune() # and solve rune.
+            #             runetimer0=now
 
     async def FindRuneCDIcon(self): # TODO: the newest screenshot crop it. 
-
         self.g.generate_newest_screenshot()
         img_gray = cv2.cvtColor(self.g.get_newest_screenshot(), cv2.COLOR_BGR2GRAY)                
         w, h = self.template.shape[::-1]    
@@ -334,24 +458,11 @@ class TkinterBot(customtkinter.CTk):
         loc = np.where( res >= threshold)
         # print(f'{type(loc)=} {len(loc)=} {len(loc[0])=} {loc=}')
         # for pt in zip(*loc[::-1]):
-        #     print(f'{type(pt)=} {pt=}')
-        #     cv2.rectangle(img_gray, pt, (pt[0] + w, pt[1] + h), (0,0,255), 2)
-            # cv2.imshow('img',img_gray)
-            # cv2.waitKey(0)
-            # cv2.destroyAllWindows()
-            # cv2.imwrite('../image/res.png',img_gray)
-        if len(loc[0]) > 0:
-            print(f'{len(loc[0])=} return True please you idiot code')
-            return True
+            # print(f'{type(pt)=} {pt=}')
+            # cv2.rectangle(img_rgb, pt, (pt[0] + w, pt[1] + h), (0,0,255), 2)
+            # cv2.imwrite('../image/res.png',img_rgb)
+        if len(loc[0]) > 0: return True
         return False
-
-    async def runechecker(self):
-        g_variable = self.g.get_rune_location()
-        x, y = (None, None) if g_variable is None else g_variable
-        if x == None:
-            return False
-        else:
-            return True
 
     async def async_function4(self): # this thread do all pixel detection / checker function. 
         diedcheckercounter=0
@@ -493,6 +604,21 @@ class TkinterBot(customtkinter.CTk):
             # time.sleep(2)
 
     async def async_function9(self):
+        self.hidenow=False
+        now=perf_counter()
+        while True:
+            while self.pause:
+                time.sleep(1)
+                if self.stop_event.is_set():
+                    return     
+            kitchen = self.g.kitchen_checker()   
+            if kitchen > 0:
+                self.hidenow=True
+            else:
+                self.hidenow=False
+            now=perf_counter()
+
+    async def async_function9_(self):
         now=perf_counter()
         thirdtimer0=now
         thirdtimer=now
@@ -534,101 +660,6 @@ class TkinterBot(customtkinter.CTk):
                 elif thirdtimer >= 15:
                     second=True
 
-    async def async_function4(self): # this thread do all pixel detection / checker function. 
-        diedcheckercounter=0
-        liedetectorcounter=0
-        reddotcounter=0
-        whitedotcounter=0
-        runecdcounter=0
-        mapledcedcounter=0
-        self.cc=False
-        while True:
-            while self.pause:
-                time.sleep(1)
-                if self.stop_event.is_set():
-                    return                    
-            self.g.generate_newest_screenshot()
-            diedcheckerlocations = self.g.died_checker()
-            if diedcheckerlocations is not None:
-                print(f'{diedcheckerlocations=}')
-                diedcheckercounter+=1
-                if diedcheckercounter > 2: # usually check 3times to confirm character really died. 
-                    diedcheckercounter=0 # reset
-                    print(f'character died. attempt to press ok .. ')
-                    position = win32gui.GetWindowRect(self.maplehwnd)
-                    x, y, w, h = position
-                    if self.broiddisabled:
-                        await self.helper.move_to_and_click_and_move_away(x+440,y+400); time.sleep(.1) ## TODO: write a list of offset for all reso.
-                        await self.togglepause()
-                        print(f'no broid. stopping bot. TODO: click map and teleport back and continue botting. ')
-                    else:
-                        await self.helper.move_to_and_click_and_move_away(x+390,y+400); time.sleep(.1) ## all offsets are of 800x600 reso
-            reddotcheckerlocations = self.g.reddot_checker()
-            if reddotcheckerlocations is not None:
-                print(f'{reddotcheckerlocations=}')
-                reddotcounter+=1
-                if reddotcounter > 1: # usually check twice to confirm really has red dot. you can change to 0 to immediately change channel. 
-                    reddotcounter=0
-                    self.cc=True # we can't directly cc in this thread because cc-ing is a long process, it will block other detectors. 
-                    print(f'red dot detected. changing  . {self.cc=}')
-            liedetectorcheckerlocations = self.g.liedetector_checker()
-            if liedetectorcheckerlocations is not None:
-                print(f'{liedetectorcheckerlocations=}')
-                liedetectorcounter+=1
-                if liedetectorcounter > 1: # usually check twice
-                    liedetectorcounter=0
-                    await self.togglepause()
-                    print(f'lie detector detector. stopping everything. [testing] {self.pause=} {self.scriptpausesignal=}')
-            whitedotcheckerlocations = self.g.white_dot_checker()
-            if whitedotcheckerlocations: # this is when accidentally pressed up and enter bounty portal and dialogue come out. 
-                print(f'{whitedotcheckerlocations}')
-                whitedotcounter+=1
-                if whitedotcounter > 1: # usually check twice
-                    whitedotcounter=0
-                    print(f'accidentally pressed up on bounty portal? clicking end chat. [testing]')
-                    position = win32gui.GetWindowRect(self.maplehwnd)
-                    x, y, w, h = position
-                    await self.helper.move_to_and_click_and_move_away(x+222,y+410); time.sleep(.1)
-            # runecdcheckerlocations = self.g.rune_cd_checker()
-            # if runecdcheckerlocations is None: # means rune no more cd
-            #     print(f'rune cd icon not found. {runecdcounter=}')
-            #     runecdcounter+=1
-            #     if runecdcounter>1: # even rune cd we checking twice!
-            #         runecdcounter=0
-            #         self.rune=True
-            #         print(f'rune cd is true (go solve rune!) {self.rune=}')
-            # else:
-            #     self.rune=False
-
-            # mapledcedcheckerlocations = self.g.maple_dced_checker() # this is redundant because the bot will stop anyway. 
-            # if mapledcedcheckerlocations:
-            #     print(f'maple login screen detected! {mapledcedcounter=}')
-            #     mapledcedcounter+=1
-            #     if mapledcedcounter>2: # we check 3 times for dc
-            #         mapledcedcounter=0
-            #         await self.togglepause()
-            #         print(f'maple dc-ed detected! (login screen) [testing] {self.pause=} {self.scriptpausesignal=}')
-                
-            # if not self.pausepolochecker and not self.portaldisabled: # i disable this because most user don't want to enter bounty portal
-            #     polocheckerlocations = self.g.polo_checker() # check for portal on minimap
-            #     if polocheckerlocations is not None:
-            #         print(f'{polocheckerlocations=}')
-            #         self.polochecker = True
-            #         self.gotoportal=True
-            # whitedotlocations = self.g.white_dot_checker() # this is when character botting, pressed up, accidentally entered portal, dialogue come out. 
-            # if whitedotlocations is not None:
-            #     whitedotcounter+=1
-            #     if whitedotcounter>1: # usually check twice to confirm character really entered portal by accident. 
-            #         self.whitedotoccur=True
-            #         self.polochecker=True
-            #         self.gotoportal=False
-            # elif whitedotlocations is None:
-            #     whitedotcounter=0
-            
-            # await self.g.run_once_all_detect()
-            time.sleep(4)
-            # time.sleep(2)
-
     async def async_function5(self): # gma_checker
         while True:
             while self.pause:
@@ -664,104 +695,6 @@ class TkinterBot(customtkinter.CTk):
     async def async_function10(self): # auto clicker monster life
         await self.autoclicker()
 
-    async def async_function99(self): # antimacro_checker
-        while True:
-            while self.pause:
-                time.sleep(1)
-                if self.stop_event.is_set():
-                    return  1
-            if self.chathwnd:
-                antimacrocheckerlocations = self.seperate_antimacro_detector()
-                if antimacrocheckerlocations:
-                    print(f'got Antimacro')
-                    bot_token = '6615554981:AAGxys8k9QDX1lhHtJnZjROPXvQE643-EbU'
-                    chat_id = '-1002053722567'
-                    message_to_send = "Anti Macro!"
-                    num_messages = 10
-                    self.resumebutton()
-                    for _ in range(num_messages):
-                        await self.send_telegram_message(bot_token, chat_id, message_to_send)
-                else:
-                    print(f'no Antimacro')
-            else:
-                print(f'chat window not found. ')
-
-            time.sleep(5)
-
-    def seperate_antimacro_detector(self):
-        if self.chathwnd == None:
-            print(f'seperate_antimacro_detector: chat window not found. ')
-            return
-        try:
-            position = win32gui.GetWindowRect(self.chathwnd)
-            x, y, w, h = position
-            print(f'{x} {y} {w} {h}')
-            chatposition = (x,y+385,w-15,h-25)
-            screenshot = ImageGrab.grab(chatposition)
-            screenshot = np.array(screenshot)
-            img = cv2.cvtColor(screenshot, cv2.COLOR_RGB2BGR)
-            # cv2.imshow('img', img)
-            # cv2.waitKey(0)
-            # cv2.destroyAllWindows()
-            img_antimacro_1 = cv2.imread('C:/Bot/Bumblebee/image/img_antimacro.png', cv2.IMREAD_COLOR)
-            result_1 = cv2.matchTemplate(img, img_antimacro_1, cv2.TM_CCOEFF_NORMED)
-            img_antimacro_2 = cv2.imread('C:/Bot/Bumblebee/image/img_antimacro2.png', cv2.IMREAD_COLOR)
-            result_2 = cv2.matchTemplate(img, img_antimacro_2, cv2.TM_CCOEFF_NORMED)
-            img_antimacro_3 = cv2.imread('C:/Bot/Bumblebee/image/img_antimacro3.png', cv2.IMREAD_COLOR)
-            result_3 = cv2.matchTemplate(img, img_antimacro_3, cv2.TM_CCOEFF_NORMED)
-
-            locations_1 = np.where(result_1 >= 0.9)
-            locations_2 = np.where(result_2 >= 0.9)
-            locations_3 = np.where(result_3 >= 0.9)
-
-            match_centers = []
-            for loc in zip(*locations_1[::-1]):
-                top_left = loc
-                h, w, _ = img_antimacro_1.shape
-                center_x = top_left[0] + w / 2
-                center_y = top_left[1] + h / 2
-                match_centers.append((center_x, center_y))
-
-            for loc in zip(*locations_2[::-1]):
-                top_left = loc
-                h, w, _ = img_antimacro_2.shape
-                center_x = top_left[0] + w / 2
-                center_y = top_left[1] + h / 2
-                match_centers.append((center_x, center_y))
-
-            for loc in zip(*locations_3[::-1]):
-                top_left = loc
-                h, w, _ = img_antimacro_3.shape
-                center_x = top_left[0] + w / 2
-                center_y = top_left[1] + h / 2
-                match_centers.append((center_x, center_y))
-
-            return match_centers
-        except Exception as e:
-            print(f'seperate_antimacro_detector: {e=}')
-
-    async def send_telegram_message(self, bot_token, chat_id, message):
-        print(f'telegramstatus')
-        now = perf_counter()
-        photo0 = self.g.get_screenshot()
-
-        success, photo0_encoded = cv2.imencode('.png', photo0)
-        photo0_bytes = photo0_encoded.tobytes()
-
-        files = {'photo': photo0_bytes}
-        payload = {
-            'chat_id': self.chat_id,
-            'caption': 'Lie Detector Active'
-        }
-        response = requests.post('https://api.telegram.org/bot' + self.TOKEN + '/sendPhoto', data=payload, files=files)
-        if response.status_code == 200:
-            print(f'{perf_counter()-now =}')
-            print(f"success {response.json().get('description')}")
-            print(f"success {response.json()}")
-        else:
-            print(f"Request failed with status code_: {response.status_code}")
-            print(f"{response.json().get('description')}")
-        pass
     def init_maple_windows(self):
         windows=[]
         winlist=[]
@@ -991,22 +924,17 @@ class TkinterBot(customtkinter.CTk):
             self.button.configure(text='Resume', fg_color='tomato')
             self.runesolver.disablerune()
             self.character.ac.disablerune()
-            print(f'stopping all rune solving action. ')
         else:
             self.button.configure(text='Pause', fg_color='lime')
             self.runesolver.enablerune()
             self.character.ac.enablerune()
-            print(f'rune solving set to enabled. ')
 
     async def togglepause(self):
         print(f'togglepause')
-        if not self.scriptpausesignal: # that means script is running. 
-            self.scriptpausesignal=True
-            self.scriptbuttonstop.configure(state='normal')
-            self.character.ac.disablerune()
-            print(f'script: stopping all rune solving action. ')
-        else: # that means script is not running. 
-            self.resumebutton()
+        # self.pause=True
+        self.resumebutton()
+        self.scriptpausesignal=True
+        self.scriptbuttonstop.configure(state='normal')        
 
     async def pausewrapper(self, func):
         if not self.pause:
@@ -1723,7 +1651,7 @@ class TkinterBot(customtkinter.CTk):
         # set a limit for cc, in case character died, stop it from spamming cc! i've been banned once due to this spamming! no appeal. 
         for i in range(10): # set a limit on how many tries to attempt to move to zakum map to avoid BAN!
             print(f'this is try no.{i} ..')
-            if i > 8: await self.togglepause() # something wrong. you are done. # self.pause=True # hopefully this work. not tested. yet. #self.scriptstopsignal=True
+            if i > 8: self.togglepause() # something wrong. you are done. # self.pause=True # hopefully this work. not tested. yet. #self.scriptstopsignal=True
             if self.pause: return
             await self.character.ac.bossuipr() # remember set it in settings.ini
             await self.helper.move_to_and_click(x+104,y+204) # zakum 800x600
@@ -1732,8 +1660,7 @@ class TkinterBot(customtkinter.CTk):
                 break # successfully entered zakum map. exit loop. 
         time.sleep(1.)
         await self.character.ac.ccbuttonpr()
-        # time.sleep(5.) # in case character were still using some skills just before enter zakum map. you can change this number just becareful. 
-        time.sleep(15.) # night lord origin skill for example. s
+        time.sleep(5.) # in case character were still using some skills just before enter zakum map. you can change this number just becareful. 
         [await self.character.ac.leftpr() for _ in range(random.randint(1, 5))]
         [await self.character.ac.downpr() for _ in range(random.randint(1, 3))] # why not
         await self.character.ac.enterpr()
@@ -1762,7 +1689,7 @@ class TkinterBot(customtkinter.CTk):
             time.sleep(3)
         async def checkstillinardentmill():            
             for i in range(7):
-                if i > 5: await self.togglepause() # self.pause=True
+                if i > 5: self.togglepause() # self.pause=True
                 if self.pause: return False
                 weareinardentyesno = self.g.ardentdetector()
                 if self.g.ardentdetector() is None:
@@ -1782,8 +1709,7 @@ class TkinterBot(customtkinter.CTk):
         if not await checkstillinardentmill(): # if return False, means either user paused or tries end (5 times). 
             return # then we return and bye. if True, proceed. 
         await self.character.ac.ccbuttonpr() # proceed. 
-        # time.sleep(3.) 
-        time.sleep(15.) # night lord origin for example
+        time.sleep(3.)        
         [await self.character.ac.leftpr() for _ in range(random.randint(1, 10))]
         time.sleep(.5)        
         await self.character.ac.enterpr()
@@ -1791,7 +1717,7 @@ class TkinterBot(customtkinter.CTk):
         [await press(self.character.ac.uppr,.06) for _ in range(random.randint(4, 10))] # ideally TODO: check ardentmill map loaded. 
         time.sleep(2.) # coming out from ardent. TODO: check if back to hunting map.
         for i in range(10): # set a limit to check. 
-            if i > 8: await self.togglepause() # self.pause=True # set a limit
+            if i > 8: self.togglepause() # self.pause=True # set a limit
             if self.pause: return
             if self.g.ardentdetector() is None: # we not in ardent. 
                 if self.g.ardentmaploading() is not None: # still loading. (whole maple dark)
@@ -1808,8 +1734,8 @@ class TkinterBot(customtkinter.CTk):
         time.sleep(1)
         randomlist = ['b', '0', 'u', '9', 'a', 'c', 'r', 'z', 'ctrl', 'home', 'f', 'f', 'f']
         now=perf_counter()
-        randommtimer0=0
-        randommtimer=0
+        self.randommtimer0=0
+        self.randommtimer=0
         runetimer0=now
         runetimer=0
         rune=False
@@ -1824,8 +1750,9 @@ class TkinterBot(customtkinter.CTk):
                 for index, action in enumerate(data):
                     # print(f'running: {index=} {action=}')
                     if pythonkeyboard.is_pressed("esc"):
-                        await self.togglepause()
-                        print(f'hello this is \'esc\'. yes scriptpaused={self.scriptpausesignal}')
+                        self.scriptpausesignal=True
+                        self.scriptbuttonstop.configure(state='normal')
+                        print(f'yes p={self.scriptpausesignal}')
                     if self.scriptpausesignal:
                         keyupall()
                         keyupall_arrow()
@@ -1837,7 +1764,6 @@ class TkinterBot(customtkinter.CTk):
                             time.sleep(1)
                             if self.stop_event.is_set():
                                 return
-                        self.character.ac.enablerune()
                         print(f'script resumed ..')
 
                     if action['type'] == 'keyDown':
@@ -1852,17 +1778,11 @@ class TkinterBot(customtkinter.CTk):
                             pass
                         key = action['button']
                         # print(f'press {key=}')
-                        if key in ['up', 'down', 'left', 'right']:
-                            keydown_arrow(key)
-                        else:
-                            keydown(key)
+                        keydown(key)
                     elif action['type'] == 'keyUp':
                         key = action['button']
                         # print(f'release {key=}')
-                        if key in ['up', 'down', 'left', 'right']:
-                            keyup_arrow(key)
-                        else:
-                            keyup(key)
+                        keyup(key)
                     try:
                         next_action = data[index + 1]
                     except IndexError:
@@ -1931,7 +1851,7 @@ class TkinterBot(customtkinter.CTk):
                                 await self.character.ac.send2(code)
                                 await self.character.ac.send3(code)
                         cctimer=now-cctimer0
-                        if cctimer>1800: # 60sec * 50min = 3000sec
+                        if cctimer>3000: # 60sec * 50min = 3000sec
                             # cc=True
                             keyupall()
                             keyupall_arrow()
@@ -1942,43 +1862,20 @@ class TkinterBot(customtkinter.CTk):
                             keyupall()
                             keyupall_arrow()
                             await self.changechannel_zakum() # this version of changing channel is from reddotdetector. 
-                            self.cc=False
+                            self.cc=False                            
                         runetimer=now-runetimer0
                         if runetimer > self.runecd:
-                            result = await self.FindRuneCDIcon()
-                            print(f'{result=}')
-                            if not result:
-                                if await self.runechecker():
-                                    x,y = await self.savecurrentposition()
-                                    await self.character.gotorune() # and solve rune.
-                                    await self.gobackjustnowposition(x,y)
-                                    runetimer0=now
+                            if not await self.FindRuneCDIcon():
+                                await self.character.gotorune() # and solve rune.
+                            runetimer0=now
                 print(f'script finished. {self.script} ..')
-
-    async def savecurrentposition(self):
-        while True:
-            g_variable = self.g.get_player_location()
-            x, y = (None, None) if g_variable is None else g_variable
-            if x == None or y == None:
-                print(f'character not found. function=savecurrentposition()')
-                time.sleep(1)
-            else:
-                return x,y
-    
-    async def gobackjustnowposition(self,x,y):
-        print(f'going back position before solving rune. thanks Astra. ')
-        await self.adjustcharacter(a=x,b=y)
 
     async def adjustcharacter(self,a=10,b=10):
         xynotfound=0
         while True:
-            if pythonkeyboard.is_pressed("esc"):
-                await self.togglepause()
-                print(f'adjustcharacter return: yes pausingscript={self.scriptpausesignal}')
             if self.scriptpausesignal:
                 keyupall()
                 keyupall_arrow()
-                self.character.ac.enablerune()
                 return
             g_variable = self.g.get_player_location()
             x, y = (None, None) if g_variable is None else g_variable
@@ -2298,8 +2195,8 @@ class TkinterBot(customtkinter.CTk):
 
 
     def setup_tab5(self):
-        frametab51 = customtkinter.CTkFrame(self.tab5)
-        frametab51.pack(padx=1, pady=(1,1))
+        frametab41 = customtkinter.CTkFrame(self.tab5)
+        frametab41.pack(padx=1, pady=(1,1))
         position = win32gui.GetWindowRect(self.maplehwnd)
         x0, y0, w, h = position
         self.autoclickerstop=False
@@ -2381,21 +2278,21 @@ class TkinterBot(customtkinter.CTk):
                     time.sleep(.08) # server lag
                     self.character.ac.enterpr_special(3,11)
                     time.sleep(.08) # server lag
-        autoclickerbutton = customtkinter.CTkButton(frametab51, text="autoclicker GO!", command=autoclicker)
+        autoclickerbutton = customtkinter.CTkButton(frametab41, text="autoclicker GO!", command=autoclicker)
         autoclickerbutton.pack(padx=(1,1),pady=(1,1))
-        frametab52 = customtkinter.CTkFrame(self.tab5)
-        frametab52.pack(padx=1, pady=(1,1))
-        labelmonsternumber = customtkinter.CTkLabel(frametab52,text='how many monster slot?')
+        frametab42 = customtkinter.CTkFrame(self.tab5)
+        frametab42.pack(padx=1, pady=(1,1))
+        labelmonsternumber = customtkinter.CTkLabel(frametab42,text='how many monster slot?')
         labelmonsternumber.pack(padx=(1,1),pady=(1,1))
-        inputmonsternumber = customtkinter.CTkEntry(frametab52, placeholder_text='20')
+        inputmonsternumber = customtkinter.CTkEntry(frametab42, placeholder_text='20')
         inputmonsternumber.pack(padx=(1,1),pady=(1,1))
-        labelcboxslot = customtkinter.CTkLabel(frametab52,text='CGrade Mob Box slot (1/2/3/4/5):')
+        labelcboxslot = customtkinter.CTkLabel(frametab42,text='CGrade Mob Box slot (1/2/3/4/5):')
         labelcboxslot.pack(padx=(1,1),pady=(1,1))
-        inputcboxslot = customtkinter.CTkEntry(frametab52, placeholder_text='2')
+        inputcboxslot = customtkinter.CTkEntry(frametab42, placeholder_text='2')
         inputcboxslot.pack(padx=(1,1),pady=(1,1))
-        labelmonsterslot = customtkinter.CTkLabel(frametab52,text='which monster slot to discharge (2/3/4/5/6/7)?')
+        labelmonsterslot = customtkinter.CTkLabel(frametab42,text='which monster slot to discharge (2/3/4/5/6/7)?')
         labelmonsterslot.pack(padx=(1,1),pady=(1,1))
-        inputmonsterslot = customtkinter.CTkEntry(frametab52, placeholder_text='7')
+        inputmonsterslot = customtkinter.CTkEntry(frametab42, placeholder_text='7')
         inputmonsterslot.pack(padx=(1,1),pady=(1,1))
         def resetmaple():
             position = win32gui.GetWindowRect(self.maplehwnd)
@@ -2439,85 +2336,8 @@ class TkinterBot(customtkinter.CTk):
         self.repeatcount=floor(100/self.monsternumber)
         self.cboxslot=199
         self.monsterslot=456
-        resetmaplebutton = customtkinter.CTkButton(frametab52, text="set all variable to current value", command=resetmaple)
+        resetmaplebutton = customtkinter.CTkButton(frametab42, text="set all variable to current value", command=resetmaple)
         resetmaplebutton.pack(padx=(1,1),pady=(10,1))
-
-        frametab53 = customtkinter.CTkFrame(self.tab5)
-        frametab53.pack(padx=1, pady=(1,1))
-        labelautocuber = customtkinter.CTkLabel(frametab53,text='welcome to auto-cuber')
-        labelautocuber.pack(padx=(1,1),pady=(1,1))
-
-        frametab54 = customtkinter.CTkFrame(self.tab5)
-        frametab54.pack(padx=1, pady=(1,1))
-        def calibratemouse():
-            print(f'Mouse calibrate position started. Click on anywhere on screen. Esc to quit. ')
-            position = win32gui.GetWindowRect(self.maplehwnd)
-            x0, y0, w, h = position
-            def on_press(key):
-                if key == keyboard.Key.esc:
-                    print(f'esc')
-                    mouse_listener.stop()
-                    return False
-            def on_click(x, y, button, pressed):
-                if pressed and button == pynputButton.left:
-                    # print(f'Mouse Position=({x},{y})')
-                    print(f'Mouse Position=({x},{y}) Maple Top Left=({x0},{y0}) | MP-MTLa.k.a.Offset=({x-x0},{y-y0})')
-            mouse_listener = MouseListener(on_click=on_click)
-            mouse_listener.start()
-            with keyboard.Listener(on_press=on_press) as listener:
-                try:
-                    listener.join()
-                except Exception as e:
-                    print(f'exception. {e=}')
-        calibratebutton = customtkinter.CTkButton(frametab53, text="calibrate mouse", command=calibratemouse)
-        calibratebutton.pack(padx=(1,1),pady=(1,1))
-        
-        position = win32gui.GetWindowRect(self.maplehwnd)
-        x0, y0, w, h = position
-        x=x0+670
-        y=y0+536
-        labelpositionx = customtkinter.CTkLabel(frametab54,text='Mouse Position X: ')
-        labelpositionx.pack(padx=(1,1),pady=(1,1))
-        inputposx = customtkinter.CTkEntry(frametab54, placeholder_text=f'{x}')
-        inputposx.insert(0,str(x))
-        inputposx.pack(padx=(1,1),pady=(1,1))
-        labelpositiony = customtkinter.CTkLabel(frametab54,text='Mouse Position Y: ')
-        labelpositiony.pack(padx=(1,1),pady=(1,1))
-        inputposy = customtkinter.CTkEntry(frametab54, placeholder_text=f'{y}')
-        inputposy.insert(0,str(y))
-        inputposy.pack(padx=(1,1),pady=(1,1))
-        
-        def go():
-            x=inputposx.get()
-            if x.isnumeric():
-                x=int(x)
-            else:
-                print(f'offset_x error {inputposx.get()}. return None.')
-                return
-            y=inputposy.get()
-            if y.isnumeric():
-                y=int(y)
-            else:
-                print(f'offset_y error {inputposy.get()}. return None.')
-                return
-            self.autoclickerstop=False
-            self.thread10 = threading.Thread(target=self.run_thread10)
-            self.thread10.start()
-            while True:
-                if self.autoclickerstop:
-                    print(f'{self.autoclickerstop=}')
-                    self.thread10.join()
-                    return
-                self.helper.movetoandclick(x,y)
-                time.sleep(.2)
-                self.character.ac.enterpr_special(3,11)
-                time.sleep(.2)
-                self.character.ac.enterpr_special(3,11)
-                time.sleep(.2)
-                self.character.ac.enterpr_special(3,11)
-                time.sleep(1.2)
-        gobutton = customtkinter.CTkButton(frametab54, text="Done Calibrating? Press this and GO. ", command=go)
-        gobutton.pack(padx=(1,1),pady=(10,1))
 
 
     async def autoclicker(self):
@@ -2860,9 +2680,9 @@ class TkinterBot(customtkinter.CTk):
         self.stop_event.set()
         self.telegram_keep_alive = False
         self.destroy()
-        self.thread1.join()
+        # self.thread1.join()
         self.thread3.join()
-        self.thread6.join()
+        # self.thread6.join()
 
 async def main2():
     mytkinter = TkinterBot()
