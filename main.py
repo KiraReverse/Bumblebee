@@ -1747,10 +1747,11 @@ class TkinterBot(customtkinter.CTk):
                             result = await self.FindRuneCDIcon()
                             print(f'{result=}')
                             if not result:
-                                x,y = await self.savecurrentposition()
-                                await self.character.gotorune() # and solve rune.
-                                await self.gobackjustnowposition(x,y)
-                            runetimer0=now
+                                if await self.runechecker():
+                                    x,y = await self.savecurrentposition()
+                                    await self.character.gotorune() # and solve rune.
+                                    await self.gobackjustnowposition(x,y)
+                                    runetimer0=now
                 print(f'script finished. {self.script} ..')
 
     async def savecurrentposition(self):
