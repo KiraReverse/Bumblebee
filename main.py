@@ -1532,7 +1532,8 @@ class TkinterBot(customtkinter.CTk):
                 break # successfully entered zakum map. exit loop. 
         time.sleep(1.)
         await self.character.ac.ccbuttonpr()
-        time.sleep(5.) # in case character were still using some skills just before enter zakum map. you can change this number just becareful. 
+        # time.sleep(5.) # in case character were still using some skills just before enter zakum map. you can change this number just becareful. 
+        time.sleep(15.) # night lord origin skill for example. s
         [await self.character.ac.leftpr() for _ in range(random.randint(1, 5))]
         [await self.character.ac.downpr() for _ in range(random.randint(1, 3))] # why not
         await self.character.ac.enterpr()
@@ -1581,7 +1582,8 @@ class TkinterBot(customtkinter.CTk):
         if not await checkstillinardentmill(): # if return False, means either user paused or tries end (5 times). 
             return # then we return and bye. if True, proceed. 
         await self.character.ac.ccbuttonpr() # proceed. 
-        time.sleep(3.)        
+        # time.sleep(3.) 
+        time.sleep(15.) # night lord origin for example
         [await self.character.ac.leftpr() for _ in range(random.randint(1, 10))]
         time.sleep(.5)        
         await self.character.ac.enterpr()
