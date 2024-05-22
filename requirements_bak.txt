@@ -8,3 +8,5 @@ pyautogui
 pyserial
 pywin32
 DeepImageSearch
+easyocr
+pytesseract

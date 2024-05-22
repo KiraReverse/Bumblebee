@@ -305,10 +305,12 @@ class TkinterBot(customtkinter.CTk):
                         self.cc=False
                     runetimer=now-runetimer0
                     if runetimer > self.runecd:
-                        if not await self.FindRuneCDIcon():
-                            await self.character.gotorune() # and solve rune.
                         runetimer0=now
-                        
+                        result = await self.FindRuneCDIcon()
+                        print(f'{result=}')
+                        if not result:
+                            if await self.runechecker():
+                                await self.character.gotorune() # and solve rune.
                     # # private server which has infinity rune buff. 
                     # runetimer=now-runetimer0
                     # print(f'{runetimer=}')
@@ -326,7 +328,7 @@ class TkinterBot(customtkinter.CTk):
         img_gray = cv2.cvtColor(self.g.get_newest_screenshot(), cv2.COLOR_BGR2GRAY)                
         w, h = self.template.shape[::-1]    
         res = cv2.matchTemplate(img_gray,self.template,cv2.TM_CCOEFF_NORMED)
-        threshold = 0.8
+        threshold = 0.70
         loc = np.where( res >= threshold)
         # print(f'{type(loc)=} {len(loc)=} {len(loc[0])=} {loc=}')
         # for pt in zip(*loc[::-1]):
@@ -399,7 +401,7 @@ class TkinterBot(customtkinter.CTk):
             if whi: # this is when accidentally pressed up and enter bounty portal and dialogue come out. 
                 print(f'{whi}')
                 whitedotcounter+=1
-                if whitedotcounter > 1: # usually check twice
+                if whitedotcounter > 3: # usually check twice, now we check x4. 
                     whitedotcounter=0 # reset
                     print(f'accidentally pressed up on bounty portal? clicking end chat. [testing]')
                     position = win32gui.GetWindowRect(self.maplehwnd)
