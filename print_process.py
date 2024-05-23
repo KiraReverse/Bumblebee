@@ -54,7 +54,7 @@ async def main():
     print("Main function started")
     aa = pygetwindow.getAllTitles()
     for _, a in enumerate(aa):
-        print(f'{_}={a}')
+        print(f'{_} = {a}')
     print(f'')
     # print("pygetwindow.getActiveWindow: ", pygetwindow.getActiveWindow())
     print(f'')
