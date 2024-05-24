@@ -30,22 +30,26 @@ class Mycharacterign(Action):
         self.exp30mtimer0 = 0
         self.exp30mtimer = 0
         self.exp30m = True
+        self.exp1dura = 1830
 
         self.extraexp30mtimer0 = 0
         self.extraexp30mtimer = 0
         self.extraexp30m = True
+        self.exp2dura = 1830
 
         self.kishintimer0 = 0
         self.kishintimer = 0
         self.kishin = 0
 
-        self.ignitiontimer0 = 0
-        self.ignitiontimer = 1830
+        self.ignitiontimer0 = self.now
+        self.ignitiontimer = 0
         self.ignition = 0
+        self.ignitiondura = 1830
 
-        self.cctimer0 = 0
-        self.cctimer = 930
+        self.cctimer0 = self.now
+        self.cctimer = 0
         self.cc = True
+        self.ccdura = 1830
 
         self.cosmicshowerplanttimer0=0
         self.cosmicshowerplanttimer=0
@@ -940,7 +944,7 @@ class Mycharacterign(Action):
              #   runonce=True
 
         self.kishintimer = self.now - self.kishintimer0
-        if self.kishintimer > random.uniform(800, 900):
+        if self.kishintimer > random.uniform(600, 900):
             time.sleep(.4)
             print(f'kishin pressed. ')
             await self.endp()
@@ -949,7 +953,7 @@ class Mycharacterign(Action):
             self.kishintimer0 = self.now
 
         self.extraexp30mtimer = self.now - self.extraexp30mtimer0
-        if self.extraexp30mtimer > 1830:
+        if self.extraexp30mtimer > self.exp1dura:
             time.sleep(.4)
             print(f'additional exp pressed. ')
             await self.sevenp()
@@ -958,7 +962,7 @@ class Mycharacterign(Action):
             self.extraexp30mtimer0 = self.now
 
         self.exp30mtimer = self.now - self.exp30mtimer0
-        if self.exp30mtimer > 930:
+        if self.exp30mtimer > self.exp2dura:
             time.sleep(.4)
             print(f'x2 exp pressed. ')
             await self.eightp()
@@ -968,7 +972,7 @@ class Mycharacterign(Action):
 
 
         self.cctimer = self.now - self.cctimer0
-        if self.cctimer > 1830:
+        if self.cctimer > self.ccdura:
             time.sleep(.4)
             print(f'changing channel ')
             time.sleep(7)  # number of seconds to stop hitting. If your class has auto hitting skills adjust for longer
@@ -988,7 +992,7 @@ class Mycharacterign(Action):
             self.cctimer0 = self.now
 
         self.ignitiontimer = self.now - self.ignitiontimer0
-        if self.ignitiontimer > 1830:
+        if self.ignitiontimer > self.ignitiondura:
             time.sleep(.4)
             print(f'ignition pressed. ')
             await self.shiftrightp()
