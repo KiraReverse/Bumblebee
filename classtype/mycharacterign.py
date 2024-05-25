@@ -30,7 +30,7 @@ class Mycharacterign(Action):
         self.exp30mtimer0 = 0
         self.exp30mtimer = 0
         self.exp30m = True
-        self.exp1dura = 1830
+        self.exp1dura = 930
 
         self.extraexp30mtimer0 = 0
         self.extraexp30mtimer = 0
