@@ -591,6 +591,11 @@ class TkinterBot(customtkinter.CTk):
             elif w-x == 1388 or w-x == 1300 or w-x == 824 or w-x == 1374 or w-x == 2592: # extra testing from users
                 self.maplehwnd=windowhwnd
                 self.runesolver.set_maplehwnd(self.maplehwnd)
+        if not self.maplehwnd:
+            print(f'is your maple on? what is your maple resolution? observe the w-x=??? value, those are maplestory resolution. \
+            it could be MapleStory website / MapleStory discord / MapleStory folder, the bot grab all processes which have name \'MapleStory\' \
+            in it. everyone has different window border setting, some extra 8 pixel, some extra 16 pixel, you have to know yours, and add in \
+            main.py --> init_maple_window function. but before you do all this, answer the first question: is your maple on?')
 
     def init_maple_windows_old(self):
         hwnd = 0
