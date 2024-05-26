@@ -436,7 +436,17 @@ class Action:
         r = random.randint(x, y)
         r /= 1000
         await sleep(r)
+    async def sixp(selfself,x=31,y=101):
+        keydown('6')
+        r = random.randint(x, y)
+        r /= 1000
+        await sleep(r)
 
+    async def sixr(selfself, x=31, y=101):
+        keyup('6')
+        r = random.randint(x, y)
+        r /= 1000
+        await sleep(r)
     async def sevenp(selfself,x=31,y=101):
         keydown('7')
         r = random.randint(x, y)
@@ -469,6 +479,17 @@ class Action:
 
     async def niner(selfself, x=31, y=101):
         keyup('9')
+        r = random.randint(x, y)
+        r /= 1000
+        await sleep(r)
+    async def zerop(selfself, x=31, y=101):
+        keydown('0')
+        r = random.randint(x, y)
+        r /= 1000
+        await sleep(r)
+
+    async def zeror(selfself, x=31, y=101):
+        keyup('0')
         r = random.randint(x, y)
         r /= 1000
         await sleep(r)

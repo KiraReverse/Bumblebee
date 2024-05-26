@@ -23,24 +23,17 @@ class Mycharacterign(Action):
         self.randomlist = ['1', '2', '4', 'f1', 'f2', 'f3', 'f4', 'w', 'e', 'y']
         # self.randomlist = []
 
-        self.x2exptimer0 = 0
-        self.x2exptimer = 0
-        self.x2exp = True
+        self.timer15min0 = 0
+        self.timer15min = 0
+        self.timer15mindura = 915
 
-        self.exp30mtimer0 = 0
-        self.exp30mtimer = 0
-        self.exp30m = True
-        self.exp1dura = 930
+        self.timer30min0 = 0
+        self.timer30min = 0
+        self.timer30mindura = 1830
 
-        self.extraexp30mtimer0 = 0
-        self.extraexp30mtimer = 0
-        self.extraexp30m = True
-        self.exp2dura = 1830
-
-        self.eaptimer0 = 0
-        self.eaptimer = 0
-        self.eap = True
-        self.eapdura = 1830
+        self.timer60min0 = 0
+        self.timer60min = 0
+        self.timer60mindura = 3660
 
         self.kishintimer0 = 0
         self.kishintimer = 0
@@ -948,7 +941,7 @@ class Mycharacterign(Action):
             #    self.replaceropeconnect=False
              #   runonce=True
 
-        self.kishintimer = self.now - self.kishintimer0
+
         if self.kishintimer > random.uniform(600, 900):
             time.sleep(.4)
             print(f'kishin pressed. ')
@@ -956,27 +949,48 @@ class Mycharacterign(Action):
             await self.endr()
             time.sleep(.1)
             self.kishintimer0 = self.now
+        self.kishintimer = self.now - self.kishintimer0
 
-        self.extraexp30mtimer = self.now - self.extraexp30mtimer0
-        if self.extraexp30mtimer > self.exp1dura:
+
+        if self.timer15min > self.timer15mindura:
             time.sleep(.4)
-            print(f'additional exp pressed. ')
+            print(f'x3 15min pressed')
+            await self.sixp()
+            await self.sixr()
+            time.sleep(.1)
+            self.timer15min0 = self.now
+        self.timer15min = self.now - self.timer15min0
+
+
+        if self.timer30min > self.timer30mindura:
+            time.sleep(.4)
+            print(f'x2 30 min pressed')
             await self.sevenp()
             await self.sevenr()
-            time.sleep(.1)
-            self.extraexp30mtimer0 = self.now
-
-        self.exp30mtimer = self.now - self.exp30mtimer0
-        if self.exp30mtimer > self.exp2dura:
             time.sleep(.4)
-            print(f'x2 exp pressed. ')
+            print(f'smallEAP pressed')
             await self.eightp()
             await self.eightr()
+            time.sleep(.4)
+            print(f'gold pot pressed')
+            await self.ninep()
+            await self.niner()
+            time.sleep(.4)
+            print(f'additional exp pressed')
+            await self.zerop()
+            await self.zeror()
+            time.sleep(.4)
             time.sleep(.1)
-            self.exp30mtimer0 = self.now
+            self.timer30min0 = self.now
+        self.timer30min = self.now - self.timer30min0
+
+        #if self.timer60min > self.timer60mindura:
+        #    self.timer60min0 = self.now
+        #self.timer60min = self.now - self.timer60min0
 
 
-        self.cctimer = self.now - self.cctimer0
+
+
         if self.cctimer > self.ccdura:
             time.sleep(.4)
             print(f'changing channel ')
@@ -995,8 +1009,9 @@ class Mycharacterign(Action):
             time.sleep(1)
             time.sleep(.1)
             self.cctimer0 = self.now
+        self.cctimer = self.now - self.cctimer0
 
-        self.ignitiontimer = self.now - self.ignitiontimer0
+
         if self.ignitiontimer > self.ignitiondura:
             time.sleep(.4)
             print(f'ignition pressed. ')
@@ -1004,6 +1019,7 @@ class Mycharacterign(Action):
             await self.shiftrightr()
             time.sleep(.1)
             self.ignitiontimer0 = self.now
+        self.ignitiontimer = self.now - self.ignitiontimer0
 
         # self.cosmicshowerplanttimer = self.now - self.cosmicshowerplanttimer0
         # if self.cosmicshowerplanttimer > 59:

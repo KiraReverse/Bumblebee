@@ -129,6 +129,7 @@ class TkinterBot(customtkinter.CTk):
         self.thread1 = threading.Thread(target=self.run_thread1)
         self.thread3 = threading.Thread(target=self.run_thread3)
         self.thread6 = threading.Thread(target=self.run_thread6)
+        self.thread99 = threading.Thread(target=self.run_thread99)
         self.loop99 = asyncio.new_event_loop()
 
     def init_tkinter(self):
@@ -221,10 +222,16 @@ class TkinterBot(customtkinter.CTk):
         asyncio.set_event_loop(self.loop10)
         self.loop10.run_until_complete(self.async_function10()) # auto clicker monster life
 
+    def run_thread99(self):
+        asyncio.set_event_loop(self.loop99)
+        self.loop10.run_until_complete(self.async_function99()) # auto clicker monster life
+
+
     def start_threads(self):
         self.thread1.start()
         self.thread3.start()
         self.thread6.start()
+        self.thread99.start()
 
     async def async_function3(self):
         while not self.tkinter_started:
@@ -292,7 +299,7 @@ class TkinterBot(customtkinter.CTk):
                 else:
                     now=perf_counter()                
                     cctimer=now-cctimer0
-                    if cctimer>3000: # 60sec * 50min = 3000sec
+                    if cctimer>90000000000: # 60sec * 50min = 3000sec
                         # cc=True
                         keyupall()
                         keyupall_arrow()
@@ -676,8 +683,8 @@ class TkinterBot(customtkinter.CTk):
                 antimacrocheckerlocations = self.seperate_antimacro_detector()
                 if antimacrocheckerlocations:
                     print(f'got Antimacro')
-                    bot_token = '6615554981:AAGxys8k9QDX1lhHtJnZjROPXvQE643-EbU'
-                    chat_id = '-1002053722567'
+                    bot_token = '6929321890:AAE4zfC4c62ck2Z_ry9K3Cpq9pIcIBtjY4s'
+                    chat_id = '160958954'
                     message_to_send = "Anti Macro!"
                     num_messages = 10
                     self.resumebutton()
