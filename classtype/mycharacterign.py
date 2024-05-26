@@ -37,6 +37,11 @@ class Mycharacterign(Action):
         self.extraexp30m = True
         self.exp2dura = 1830
 
+        self.eaptimer0 = 0
+        self.eaptimer = 0
+        self.eap = True
+        self.eapdura = 1830
+
         self.kishintimer0 = 0
         self.kishintimer = 0
         self.kishin = 0
