@@ -40,3 +40,9 @@ theinterception/__pycache__/strokes.cpython-312.pyc
 *.pyc
 *.pyc
 *.pyc
+.vs/ProjectSettings.json
+.vs/slnx.sqlite
+.vs/Bumblebee/FileContentIndex/75c6e624-415e-4314-b98e-cb18fe4be438.vsidx
+.vs/Bumblebee/v17/DocumentLayout.json
+.vs/Bumblebee/v17/.wsuo
+.vs/VSWorkspaceState.json

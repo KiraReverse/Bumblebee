@@ -311,25 +311,25 @@ class TkinterBot(customtkinter.CTk):
                         keyupall_arrow()
                         # await self.changechannel_zakum() # we don't go ardent because it has 5 min cd.
                         self.cc=False
+                    #runetimer=now-runetimer0
+                    #if runetimer > self.runecd:
+                    #    runetimer0=now
+                    #    result = await self.FindRuneCDIcon()
+                    #    print(f'{result=}')
+                    #    if not result:
+                    #        if await self.runechecker():
+                    #            await self.character.gotorune() # and solve rune.
+                     # private server which has infinity rune buff.
                     runetimer=now-runetimer0
+                    print(f'{runetimer=}')
                     if runetimer > self.runecd:
-                        runetimer0=now
-                        result = await self.FindRuneCDIcon()
-                        print(f'{result=}')
-                        if not result:
+                        if await self.runechecker():
+                            await self.character.gotorune() # and solve rune.
+                            await self.character.ac.goleftattack(); time.sleep(.31)
                             if await self.runechecker():
-                                await self.character.gotorune() # and solve rune.
-                    # # private server which has infinity rune buff. 
-                    # runetimer=now-runetimer0
-                    # print(f'{runetimer=}')
-                    # if runetimer > self.runecd:
-                    #     if await self.runechecker():
-                    #         await self.character.gotorune() # and solve rune.
-                    #         await self.character.ac.goleftattack(); time.sleep(.31)
-                    #         if await self.runechecker():
-                    #             print(f'still got rune. ')
-                    #         else:
-                    #             runetimer0=perf_counter()
+                                print(f'still got rune. ')
+                            else:
+                                runetimer0=perf_counter()
 
 
 
@@ -350,7 +350,7 @@ class TkinterBot(customtkinter.CTk):
             # cv2.destroyAllWindows()
             # cv2.imwrite('../image/res.png',img_gray)
         if len(loc[0]) > 0:
-            print(f'{len(loc[0])=} return True please you idiot code')
+            #print(f'{len(loc[0])=} return True please you idiot code')
             return True
         return False
 
@@ -762,7 +762,7 @@ class TkinterBot(customtkinter.CTk):
             'chat_id': self.chat_id,
             'caption': 'Lie Detector Active'
         }
-        response = requests.post('https://api.telegram.org/bot' + self.TOKEN + '/sendPhoto', data=payload, files=files)
+        response = requests.post('https://api.telegram.org/bot' + self.bot_token + '/sendPhoto', data=payload, files=files)
         if response.status_code == 200:
             print(f'{perf_counter()-now =}')
             print(f"success {response.json().get('description')}")
