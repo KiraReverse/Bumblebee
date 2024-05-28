@@ -28,7 +28,7 @@ import gdi_capture
 from PIL import Image, ImageTk
 from configparser import ConfigParser
 from typing import Final
-from telegram import Update
+from telegram import Bot, Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 from attack import leftp, leftr, rightp, rightr, sleep, npcp, npcr
 from action import Action
@@ -120,17 +120,16 @@ class TkinterBot(customtkinter.CTk):
         self.loop2 = asyncio.new_event_loop()
         self.loop3 = asyncio.new_event_loop()
         self.loop4 = asyncio.new_event_loop()
-        self.loop5 = asyncio.new_event_loop()
+        #self.loop5 = asyncio.new_event_loop()
         self.loop6 = asyncio.new_event_loop()
         self.loop7 = asyncio.new_event_loop()
         self.loop8 = asyncio.new_event_loop()
         self.loop9 = asyncio.new_event_loop()
         self.loop10 = asyncio.new_event_loop()
+        self.loop99 = asyncio.new_event_loop()
         self.thread1 = threading.Thread(target=self.run_thread1)
         self.thread3 = threading.Thread(target=self.run_thread3)
         self.thread6 = threading.Thread(target=self.run_thread6)
-        self.thread99 = threading.Thread(target=self.run_thread99)
-        self.loop99 = asyncio.new_event_loop()
 
     def init_tkinter(self):
         self.title("chrome")
@@ -198,9 +197,9 @@ class TkinterBot(customtkinter.CTk):
         asyncio.set_event_loop(self.loop4)
         self.loop4.run_until_complete(self.async_function4()) # checker thread
 
-    def run_thread5(self):
+    '''def run_thread5(self):
         asyncio.set_event_loop(self.loop5)
-        self.loop5.run_until_complete(self.async_function5()) # gma thread
+        self.loop5.run_until_complete(self.async_function5()) # gma thread'''
     
     def run_thread6(self):
         asyncio.set_event_loop(self.loop6)
@@ -224,22 +223,24 @@ class TkinterBot(customtkinter.CTk):
 
     def run_thread99(self):
         asyncio.set_event_loop(self.loop99)
-        self.loop10.run_until_complete(self.async_function99()) # auto clicker monster life
-
+        self.loop99.run_until_complete(self.async_function99()) #anti macro maple origin
 
     def start_threads(self):
         self.thread1.start()
         self.thread3.start()
         self.thread6.start()
-        self.thread99.start()
 
     async def async_function3(self):
         while not self.tkinter_started:
             time.sleep(1.01)
         self.thread4 = threading.Thread(target=self.run_thread4)
         self.thread4.start() # all the detector goes here
-        self.thread5 = threading.Thread(target=self.run_thread5)
-        self.thread5.start() # gma detector goes here
+        '''self.thread5 = threading.Thread(target=self.run_thread5)
+        self.thread5.start() # gma detector goes here'''
+        
+        self.thread99 = threading.Thread(target=self.run_thread99)
+        self.thread99.start() # antimacro detector goes here
+        
         self.ac=self.character.ac
         self.polocheckertimer0=0
         self.now=0
@@ -267,14 +268,15 @@ class TkinterBot(customtkinter.CTk):
                     time.sleep(1)
                     if self.stop_event.is_set():
                         self.thread4.join()
-                        self.thread5.join()
+                        # self.thread5.join()
+                        self.thread99.join()
                         return
                 print(f'script resumed ..')
             #
             if self.character.ac.goingtoportal or self.character.ac.gotoportal1 or self.character.ac.gotoportal2 or self.character.ac.gotoportal3 or self.character.ac.gotoportal4:
                 time.sleep(.0001) # 
             else:
-                time.sleep(.011) # 
+                time.sleep(.411) # 
             # time.sleep(.811) # when testing ..
             # time.sleep(.411) # when testing ..
             # time.sleep(.001) # when idk maybe you gone insane ..
@@ -638,7 +640,7 @@ class TkinterBot(customtkinter.CTk):
             time.sleep(4)
             # time.sleep(2)
 
-    async def async_function5(self): # gma_checker
+    '''async def async_function5(self): # gma_checker
         while True:
             while self.pause:
                 time.sleep(1)
@@ -653,7 +655,7 @@ class TkinterBot(customtkinter.CTk):
             else:
                 pass
 
-            time.sleep(5)
+            time.sleep(5)'''
 
     async def async_function6(self): # just a button loop
         while True:
