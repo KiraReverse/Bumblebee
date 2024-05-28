@@ -425,83 +425,83 @@ class Action:
         r /= 1000
         await sleep(r)
 
-    async def endp(selfself,x=31,y=101):
+    async def endp(self,x=31,y=101):
         keydown('end')
         r = random.randint(x, y)
         r /= 1000
         await sleep(r)
 
-    async def endr(selfself, x=31, y=101):
+    async def endr(self, x=31, y=101):
         keyup('end')
         r = random.randint(x, y)
         r /= 1000
         await sleep(r)
-    async def sixp(selfself,x=31,y=101):
+    async def sixp(self,x=31,y=101):
         keydown('6')
         r = random.randint(x, y)
         r /= 1000
         await sleep(r)
 
-    async def sixr(selfself, x=31, y=101):
+    async def sixr(self, x=31, y=101):
         keyup('6')
         r = random.randint(x, y)
         r /= 1000
         await sleep(r)
-    async def sevenp(selfself,x=31,y=101):
+    async def sevenp(self,x=31,y=101):
         keydown('7')
         r = random.randint(x, y)
         r /= 1000
         await sleep(r)
 
-    async def sevenr(selfself, x=31, y=101):
+    async def sevenr(self, x=31, y=101):
         keyup('7')
         r = random.randint(x, y)
         r /= 1000
         await sleep(r)
 
-    async def eightp(selfself, x=31, y=101):
+    async def eightp(self, x=31, y=101):
         keydown('8')
         r = random.randint(x, y)
         r /= 1000
         await sleep(r)
 
-    async def eightr(selfself, x=31, y=101):
+    async def eightr(self, x=31, y=101):
         keyup('8')
         r = random.randint(x, y)
         r /= 1000
         await sleep(r)
 
-    async def ninep(selfself, x=31, y=101):
+    async def ninep(self, x=31, y=101):
         keydown('9')
         r = random.randint(x, y)
         r /= 1000
         await sleep(r)
 
-    async def niner(selfself, x=31, y=101):
+    async def niner(self, x=31, y=101):
         keyup('9')
         r = random.randint(x, y)
         r /= 1000
         await sleep(r)
-    async def zerop(selfself, x=31, y=101):
+    async def zerop(self, x=31, y=101):
         keydown('0')
         r = random.randint(x, y)
         r /= 1000
         await sleep(r)
 
-    async def zeror(selfself, x=31, y=101):
+    async def zeror(self, x=31, y=101):
         keyup('0')
         r = random.randint(x, y)
         r /= 1000
         await sleep(r)
 
-    async def shiftrightp(selfself, x=31, y=101):
-        keydown('shiftright')
+    async def shiftrightp(self, x=31, y=101):
+        keydown('shiftleft')
         r = random.randint(x, y)
         r /= 1000
         await sleep(r)
 
-    async def shiftrightr(selfself, x=31, y=101):
-        keyup('shiftright')
+    async def shiftrightr(self, x=31, y=101):
+        keyup('shiftleft')
         r = random.randint(x, y)
         r /= 1000
         await sleep(r)
