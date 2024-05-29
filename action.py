@@ -39,7 +39,7 @@ class Action:
         self.ardent = self.config.get('keybind', 'ardent')
         self.ipaddress = self.config.get('main', 'ipaddress')
         self.offsety=10
-        self.offsetx=10
+        self.offsetx=8
         ## for main rotation
         self.top=10.0
         self.left=10.0
