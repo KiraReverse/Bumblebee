@@ -2340,7 +2340,7 @@ class TkinterBot(customtkinter.CTk):
                             self.thread10.join()
                             return
                         else:
-                            self.helper.movetoandclick(x0+697,y0+418) # click buy --> enter --> enter 697,418                            
+                            self.helper.movetoandclick(x0+546,y0+418) # click buy --> enter --> enter 697,418
                             self.character.ac.enterpr_special(3,11)
                             time.sleep(.005)
                             self.character.ac.enterpr_special(3,11)
