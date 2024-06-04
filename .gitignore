@@ -48,3 +48,16 @@ theinterception/__pycache__/strokes.cpython-312.pyc
 .vs/VSWorkspaceState.json
 .idea/modules.xml
 .idea/misc.xml
+.idea/misc.xml
+gdi_capture/__pycache__/__init__.cpython-312.pyc
+gdi_capture/__pycache__/gdi_capture.cpython-312.pyc
+theinterception/__pycache__/__init__.cpython-312.pyc
+theinterception/__pycache__/_consts.cpython-312.pyc
+theinterception/__pycache__/_keycodes.cpython-312.pyc
+theinterception/__pycache__/_utils.cpython-312.pyc
+theinterception/__pycache__/device.cpython-312.pyc
+theinterception/__pycache__/exceptions.cpython-312.pyc
+theinterception/__pycache__/inputs.cpython-312.pyc
+theinterception/__pycache__/interception.cpython-312.pyc
+theinterception/__pycache__/strokes.cpython-312.pyc
+theinterception/__pycache__/types.cpython-312.pyc
