@@ -312,7 +312,13 @@ class TkinterBot(customtkinter.CTk):
                         keyupall()
                         keyupall_arrow()
                         # await self.changechannel_zakum() # we don't go ardent because it has 5 min cd.
-                        self.cc=False
+                        bot_token = '6929321890:AAE4zfC4c62ck2Z_ry9K3Cpq9pIcIBtjY4s'
+                        chat_id = '160958954'
+                        message_to_send = "Other Player!"
+                        num_messages = 5
+                        self.resumebutton()
+                        for _ in range(num_messages):
+                            await self.send_telegram_message(bot_token, chat_id, message_to_send)
                     #runetimer=now-runetimer0
                     #if runetimer > self.runecd:
                     #    runetimer0=now
@@ -1731,7 +1737,7 @@ class TkinterBot(customtkinter.CTk):
         buttonplayback.pack(padx=(1,1),pady=(1,1))
 
     async def changechannel_zakum(self):
-        async def press(button,sleep):
+        '''async def press(button,sleep):
                 await button()
                 time.sleep(sleep)
         position = win32gui.GetWindowRect(self.maplehwnd)
@@ -1760,11 +1766,11 @@ class TkinterBot(customtkinter.CTk):
         # check for red dot/guild dot/bl dot after cc
         await self.helper.checkreddotaftercomeoutfromzakummap(hwnd=self.maplehwnd,ca=self.character.ac, position1=(self.minimapX,self.minimapY)) # sorry perfectionist =(
         # TODO: repeat this function for guild dot 
-        # TODO: count number of red dot/guild dot/bl dot (instanced map)
+        # TODO: count number of red dot/guild dot/bl dot (instanced map)'''
         
 
     async def changechannel(self): # ardentmill version
-        position = win32gui.GetWindowRect(self.maplehwnd)
+        '''position = win32gui.GetWindowRect(self.maplehwnd)
         x, y, w, h = position
         async def gotoardent():
             await self.helper.move_to_and_click(x+559,y+233) # click somewhere else to prevent typing in chat. 
@@ -1818,7 +1824,7 @@ class TkinterBot(customtkinter.CTk):
             else: # we still in ardent TODO: if exceed x number of time, just cc again to align with portal and press up. 
                 time.sleep(.5)
         await self.helper.checkreddotaftercomeoutfromzakummap(hwnd=self.maplehwnd,ca=self.character.ac, position1=(self.minimapX,self.minimapY)) #
-        # TODO: set a limit for cc, in case character died, stop it from spamming cc! i've been banned once due to this spamming! no appeal can be made.  
+        # TODO: set a limit for cc, in case character died, stop it from spamming cc! i've been banned once due to this spamming! no appeal can be made. '''
 
     async def playback(self):
         time.sleep(1)
