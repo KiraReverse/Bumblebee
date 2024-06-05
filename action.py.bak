@@ -1727,6 +1727,25 @@ class Action:
         r /= 1000
         await sleep(r)
 
+    ## better naming. yes. 
+    async def bum(self, code, x=.031, y=.101):
+        keydown(code); await sleep(random.uniform(x,y))
+
+    async def bum_(self, code, x=.031, y=.101):
+        keyup(code); await sleep(random.uniform(x,y))
+
+    async def ble(self, code, x=.031, y=.101):
+        keydown_arrow(code); await sleep(random.uniform(x,y))
+
+    async def ble_(self, code, x=.031, y=.101):
+        keyup_arrow(code); await sleep(random.uniform(x,y))
+
+    async def bumblebee_(self, code, x=.031, y=.101):
+        keyupall(code); await sleep(random.uniform(x,y))
+
+    async def bumbeeble_(self, code, x=.031, y=101):
+        keyupall_arrow(code); await sleep(random.uniform(x,y))
+
     # test purpose
 
     async def testnpc(self):

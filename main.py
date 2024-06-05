@@ -86,8 +86,10 @@ class TkinterBot(customtkinter.CTk):
         self.threads = []
         self.stop_event = threading.Event()
         self.pause = True
+
         self.asyncfunction99_event = asyncio.Event()
         self.asyncfunction99_event.set()
+
         self.telegram_keep_alive = True
         self.acc_not_bind = False
         self.telegram_started = False
@@ -327,27 +329,8 @@ class TkinterBot(customtkinter.CTk):
                     if self.cc: # this is for red dot. 
                         keyupall()
                         keyupall_arrow()
-                        # await self.changechannel_zakum() # we don't go ardent because it has 5 min cd.
-                        bot_token = '6929321890:AAE4zfC4c62ck2Z_ry9K3Cpq9pIcIBtjY4s'
-                        chat_id = '160  958954'
-                        message_to_send = "Other Player!"
-                        num_messages = 5
-                        self.resumebutton()
-                        for _ in range(num_messages):
-                            await self.send_telegram_message(bot_token, chat_id, message_to_send)
-                    #runetimer=now-runetimer0
-                    #if runetimer > self.runecd:
-                    #    runetimer0=now
-                    #    result = await self.FindRuneCDIcon()
-                    #    print(f'{result=}')
-                    #    if not result:
-                    #        if await self.runechecker():
-                    #            await self.character.gotorune() # and solve rune.
-                     # private server which has infinity rune buff.
-=======
                         await self.changechannel() # we don't go ardent because it has 5 min cd. 
                         self.cc=False
->>>>>>> Stashed changes
                     runetimer=now-runetimer0
                     print(f'{runetimer=}')
                     if runetimer > self.runecd:
@@ -376,15 +359,10 @@ class TkinterBot(customtkinter.CTk):
         loc = np.where( res >= threshold)
         # print(f'{type(loc)=} {len(loc)=} {len(loc[0])=} {loc=}')
         # for pt in zip(*loc[::-1]):
-        #     print(f'{type(pt)=} {pt=}')
-        #     cv2.rectangle(img_gray, pt, (pt[0] + w, pt[1] + h), (0,0,255), 2)
-            # cv2.imshow('img',img_gray)
-            # cv2.waitKey(0)
-            # cv2.destroyAllWindows()
-            # cv2.imwrite('../image/res.png',img_gray)
-        if len(loc[0]) > 0:
-            #print(f'{len(loc[0])=} return True please you idiot code')
-            return True
+            # print(f'{type(pt)=} {pt=}')
+            # cv2.rectangle(img_rgb, pt, (pt[0] + w, pt[1] + h), (0,0,255), 2)
+            # cv2.imwrite('../image/res.png',img_rgb)
+        if len(loc[0]) > 0: return True
         return False
 
     async def async_function4(self): # this thread do all pixel detection / checker function. 
@@ -429,6 +407,12 @@ class TkinterBot(customtkinter.CTk):
                     guilddotcounter=0
                     #self.cc=True # we can't directly cc in this thread because cc-ing is a long process, it will block other detectors. 
                     print(f'got person here. {self.cc=}')
+                    bot_token = '6929321890:AAE4zfC4c62ck2Z_ry9K3Cpq9pIcIBtjY4s'
+                    chat_id = '160958954'
+                    message_to_send = "Other players around!"
+                    num_messages = 5
+                    for _ in range(num_messages):
+                        await self.send_telegram_message(bot_token, chat_id, message_to_send)
 
             if lie is not None:
                 print(f'{lie=}')
@@ -624,7 +608,7 @@ class TkinterBot(customtkinter.CTk):
                     self.asyncfunction99_event.clear()
                     await self.togglepause()
                     while True:
-                        image_path = 'F:/AutoMaple/Bumblebee/image/all_ld.png'
+                        image_path = 'C:/Bot/Bumblebee/image/all_ld.png'
                         all_ld = pytesseract.image_to_string(Image.open(image_path))
                         print(f'All LD {all_ld}')
                         try:
@@ -663,7 +647,7 @@ class TkinterBot(customtkinter.CTk):
                         screenshot = ImageGrab.grab(position)
                         screenshot = np.array(screenshot)
                         img = cv2.cvtColor(screenshot, cv2.COLOR_RGB2BGR)
-                        img_sylvia = cv2.imread('F:/AutoMaple/Bumblebee/image/img_sylvia.png', cv2.IMREAD_COLOR)
+                        img_sylvia = cv2.imread('C:/Bot/Bumblebee/image/img_sylvia.png', cv2.IMREAD_COLOR)
                         result = cv2.matchTemplate(img, img_sylvia, cv2.TM_CCOEFF_NORMED)
                         locations = np.where(result >= 0.9)
                         if not any(zip(*locations[::-1])):
@@ -701,14 +685,14 @@ class TkinterBot(customtkinter.CTk):
                     screenshot = ImageGrab.grab(position)
                     screenshot = np.array(screenshot)
                     img = cv2.cvtColor(screenshot, cv2.COLOR_RGB2BGR)
-                    img_sylvia = cv2.imread('F:/AutoMaple/Bumblebee/image/img_sylvia.png', cv2.IMREAD_COLOR)
+                    img_sylvia = cv2.imread('C:/Bot/Bumblebee/image/img_sylvia.png', cv2.IMREAD_COLOR)
                     result = cv2.matchTemplate(img, img_sylvia, cv2.TM_CCOEFF_NORMED)
                     locations = np.where(result >= 0.9)
                     if not any(zip(*locations[::-1])):  
                         print(f'got Antimacro')
-                        bot_token = '6615554981:AAGxys8k9QDX1lhHtJnZjROPXvQE643-EbU'
-                        chat_id = '-1002053722567'
-                        message_to_send = "Anti Macro!"
+                        bot_token = '6929321890:AAE4zfC4c62ck2Z_ry9K3Cpq9pIcIBtjY4s'
+                        chat_id = '160958954'
+                        message_to_send = "LD Detected!"
                         num_messages = 5
                         for _ in range(num_messages):
                             await self.send_telegram_message(bot_token, chat_id, message_to_send)
@@ -814,7 +798,7 @@ class TkinterBot(customtkinter.CTk):
             screenshot = ImageGrab.grab(position)
             screenshot = np.array(screenshot)
             img = cv2.cvtColor(screenshot, cv2.COLOR_RGB2BGR)
-            img_sylvia = cv2.imread('F:/AutoMaple/Bumblebee/image/img_sylvia.png', cv2.IMREAD_COLOR)
+            img_sylvia = cv2.imread('C:/Bot/Bumblebee/image/img_sylvia.png', cv2.IMREAD_COLOR)
             result = cv2.matchTemplate(img, img_sylvia, cv2.TM_CCOEFF_NORMED)
             locations = np.where(result >= 0.9)
             match_centers = []
@@ -829,10 +813,10 @@ class TkinterBot(customtkinter.CTk):
             x, y, w, h = position
             chatposition = (x,y+385,w-15,h-25)
             screenshot = ImageGrab.grab(chatposition)
-            #screenshot.save('F:/AutoMaple/Bumblebee/image/chatposition_newld.png')
+            #screenshot.save('C:/Bot/Bumblebee/image/chatposition_newld.png')
             screenshot = np.array(screenshot)
             img = cv2.cvtColor(screenshot, cv2.COLOR_RGB2BGR)
-            img_newld = cv2.imread('F:/AutoMaple/Bumblebee/image/img_newld.png', cv2.IMREAD_COLOR)
+            img_newld = cv2.imread('C:/Bot/Bumblebee/image/img_newld.png', cv2.IMREAD_COLOR)
             result = cv2.matchTemplate(img, img_newld, cv2.TM_CCOEFF_NORMED)
             locations = np.where(result >= 0.9)
             matches = []
@@ -857,8 +841,9 @@ class TkinterBot(customtkinter.CTk):
                                  y1 + 385 + top_left[1],
                                  w1 - 15,
                                  y1 + 385 + top_left[1]+ h)
+
                 screenshot1 = ImageGrab.grab(newldposition)
-                screenshot1.save('F:/AutoMaple/Bumblebee/image/all_ld.png')
+                screenshot1.save('C:/Bot/Bumblebee/image/all_ld.png')
                 screenshot1 = np.array(screenshot1)
                 img = cv2.cvtColor(screenshot1, cv2.COLOR_RGB2BGR)
             if match_centers and matches:
@@ -866,8 +851,6 @@ class TkinterBot(customtkinter.CTk):
         except Exception as e:
             print(f'seperate_newld: {e=}')
             self.rebindchathwnd()
-
-    def seperate_gma_detector(self)
     def seperate_antimacro_detector(self):
         if self.chathwnd == None:
             print(f'seperate_antimacro_detector1: chat window not found.', self.rebindchathwnd())
@@ -884,11 +867,11 @@ class TkinterBot(customtkinter.CTk):
             #cv2.imshow('img', img)
             #cv2.waitKey(0)
             #cv2.destroyAllWindows()
-            img_antimacro_1 = cv2.imread('F:/AutoMaple/Bumblebee/image/img_antimacro.png', cv2.IMREAD_COLOR)
+            img_antimacro_1 = cv2.imread('C:/Bot/Bumblebee/image/img_antimacro.png', cv2.IMREAD_COLOR)
             result_1 = cv2.matchTemplate(img, img_antimacro_1, cv2.TM_CCOEFF_NORMED)
-            img_antimacro_2 = cv2.imread('F:/AutoMaple/Bumblebee/image/img_antimacro2.png', cv2.IMREAD_COLOR)
+            img_antimacro_2 = cv2.imread('C:/Bot/Bumblebee/image/img_antimacro2.png', cv2.IMREAD_COLOR)
             result_2 = cv2.matchTemplate(img, img_antimacro_2, cv2.TM_CCOEFF_NORMED)
-            img_antimacro_3 = cv2.imread('F:/AutoMaple/Bumblebee/image/img_antimacro3.png', cv2.IMREAD_COLOR)
+            img_antimacro_3 = cv2.imread('C:/Bot/Bumblebee/image/img_antimacro3.png', cv2.IMREAD_COLOR)
             result_3 = cv2.matchTemplate(img, img_antimacro_3, cv2.TM_CCOEFF_NORMED)
 
             locations_1 = np.where(result_1 >= 0.9)
@@ -1894,8 +1877,8 @@ class TkinterBot(customtkinter.CTk):
         time.sleep(1)
         randomlist = ['b', '0', 'u', '9', 'a', 'c', 'r', 'z', 'ctrl', 'home', 'f', 'f', 'f']
         now=perf_counter()
-        randommtimer0=0
-        randommtimer=0
+        self.randommtimer0=0
+        self.randommtimer=0
         runetimer0=now
         runetimer=0
         rune=False

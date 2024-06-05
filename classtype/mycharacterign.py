@@ -989,29 +989,6 @@ class Mycharacterign(Action):
         #self.timer60min = self.now - self.timer60min0
 
 
-
-
-        if self.cctimer > self.ccdura:
-            time.sleep(.4)
-            print(f'changing channel ')
-            time.sleep(7)  # number of seconds to stop hitting. If your class has auto hitting skills adjust for longer
-            await self.ninep()  # press change channel hotkey
-            await self.niner()  # release change channel hotkey
-            time.sleep(0.1)
-            await self.rightp()
-            await self.rightr()
-            time.sleep(0.1)
-            await self.enterp()
-            await self.enterr()
-            time.sleep(0.1)
-            await self.enterp()
-            await self.enterr()
-            time.sleep(1)
-            time.sleep(.1)
-            self.cctimer0 = self.now
-        self.cctimer = self.now - self.cctimer0
-
-
         if self.ignitiontimer > self.ignitiondura:
             time.sleep(.4)
             print(f'ignition pressed. ')
