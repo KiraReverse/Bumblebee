@@ -313,7 +313,7 @@ class TkinterBot(customtkinter.CTk):
                         keyupall_arrow()
                         # await self.changechannel_zakum() # we don't go ardent because it has 5 min cd.
                         bot_token = '6929321890:AAE4zfC4c62ck2Z_ry9K3Cpq9pIcIBtjY4s'
-                        chat_id = '160958954'
+                        chat_id = '160  958954'
                         message_to_send = "Other Player!"
                         num_messages = 5
                         self.resumebutton()
