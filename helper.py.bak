@@ -203,7 +203,6 @@ class Helper:
     # check for red dot after coming out from zakum map. 
     async def checkreddotaftercomeoutfromzakummap(self,hwnd, ca=None, position1=(200,200)):
         rdbgr = (0, 0, 255)
-        gdbgr = (255, 102, 102)
         yellowbgr = (68, 221, 255)
         # 255 0 0 rgb
         # hwnd = win32gui.FindWindow(None, "MapleStory")
@@ -226,10 +225,8 @@ class Helper:
                 indicesyellow = np.where(np.all(img == yellowbgr, axis=-1))
                 if len(indicesyellow[0]) != 0:
                     index = np.where(np.all(img == rdbgr, axis=-1))
-                    index2 = np.where(np.all(img == gdbgr, axis=-1))
-                    # if len(index[0] != 0 or index2[0] !=0):
-                    if len(index[0] != 0) or len(index2[0] != 0):
-                        print(f'got person here')
+                    if len(index[0] != 0):
+                        print(f'got red dot')
                         time.sleep(1)
                         await ca.ccbuttonpr()
                         r = random.randint(1, 5)
@@ -240,7 +237,7 @@ class Helper:
                         await ca.enterr()
                         time.sleep(3)
                     else:
-                        print(f'no person here')
+                        print(f'no red dot')
                         return
                 else:
                     time.sleep(1)

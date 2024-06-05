@@ -161,11 +161,10 @@ class Game:
         
         died_locations = self.mini_checker_function(img_cropped1,OKBGR)
         red_dot_locations = self.mini_checker_function(img_cropped2,ENEMY_BGRA)
-        guild_dot_locations = self.mini_checker_function(img_cropped2,GUILD_BGRA)
         lie_detector_ok_locations = self.mini_checker_function(img_cropped3,LOBGR)
         white_dot_locations = self.mini_checker_function(img_cropped4,WDBGR)
 
-        return (died_locations, red_dot_locations, guild_dot_locations, lie_detector_ok_locations, white_dot_locations)
+        return (died_locations, red_dot_locations, lie_detector_ok_locations, white_dot_locations)
 
     def mini_checker_function(self,img,THEBGR):
         locations = []
@@ -234,10 +233,6 @@ class Game:
 
     def reddot_checker(self):
         location = self.locate(ENEMY_BGRA)
-        return location[0] if len(location) > 0 else None
-
-    def guilddot_checker(self):
-        location = self.locate(GUILD_BGRA)
         return location[0] if len(location) > 0 else None
 
     def liedetector_checker(self):
