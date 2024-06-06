@@ -2387,7 +2387,7 @@ class TkinterBot(customtkinter.CTk):
                     return
                 self.helper.movetoandclick(x0+878,y0+760) # click shop 878,760
                 for j in range(14):
-                    for i in range(14):
+                    for i in range(8):
                         if self.autoclickerstop:
                             print(f'{self.autoclickerstop=}')
                             self.thread10.join()
@@ -2417,10 +2417,10 @@ class TkinterBot(customtkinter.CTk):
                             self.helper.movetoandclick(x0+self.cboxslot,y0+719) # click c box --> enter --> enter 136 199 277 350 419,719
                             self.character.ac.enterpr_special(3,11)
                             self.character.ac.enterpr_special(3,11)
-                    #self.helper.movetoandclick(x0+77,y0+292) # click auto take care  --> enter 77,292
-                    #time.sleep(.033)
-                    #self.helper.movetoandclick(x0+77,y0+292) # click auto take care  --> enter 77,292 # double click to ensure
-                    #time.sleep(.033)
+                    self.helper.movetoandclick(x0+77,y0+292) # click auto take care  --> enter 77,292
+                    time.sleep(.033)
+                    self.helper.movetoandclick(x0+77,y0+292) # click auto take care  --> enter 77,292 # double click to ensure
+                    time.sleep(.033)
                     self.character.ac.enterpr_special()
                     time.sleep(.013)
                     self.character.ac.enterpr_special()
@@ -2434,22 +2434,22 @@ class TkinterBot(customtkinter.CTk):
                             self.thread10.join()
                             return
                         else:
-                            self.helper.movetoandrclick(x0 + self.monsterslot, y0 + 726,
-                                                        duration=.05)  # right click monster 155 243 312 377 456 539,726
-                            self.character.ac.enterpr_special(3, 11)
-                            time.sleep(.050)
-                            self.character.ac.enterpr_special(3, 11)
-                            time.sleep(.100)
-                            right_click()
-                            time.sleep(.150)
-                            self.helper.movetoandclick(x0 + self.monsterslot, y0 + 569, duration=.1,
-                                                       sleep=.1)  # click care 155 243 312 377 456 539,597
-                            self.character.ac.enterpr_special(3, 11)
-                            time.sleep(.050)
-                            self.character.ac.enterpr_special(3, 11)
-                            time.sleep(.100)
-                            self.character.ac.enterpr_special(3, 11)
-                            time.sleep(.150)
+                            #self.helper.movetoandrclick(x0 + self.monsterslot, y0 + 726,
+                            #                            duration=.05)  # right click monster 155 243 312 377 456 539,726
+                            #self.character.ac.enterpr_special(3, 11)
+                            #time.sleep(.050)
+                            #self.character.ac.enterpr_special(3, 11)
+                            #time.sleep(.100)
+                            #right_click()
+                            #time.sleep(.150)
+                            #self.helper.movetoandclick(x0 + self.monsterslot, y0 + 569, duration=.1,
+                            #                           sleep=.1)  # click care 155 243 312 377 456 539,597
+                            #self.character.ac.enterpr_special(3, 11)
+                            #time.sleep(.050)
+                            #self.character.ac.enterpr_special(3, 11)
+                            #time.sleep(.100)
+                            #self.character.ac.enterpr_special(3, 11)
+                            #time.sleep(.150)
                             self.helper.movetoandrclick(x0+self.monsterslot,y0+726,duration=.05) # right click monster 155 243 312 377 456 539,726                            
                             self.character.ac.enterpr_special(3,11)
                             time.sleep(.050)
