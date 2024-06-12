@@ -86,8 +86,10 @@ class TkinterBot(customtkinter.CTk):
         self.threads = []
         self.stop_event = threading.Event()
         self.pause = True
+
         self.asyncfunction99_event = asyncio.Event()
         self.asyncfunction99_event.set()
+
         self.telegram_keep_alive = True
         self.acc_not_bind = False
         self.telegram_started = False
@@ -327,26 +329,8 @@ class TkinterBot(customtkinter.CTk):
                     if self.cc: # this is for red dot. 
                         keyupall()
                         keyupall_arrow()
-                        # await self.changechannel_zakum() # we don't go ardent because it has 5 min cd.
-                        bot_token = '6929321890:AAE4zfC4c62ck2Z_ry9K3Cpq9pIcIBtjY4s'
-                        chat_id = '160  958954'
-                        message_to_send = "Other Player!"
-                        num_messages = 5
-                        self.resumebutton()
-                        for _ in range(num_messages):
-                            await self.send_telegram_message(bot_token, chat_id, message_to_send)
-                    #runetimer=now-runetimer0
-                    #if runetimer > self.runecd:
-                    #    runetimer0=now
-                    #    result = await self.FindRuneCDIcon()
-                    #    print(f'{result=}')
-                    #    if not result:
-                    #        if await self.runechecker():
-                    #            await self.character.gotorune() # and solve rune.
-                     # private server which has infinity rune buff.
-
-                    await self.changechannel() # we don't go ardent because it has 5 min cd.
-                    self.cc=False
+                        await self.changechannel() # we don't go ardent because it has 5 min cd. 
+                        self.cc=False
                     runetimer=now-runetimer0
                     print(f'{runetimer=}')
                     if runetimer > self.runecd:
@@ -375,15 +359,10 @@ class TkinterBot(customtkinter.CTk):
         loc = np.where( res >= threshold)
         # print(f'{type(loc)=} {len(loc)=} {len(loc[0])=} {loc=}')
         # for pt in zip(*loc[::-1]):
-        #     print(f'{type(pt)=} {pt=}')
-        #     cv2.rectangle(img_gray, pt, (pt[0] + w, pt[1] + h), (0,0,255), 2)
-            # cv2.imshow('img',img_gray)
-            # cv2.waitKey(0)
-            # cv2.destroyAllWindows()
-            # cv2.imwrite('../image/res.png',img_gray)
-        if len(loc[0]) > 0:
-            #print(f'{len(loc[0])=} return True please you idiot code')
-            return True
+            # print(f'{type(pt)=} {pt=}')
+            # cv2.rectangle(img_rgb, pt, (pt[0] + w, pt[1] + h), (0,0,255), 2)
+            # cv2.imwrite('../image/res.png',img_rgb)
+        if len(loc[0]) > 0: return True
         return False
 
     async def async_function4(self): # this thread do all pixel detection / checker function. 
@@ -428,6 +407,12 @@ class TkinterBot(customtkinter.CTk):
                     guilddotcounter=0
                     #self.cc=True # we can't directly cc in this thread because cc-ing is a long process, it will block other detectors. 
                     print(f'got person here. {self.cc=}')
+                    bot_token = '6929321890:AAE4zfC4c62ck2Z_ry9K3Cpq9pIcIBtjY4s'
+                    chat_id = '160958954'
+                    message_to_send = "Other players around!"
+                    num_messages = 5
+                    for _ in range(num_messages):
+                        await self.send_telegram_message(bot_token, chat_id, message_to_send)
 
             if lie is not None:
                 print(f'{lie=}')
@@ -707,7 +692,7 @@ class TkinterBot(customtkinter.CTk):
                         print(f'got Antimacro')
                         bot_token = '6929321890:AAE4zfC4c62ck2Z_ry9K3Cpq9pIcIBtjY4s'
                         chat_id = '160958954'
-                        message_to_send = "Anti Macro!"
+                        message_to_send = "LD Detected!"
                         num_messages = 5
                         for _ in range(num_messages):
                             await self.send_telegram_message(bot_token, chat_id, message_to_send)
@@ -1892,8 +1877,8 @@ class TkinterBot(customtkinter.CTk):
         time.sleep(1)
         randomlist = ['b', '0', 'u', '9', 'a', 'c', 'r', 'z', 'ctrl', 'home', 'f', 'f', 'f']
         now=perf_counter()
-        randommtimer0=0
-        randommtimer=0
+        self.randommtimer0=0
+        self.randommtimer=0
         runetimer0=now
         runetimer=0
         rune=False
@@ -2402,7 +2387,7 @@ class TkinterBot(customtkinter.CTk):
                     return
                 self.helper.movetoandclick(x0+878,y0+760) # click shop 878,760
                 for j in range(14):
-                    for i in range(14):
+                    for i in range(8):
                         if self.autoclickerstop:
                             print(f'{self.autoclickerstop=}')
                             self.thread10.join()
@@ -2432,10 +2417,10 @@ class TkinterBot(customtkinter.CTk):
                             self.helper.movetoandclick(x0+self.cboxslot,y0+719) # click c box --> enter --> enter 136 199 277 350 419,719
                             self.character.ac.enterpr_special(3,11)
                             self.character.ac.enterpr_special(3,11)
-                    #self.helper.movetoandclick(x0+77,y0+292) # click auto take care  --> enter 77,292
-                    #time.sleep(.033)
-                    #self.helper.movetoandclick(x0+77,y0+292) # click auto take care  --> enter 77,292 # double click to ensure
-                    #time.sleep(.033)
+                    self.helper.movetoandclick(x0+77,y0+292) # click auto take care  --> enter 77,292
+                    time.sleep(.033)
+                    self.helper.movetoandclick(x0+77,y0+292) # click auto take care  --> enter 77,292 # double click to ensure
+                    time.sleep(.033)
                     self.character.ac.enterpr_special()
                     time.sleep(.013)
                     self.character.ac.enterpr_special()
@@ -2449,22 +2434,22 @@ class TkinterBot(customtkinter.CTk):
                             self.thread10.join()
                             return
                         else:
-                            self.helper.movetoandrclick(x0 + self.monsterslot, y0 + 726,
-                                                        duration=.05)  # right click monster 155 243 312 377 456 539,726
-                            self.character.ac.enterpr_special(3, 11)
-                            time.sleep(.050)
-                            self.character.ac.enterpr_special(3, 11)
-                            time.sleep(.100)
-                            right_click()
-                            time.sleep(.150)
-                            self.helper.movetoandclick(x0 + self.monsterslot, y0 + 569, duration=.1,
-                                                       sleep=.1)  # click care 155 243 312 377 456 539,597
-                            self.character.ac.enterpr_special(3, 11)
-                            time.sleep(.050)
-                            self.character.ac.enterpr_special(3, 11)
-                            time.sleep(.100)
-                            self.character.ac.enterpr_special(3, 11)
-                            time.sleep(.150)
+                            #self.helper.movetoandrclick(x0 + self.monsterslot, y0 + 726,
+                            #                            duration=.05)  # right click monster 155 243 312 377 456 539,726
+                            #self.character.ac.enterpr_special(3, 11)
+                            #time.sleep(.050)
+                            #self.character.ac.enterpr_special(3, 11)
+                            #time.sleep(.100)
+                            #right_click()
+                            #time.sleep(.150)
+                            #self.helper.movetoandclick(x0 + self.monsterslot, y0 + 569, duration=.1,
+                            #                           sleep=.1)  # click care 155 243 312 377 456 539,597
+                            #self.character.ac.enterpr_special(3, 11)
+                            #time.sleep(.050)
+                            #self.character.ac.enterpr_special(3, 11)
+                            #time.sleep(.100)
+                            #self.character.ac.enterpr_special(3, 11)
+                            #time.sleep(.150)
                             self.helper.movetoandrclick(x0+self.monsterslot,y0+726,duration=.05) # right click monster 155 243 312 377 456 539,726                            
                             self.character.ac.enterpr_special(3,11)
                             time.sleep(.050)

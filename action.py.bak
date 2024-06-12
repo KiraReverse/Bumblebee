@@ -3,23 +3,12 @@ import time
 from time import perf_counter
 from configparser import ConfigParser
 # from initinterception import interception, move_to, move_relative, left_click, keydown, keyup, sleep
-from initinterception import keydown, keyup, keyupall, sleep
+from initinterception import keydown, keyup, keyupall, keydown_arrow, keyup_arrow, keyupall_arrow, sleep, sleeplol
 import win32gui
 from PIL import ImageGrab
 import json
 import numpy as np
 import requests
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1620,7 +1609,7 @@ class Action:
         runepos = (x+121, y+143, x+697, y+371) # 800x600
         # runepos = (x+221, y+143, x+797, y+371) # 1074x768
         # runepos = (x+341, y+143, x+917, y+371) # 1280x720
-        # runepos = (x+381, y+143, x+957, y+371) # 1366x768
+        #unepos = (x+381, y+143, x+957, y+371) # 1366x768
         # runepos = (x+631, y+143, x+1207, y+371) # 1920x1080 # if this coordinate not work, lemme know!
         print(x,y,w,h)
         screenshot = ImageGrab.grab(runepos,all_screens=True)
@@ -1672,14 +1661,14 @@ class Action:
                 print(f'randomiser {code=}')
                 await self.send2(code)
                 await self.send3(code)
-        if self.replaceropeconnect==True:
-            if runonce:
-                replaceropeconnecttimer0=self.now
-                runonce=False
-            replaceropeconnecttimer = self.now - replaceropeconnecttimer0
-            if replaceropeconnecttimer > 90:
-                self.replaceropeconnect=False
-                runonce=True
+        #if self.replaceropeconnect==True:
+            #if runonce:
+             #   replaceropeconnecttimer0=self.now
+             #   runonce=False
+            #replaceropeconnecttimer = self.now - replaceropeconnecttimer0
+            #if replaceropeconnecttimer > 90:
+             #   self.replaceropeconnect=False
+              #  runonce=True
         # self.cosmicshowerplanttimer = self.now - self.cosmicshowerplanttimer0
         # if self.cosmicshowerplanttimer > 59:
         #     self.cosmicshowerplant = True

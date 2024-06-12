@@ -4,7 +4,7 @@
 
 import time
 from time import perf_counter
-from initinterception import left_click, right_click, mouse_position, move_relative, sleep
+from initinterception import double_click, left_click, right_click, mouse_position, move_relative, sleep
 from humancursor import SystemCursor
 import win32gui
 from PIL import ImageGrab
@@ -70,6 +70,13 @@ class Helper:
         self.hc.move_to((x,y))
         time.sleep(.1)
         left_click()
+        time.sleep(.1)
+        move_relative(10,0)
+
+    async def move_to_and_click_double_and_move_away(self,x,y):
+        self.hc.move_to((x,y))
+        time.sleep(.1)
+        double_click()
         time.sleep(.1)
         move_relative(10,0)
 
