@@ -1937,9 +1937,11 @@ class TkinterBot(customtkinter.CTk):
         
         time.sleep(10.)
         #await self.helper.move_to_and_click(x+62,y+744) # laptop
-        await self.helper.move_to_and_click(x+70,y+780) # PC
-        time.sleep(7.)
-        await self.helper.move_to_and_click_and_move_away(x+463,y+104) #click window maple if failed
+        #await self.helper.move_to_and_click(x+70,y+780) # PC
+        #time.sleep(7.)
+        #await self.helper.move_to_and_click_and_move_away(x+463,y+104) #click window maple if failed
+        await self.character.ac.escpr()
+        await self.character.ac.enterpr_special(3, 11)
         self.togglepause
         # check for red dot/guild dot/bl dot after cc
         await self.helper.checkreddotaftercomeoutfromzakummap(hwnd=self.maplehwnd,ca=self.character.ac, position1=(self.minimapX,self.minimapY)) # sorry perfectionist =(
