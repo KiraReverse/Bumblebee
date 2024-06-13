@@ -74,6 +74,7 @@ class Action:
         self.prbp2=self.prb+2 # portal right boundary plus two, 76.5
         self.successthreshold=180.5 # what will be the coordinate of your character if successfully entered portal. 
         self.preventgotonextmap=56.5 # if there is a goto next map portal, put here
+        self.firstx = 0 # use to compare pass portal
         ## all the entry goes here
         self.rotation_list = ['default']
         self.rotation='default'
@@ -318,6 +319,42 @@ class Action:
         await self.ctrlp()
         await self.ctrlr()
 
+    async def rp(self,x=31,y=101):
+        keydown('r')
+        r = random.randint(x, y)
+        r /= 1000
+        await sleep(r)
+
+    async def rr(self,x=31,y=101):
+        keyup('r')
+        r = random.randint(x, y)
+        r /= 1000
+        await sleep(r)
+
+    async def up(self,x=31,y=101):
+        keydown('u')
+        r = random.randint(x, y)
+        r /= 1000
+        await sleep(r)
+
+    async def ur(self,x=31,y=101):
+        keyup('u')
+        r = random.randint(x, y)
+        r /= 1000
+        await sleep(r)
+
+    async def ep(self,x=31,y=101):
+        keydown('e')
+        r = random.randint(x, y)
+        r /= 1000
+        await sleep(r)
+
+    async def er(self,x=31,y=101):
+        keyup('e')
+        r = random.randint(x, y)
+        r /= 1000
+        await sleep(r)
+
     async def bp(self,x=31,y=101):
         keydown('b')
         r = random.randint(x, y)
@@ -413,7 +450,154 @@ class Action:
         r = random.randint(x, y)
         r /= 1000
         await sleep(r)
+        
+    async def fp(self,x=31,y=101):
+        keydown('f')
+        r = random.randint(x, y)
+        r /= 1000
+        await sleep(r)
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     async def endp(self,x=31,y=101):
         keydown('end')
         r = random.randint(x, y)
@@ -517,6 +701,10 @@ class Action:
         r = random.randint(x, y)
         r /= 1000
         await sleep(r)
+
+    async def teleportpr(self,x=31,y=101):
+        await self.teleportp()
+        await self.teleportr()
 
     async def attackp(self,x=31,y=101):
         keydown(self.atk)
@@ -1463,6 +1651,7 @@ class Action:
         time.sleep(.7)
 
     async def gotorune(self):
+        self.stoprune=False
         g_variable = self.g.get_rune_location()
         x, y = (None, None) if g_variable is None else g_variable
         if x == None:
@@ -1609,7 +1798,7 @@ class Action:
         runepos = (x+121, y+143, x+697, y+371) # 800x600
         # runepos = (x+221, y+143, x+797, y+371) # 1074x768
         # runepos = (x+341, y+143, x+917, y+371) # 1280x720
-        #unepos = (x+381, y+143, x+957, y+371) # 1366x768
+        # runepos = (x+381, y+143, x+957, y+371) # 1366x768
         # runepos = (x+631, y+143, x+1207, y+371) # 1920x1080 # if this coordinate not work, lemme know!
         print(x,y,w,h)
         screenshot = ImageGrab.grab(runepos,all_screens=True)

@@ -270,12 +270,14 @@ def mouse_down(button: MouseButton, delay: Optional[float] = None) -> None:
     interception.send_mouse(stroke)
     time.sleep(delay or MOUSE_BUTTON_DELAY)
 
+
 def mouse_up(button: MouseButton, delay: Optional[float] = None) -> None:
     """Releases a mouse button."""
     button_state = _get_button_states(button, down=False)
     stroke = MouseStroke(button_state, MouseFlag.MOUSE_MOVE_ABSOLUTE, 0, 0, 0, 0)
     interception.send_mouse(stroke)
     time.sleep(delay or MOUSE_BUTTON_DELAY)
+
 
 def move_to(x: int | tuple[int, int], y: Optional[int] = None) -> None:
     """Moves to a given absolute (x, y) location on the screen.
@@ -303,6 +305,7 @@ def move_to(x: int | tuple[int, int], y: Optional[int] = None) -> None:
     stroke = MouseStroke(0, MouseFlag.MOUSE_MOVE_ABSOLUTE, 0, x, y, 0)
     interception.send_mouse(stroke)
 
+
 def move_relative(x: int = 0, y: int = 0) -> None:
     """Moves relatively from the current cursor position by the given amounts.
 
@@ -323,13 +326,14 @@ def move_relative(x: int = 0, y: int = 0) -> None:
     stroke = MouseStroke(0, MouseFlag.MOUSE_MOVE_RELATIVE, 0, x, y, 0)
     interception.send_mouse(stroke)
 
+
 def click(
-    x: Optional[int | tuple[int, int]] = None,
-    y: Optional[int] = None,
-    button: MouseButton | str = "left",
-    clicks: int = 1,
-    interval: int | float = 0.1,
-    delay: int | float = 0.3,
+        x: Optional[int | tuple[int, int]] = None,
+        y: Optional[int] = None,
+        button: MouseButton | str = "left",
+        clicks: int = 1,
+        interval: int | float = 0.1,
+        delay: int | float = 0.3,
 ) -> None:
     """Presses a mouse button at a specific location (if given).
 
@@ -358,22 +362,20 @@ def click(
         if clicks > 1:
             time.sleep(interval)
 
+
 # decided against using functools.partial for left_click and right_click
 # because it makes it less clear that the method attribute is a function
 # and might be misunderstood. It also still allows changing the button
 # argument afterall - just adds the correct default.
-            
-def double_click(clicks: int = 1, interval: int | float = 0.1) -> None:
-    """Thin wrapper for the `click` function with the left mouse button."""
-    click(button="left", clicks=clicks, interval=interval)
-
 def left_click(clicks: int = 1, interval: int | float = 0.1) -> None:
     """Thin wrapper for the `click` function with the left mouse button."""
     click(button="left", clicks=clicks, interval=interval)
 
+
 def right_click(clicks: int = 1, interval: int | float = 0.1) -> None:
     """Thin wrapper for the `click` function with the right mouse button."""
     click(button="right", clicks=clicks, interval=interval)
+
 
 def mouse_position() -> tuple[int, int]:
     """Returns the current position of the cursor as `(x, y)` coordinate.
@@ -381,6 +383,7 @@ def mouse_position() -> tuple[int, int]:
     This does nothing special like other conventional mouse position functions.
     """
     return _utils.get_cursor_pos()
+
 
 @requires_driver
 @contextmanager
@@ -398,71 +401,73 @@ def hold_mouse(button: MouseButton):
     finally:
         mouse_up(button=button)
 
-async def movetoandleftclick(x,y):
+
+async def movetoandleftclick(x, y):
     # move_to(x,y)
-    await custommoveto(x,y)
+    await custommoveto(x, y)
     # hc.move_to(x,y)
     time.sleep(.3)
     left_click()
 
-async def custommoveto(targetx,targety):    
+
+async def custommoveto(targetx, targety):
     print(f'moving mouse .. {targetx=}, {targety=} ')
     # hc.move_to(targetx,targety)
     # while True:
     for i in range(1500):
-        x,y = mouse_position()
+        x, y = mouse_position()
         print(f'custom mouse test {i=} {x=},{y=}')
         # print(f'{x=},{y=}')
-        if x >= targetx-3 and x <= targetx+3:
-            if y>= targety-3 and y <= targety+3:
+        if x >= targetx - 3 and x <= targetx + 3:
+            if y >= targety - 3 and y <= targety + 3:
                 break
-        if targetx-x < 0:
-            r = random.randint(1,5)
-            move_relative(-r,0)
-            r/=1000
+        if targetx - x < 0:
+            r = random.randint(1, 5)
+            move_relative(-r, 0)
+            r /= 1000
             await sleep(r)
             # time.sleep(r)
         else:
-            r = random.randint(1,5)
-            move_relative(r,0)
-            r/=1000
+            r = random.randint(1, 5)
+            move_relative(r, 0)
+            r /= 1000
             await sleep(r)
             # time.sleep(r)
-        if targety-y < 0:
-            r = random.randint(1,5)
-            move_relative(0,-r)
-            r/=1000
+        if targety - y < 0:
+            r = random.randint(1, 5)
+            move_relative(0, -r)
+            r /= 1000
             await sleep(r)
             # time.sleep(r)
         else:
-            r = random.randint(1,5)
-            move_relative(0,r)
-            r/=1000
+            r = random.randint(1, 5)
+            move_relative(0, r)
+            r /= 1000
             await sleep(r)
             # time.sleep(r)
         # print(f'moved. ')
         # time.sleep(.5)
     print(f'moved finished. ')
 
-    
+
 async def initiate_move():
     for i in range(10):
-        r = random.randint(1,5)
-        move_relative(r,r)
-        r/=1000
+        r = random.randint(1, 5)
+        move_relative(r, r)
+        r /= 1000
         await sleep(r)
     for i in range(10):
-        r = random.randint(1,5)
-        move_relative(-r,r)
-        r/=1000
+        r = random.randint(1, 5)
+        move_relative(-r, r)
+        r /= 1000
         await sleep(r)
     for i in range(10):
-        r = random.randint(1,5)
-        move_relative(-r,-r)
-        r/=1000
+        r = random.randint(1, 5)
+        move_relative(-r, -r)
+        r /= 1000
         await sleep(r)
     for i in range(10):
-        r = random.randint(1,5)
-        move_relative(r,-r)
-        r/=1000
+        r = random.randint(1, 5)
+        move_relative(r, -r)
+        r /= 1000
         await sleep(r)

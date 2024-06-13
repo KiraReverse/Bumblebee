@@ -608,8 +608,8 @@ class TkinterBot(customtkinter.CTk):
 
     async def async_function97(self): # new ld OriginMS
         failed_attempts = 0
-        bot_token = '6615554981:AAGxys8k9QDX1lhHtJnZjROPXvQE643-EbU'
-        chat_id = '-1002053722567'
+        bot_token = '6929321890:AAE4zfC4c62ck2Z_ry9K3Cpq9pIcIBtjY4s'
+        chat_id = '160958954'
 
         while True:
             while self.pause:
@@ -638,8 +638,8 @@ class TkinterBot(customtkinter.CTk):
                         mask_red = cv2.bitwise_or(mask_red1, mask_red2)
                         mask_not_red = cv2.bitwise_not(mask_red)
                         result_image = cv2.bitwise_and(image, image, mask=mask_not_red)
-                        cv2.imwrite('F:/AutoMaple/Bumblebee/image/all_ld_pixel.png', result_image)
-                        image_path_pixel = 'F:/AutoMaple/Bumblebee/image/all_ld_pixel.png'
+                        cv2.imwrite('C:/Bot/Bumblebee/image/all_ld_pixel.png', result_image)
+                        image_path_pixel = 'C:/Bot/Bumblebee/image/all_ld_pixel.png'
                         all_ld = pytesseract.image_to_string(Image.open(image_path_pixel))
                         print(f'All Lie Detector :{all_ld}')
                         all_ld_no_spaces = all_ld.replace(' ', '')
@@ -660,8 +660,8 @@ class TkinterBot(customtkinter.CTk):
                         
                         if third_part:
                             print(f'Lie Detector is :{third_part}')
-                            data_path = 'F:/AutoMaple/Bumblebee/image/data/'
-                            #data2_path = 'F:/AutoMaple/Bumblebee/image/data/data2/'
+                            data_path = 'C:/Bot/Bumblebee/image/data/'
+                            #data2_path = 'C:/Bot/Bumblebee/image/data/data2/'
                             image = Image.open(image_path_pixel)
                             boxes = pytesseract.image_to_boxes(image)
                             pipe_positions = []
@@ -684,7 +684,7 @@ class TkinterBot(customtkinter.CTk):
                                 sanitized_third_part = sanitize_filename(third_part)
                                 data_image = os.path.join(data_path, f'{sanitized_third_part}.png')
                                 cropped_image.save(data_image)
-                                #image_path_third_part = f'F:/AutoMaple/Bumblebee/image/data/{third_part}.png'
+                                #image_path_third_part = f'C:/Bot/Bumblebee/image/data/{third_part}.png'
                                 #data_third_part = pytesseract.image_to_string(Image.open(image_path_third_part))
                                 #data2_image = os.path.join(data2_path, f'{data_third_part}.png')
                                 #cropped_image.save(data2_image)
@@ -741,14 +741,14 @@ class TkinterBot(customtkinter.CTk):
                             position = win32gui.GetWindowRect(self.maplehwnd)
                             x, y, w, h = position
                             screenshot = ImageGrab.grab(position)
-                            screenshot.save('F:/AutoMaple/Bumblebee/image/maplestory_screenshot.png')
+                            screenshot.save('C:/Bot/Bumblebee/image/maplestory_screenshot.png')
                             if failed_attempts >= 2:
                                 def close_maplestory():
                                     for proc in psutil.process_iter():
                                         if "MapleStory" in proc.name():
                                             proc.terminate()
                                 print("Failed 2 times, closing Maplestory.")
-                                #await self.send_telegram_image(bot_token, chat_id, 'F:/AutoMaple/Bumblebee/image/maplestory_screenshot.png')
+                                #await self.send_telegram_image(bot_token, chat_id, 'C:/Bot/Bumblebee/image/maplestory_screenshot.png')
                                 close_maplestory()
                                 #time.sleep(2.)
                                 #await self.send_telegram_message(bot_token, chat_id, message_to_send_2)
@@ -756,7 +756,7 @@ class TkinterBot(customtkinter.CTk):
                                 print(f"Captcha failed, attempt {failed_attempts}/3")  
                                 #await self.send_telegram_message(bot_token, chat_id, message_to_send)
                                 #time.sleep(2.)
-                                #await self.send_telegram_image(bot_token, chat_id, 'F:/AutoMaple/Bumblebee/image/maplestory_screenshot.png')
+                                #await self.send_telegram_image(bot_token, chat_id, 'C:/Bot/Bumblebee/image/maplestory_screenshot.png')
                                 print(f"failed_attempts : {failed_attempts}")
                                 seperate_newldlocations = self.seperate_newld()                
                 else:
@@ -765,62 +765,72 @@ class TkinterBot(customtkinter.CTk):
                 print(f'Maplestory window not found. ')   
 
             time.sleep(1.)    
-                print(f'Maplestory window not found. ')
 
-            time.sleep(3)
-    
-    async def async_function99(self): # antimacro_checker
+    async def async_function98(self): # safetycharm
         while True:
-            while self.pause or not self.asyncfunction99_event.is_set():
+            while self.pause:
                 time.sleep(1)
                 if self.stop_event.is_set():
                     return  1
-            if self.chathwnd:
+            if self.maplehwnd:
+                safetycharmcheckerlocations = self.seperate_safetycharm()
+                if safetycharmcheckerlocations:
+                    print(f'got Safetycharm')
+                    await self.character.ac.up(11,31)
+                    await self.character.ac.ur(3,11)
+                    time.sleep(1.)
+                else:
+                    print(f'no Safetycharm')
+            else:
+                print(f'Maplestory window not found. ')
+
+            time.sleep(60)
+
+    
+    async def async_function99(self): # antimacro_checkerc1
+        while True:
+            while self.pause:
+                time.sleep(1)
+                if self.stop_event.is_set():
+                    return  1
+            if self.maplehwnd:
                 antimacrocheckerlocations = self.seperate_antimacro_detector()
                 if antimacrocheckerlocations:
+                    print(f'got Antimacro')
+                    print(f'Function4 : Off')
+                    self.asyncfunction4_event.clear()
                     await self.togglepause()
+                    keyupall()
+                    keyupall_arrow()                     
                     position = win32gui.GetWindowRect(self.maplehwnd)
                     x, y, w, h = position
                     print(f'{x} {y} {w} {h}')   
-                    screenshot = ImageGrab.grab(position)
-                    screenshot = np.array(screenshot)
-                    img = cv2.cvtColor(screenshot, cv2.COLOR_RGB2BGR)
-                    img_sylvia = cv2.imread('C:/Bot/Bumblebee/image/img_sylvia.png', cv2.IMREAD_COLOR)
-                    result = cv2.matchTemplate(img, img_sylvia, cv2.TM_CCOEFF_NORMED)
-                    locations = np.where(result >= 0.9)
-                    if not any(zip(*locations[::-1])):  
-                        print(f'got Antimacro')
-                        bot_token = '6929321890:AAE4zfC4c62ck2Z_ry9K3Cpq9pIcIBtjY4s'
-                        chat_id = '160958954'
-                        message_to_send = "LD Detected!"
-                        num_messages = 5
-                        for _ in range(num_messages):
-                            await self.send_telegram_message(bot_token, chat_id, message_to_send)
-
-                        position = win32gui.GetWindowRect(self.maplehwnd)
-                        x, y, w, h = position
-                        time.sleep(7.)
-                        for _ in range(3):
-                            await self.character.ac.f6pr()
-                            await self.helper.move_to_and_click_and_move_away(x+489,y+369) # exit 800x600
-                            await asyncio.sleep(1.)
-                        
-                        time.sleep(10.)
-                        await self.helper.move_to_and_click(x+70,y+780) # exit 800x600
-                        time.sleep(7.)
-                        # check for red dot/guild dot/bl dot after cc
-                        await self.helper.checkreddotaftercomeoutfromzakummap(hwnd=self.maplehwnd,ca=self.character.ac, position1=(self.minimapX,self.minimapY)) # sorry perfectionist =(
-                        # TODO: repeat this function for guild dot 
-                        # TODO: count number of red dot/guild dot/bl dot (instanced map)
-                        for _ in range(10):
-                            await self.character.ac.bum('o')
-                            await self.character.ac.bum_('o')
-                            time.sleep(1.)
-                        await self.togglepause()
+                    bot_token = '6615554981:AAGxys8k9QDX1lhHtJnZjROPXvQE643-EbU'
+                    chat_id = '-1002053722567'
+                    message_to_send = "Anti Macro!"
+                    num_messages = 2
+                    for _ in range(num_messages):
+                        await self.send_telegram_message(bot_token, chat_id, message_to_send)
+                        time.sleep(2.)
+                    await self.helper.move_to_and_click_and_move_away(x+397,y+377)
+                    await self.character.ac.bum('9')
+                    await self.character.ac.bum_('9')
+                    time.sleep(.9)
+                    await self.helper.move_to_and_click_double_and_move_away(x+556,y+380)
+                    time.sleep(.8)
+                    await self.helper.move_to_and_click_and_move_away(x+448,y+363)
+                    time.sleep(7.)
+                    # check for red dot/guild dot/bl dot after cc
+                    await self.helper.checkreddotaftercomeoutfromzakummap(hwnd=self.maplehwnd,ca=self.character.ac, position1=(self.minimapX,self.minimapY)) # sorry perfectionist =(
+                    # TODO: repeat this function for guild dot 
+                    # TODO: count number of red dot/guild dot/bl dot (instanced map)
+                    await self.togglepause()
+                    self.asyncfunction4_event.set()
+                    print(f'Function4 : On')
                 else:
                     print(f'no Antimacro')
             else:
-                print(f'chat window not found. ')
+                print(f'window not found. ')
 
             time.sleep(30)
 
@@ -901,7 +911,7 @@ class TkinterBot(customtkinter.CTk):
             # cv2.imshow('img', img)
             # cv2.waitKey(0)
             # cv2.destroyAllWindows()
-            img_safetycharm = cv2.imread('F:/AutoMaple/Bumblebee/image/img_safetycharm.png', cv2.IMREAD_COLOR)
+            img_safetycharm = cv2.imread('C:/Bot/Bumblebee/image/img_safetycharm.png', cv2.IMREAD_COLOR)
             result = cv2.matchTemplate(img, img_safetycharm, cv2.TM_CCOEFF_NORMED)
             locations = np.where(result >= 0.9)
             match_centers = []
@@ -981,16 +991,14 @@ class TkinterBot(customtkinter.CTk):
             self.rebindchathwnd()
 
     def seperate_antimacro_detector(self):
-        if self.chathwnd == None:
-            print(f'seperate_antimacro_detector1: chat window not found.', self.rebindchathwnd())
-            print(self.chathwnd)
+        if self.maplehwnd == None:
+            print(f'seperate_antimacro_detector1: window not found.')
             return
         try:
-            position = win32gui.GetWindowRect(self.chathwnd)
+            position = win32gui.GetWindowRect(self.maplehwnd)
             x, y, w, h = position
-            print(f'chat postition: {x} {y} {w} {h}')   
-            chatposition = (x,y+385,w-15,h-25)
-            screenshot = ImageGrab.grab(chatposition)
+            print(f'{x} {y} {w} {h}')   
+            screenshot = ImageGrab.grab(position)
             screenshot = np.array(screenshot)
             img = cv2.cvtColor(screenshot, cv2.COLOR_RGB2BGR)
             #cv2.imshow('img', img)
@@ -1928,7 +1936,8 @@ class TkinterBot(customtkinter.CTk):
             await asyncio.sleep(1.)
         
         time.sleep(10.)
-        await self.helper.move_to_and_click(x+70,y+780) # exit 800x600
+        #await self.helper.move_to_and_click(x+62,y+744) # laptop
+        await self.helper.move_to_and_click(x+70,y+780) # PC
         time.sleep(7.)
         await self.helper.move_to_and_click_and_move_away(x+463,y+104) #click window maple if failed
         self.togglepause
@@ -2133,7 +2142,7 @@ class TkinterBot(customtkinter.CTk):
                             keyupall()
                             keyupall_arrow()
                             await self.changechannel_zakum() # this version of changing channel is from reddotdetector. 
-                            self.cc=False                            
+                            self.cc=False
                         runetimer=now-runetimer0
                         if runetimer > self.runecd:
                             result = await self.FindRuneCDIcon()

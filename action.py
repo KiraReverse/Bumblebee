@@ -12,6 +12,17 @@ import requests
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 class Action:
 
     def __init__(self):
@@ -222,13 +233,13 @@ class Action:
         await self.ardentr()
 
     async def leftp(self,x=31,y=101):
-        keydown('left')
+        keydown_arrow('left')
         r = random.randint(x, y)
         r /= 1000
         await sleep(r)
 
     async def leftr(self,x=31,y=101):
-        keyup('left')
+        keyup_arrow('left')
         r = random.randint(x, y)
         r /= 1000
         await sleep(r)
@@ -238,13 +249,13 @@ class Action:
         await self.leftr()
 
     async def rightp(self,x=31,y=101):
-        keydown('right')
+        keydown_arrow('right')
         r = random.randint(x, y)
         r /= 1000
         await sleep(r)
 
     async def rightr(self,x=31,y=101):
-        keyup('right')
+        keyup_arrow('right')
         r = random.randint(x, y)
         r /= 1000
         await sleep(r)
@@ -254,29 +265,33 @@ class Action:
         await self.rightr()
 
     async def upp(self,x=31,y=101):
-        keydown('up')
+        # print(f'up press ..')
+        keydown_arrow('up')
         r = random.randint(x, y)
         r /= 1000
         await sleep(r)
+        # print(f'up press done ..')
 
     async def upr(self,x=31,y=101):
-        keyup('up')
+        # print(f'up release ..')
+        keyup_arrow('up')
         r = random.randint(x, y)
         r /= 1000
         await sleep(r)
+        # print(f'up done ..')
     
     async def uppr(self,x=31,y=101):
         await self.upp()
         await self.upr()
 
     async def downp(self,x=31,y=101):
-        keydown('down')
+        keydown_arrow('down')
         r = random.randint(x, y)
         r /= 1000
         await sleep(r)
 
     async def downr(self,x=31,y=101):
-        keyup('down')
+        keyup_arrow('down')
         r = random.randint(x, y)
         r /= 1000
         await sleep(r)
