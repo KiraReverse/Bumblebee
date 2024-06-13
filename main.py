@@ -119,6 +119,7 @@ class TkinterBot(customtkinter.CTk):
         self.triggermousetest=False
         self.rockduck=False
         self.rockduck2=False
+        self.inCashShop=False
         self.init_maple_windows()
         self.template = cv2.imread('sealed_rune.png', cv2.IMREAD_GRAYSCALE)
         
@@ -335,7 +336,8 @@ class TkinterBot(customtkinter.CTk):
                     if self.cc: # this is for red dot. 
                         keyupall()
                         keyupall_arrow()
-                        await self.changechannel() # we don't go ardent because it has 5 min cd. 
+                        await self.gocashshop()
+                        #await self.changechannel() # we don't go ardent because it has 5 min cd.
                         self.cc=False
                     runetimer=now-runetimer0
                     print(f'{runetimer=}')
@@ -381,7 +383,7 @@ class TkinterBot(customtkinter.CTk):
         mapledcedcounter=0
         self.cc=False
         while True:
-            while self.pause or not self.asyncfunction4_event.is_set():
+            while self.pause or not self.asyncfunction4_event.is_set() or self.inCashShop is False:
                 time.sleep(1)
                 if self.stop_event.is_set():
                     return                    
@@ -1929,20 +1931,24 @@ class TkinterBot(customtkinter.CTk):
         position = win32gui.GetWindowRect(self.maplehwnd)
         x, y, w, h = position
         self.togglepause
+        self.inCashShop = True
         time.sleep(7.)
         for _ in range(3):
             await self.character.ac.f6pr()
-            await self.helper.move_to_and_click_and_move_away(x+489,y+369) # exit 800x600
+            #await self.helper.move_to_and_click_and_move_away(x+489,y+369) # exit 800x600
             await asyncio.sleep(1.)
-        
+            print(f'entering CS')
         time.sleep(10.)
         #await self.helper.move_to_and_click(x+62,y+744) # laptop
         #await self.helper.move_to_and_click(x+70,y+780) # PC
         #time.sleep(7.)
         #await self.helper.move_to_and_click_and_move_away(x+463,y+104) #click window maple if failed
         await self.character.ac.escpr()
+        await asyncio.sleep(1.)
         await self.character.ac.enterpr_special(3, 11)
+        print(f'exiting CS')
         self.togglepause
+        self.inCashShop = False
         # check for red dot/guild dot/bl dot after cc
         await self.helper.checkreddotaftercomeoutfromzakummap(hwnd=self.maplehwnd,ca=self.character.ac, position1=(self.minimapX,self.minimapY)) # sorry perfectionist =(
         # TODO: repeat this function for guild dot 
