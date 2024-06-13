@@ -773,6 +773,37 @@ class Action:
         r = random.randint(x, y)
         r /= 1000
         await sleep(r)
+
+    async def f6p(self, x=31, y=101):
+        keydown('f6')
+        r = random.randint(x, y)
+        r /= 1000
+        await sleep(r)
+
+    async def f6r(self, x=31, y=101):
+        keyup('f6')
+        r = random.randint(x, y)
+        r /= 1000
+        await sleep(r)
+
+    async def escp(self, x=31, y=101):
+        keydown('esc')
+        r = random.randint(x, y)
+        r /= 1000
+        await sleep(r)
+    async def escr (self, x=31, y=101):
+        keyup('esc')
+        r = random.randint(x, y)
+        r /= 1000
+        await sleep(r)
+
+    async def escpr (self, x=31, y=101):
+        await self.escp()
+        await self.escr()
+
+    async def f6pr(self, x=31, y=101):
+        await self.f6p()
+        await self.f6r()
     
     async def leftattack(self):
         print(f'leftattack')

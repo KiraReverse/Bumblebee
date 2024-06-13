@@ -20,7 +20,7 @@ class Mycharacterign(Action):
         self.offsetx=15
         self.goleft=True
         self.goright=False
-        self.randomlist = ['1', '2', '4', 'f1', 'f2', 'f3', 'f4', 'w', 'e', 'y']
+        self.randomlist = ['1', '2', '4', 'f1', 'f2', 'f3', 'f4', 'w', 'e', 'y', 'f']
         # self.randomlist = []
 
         self.timer15min0 = 0
